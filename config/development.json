@@ -1,0 +1,13 @@
+{
+  "port": 3001,
+  "db": {
+    "host": "localhost",
+    "port": 27017,
+    "user": "",
+    "password": "",
+    "name": "domcoffee"
+  },
+  "secretKey": "developer",
+  "sqlLogging": false,
+  "loggerPath": "./logs.log"
+}

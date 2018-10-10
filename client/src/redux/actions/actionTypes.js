@@ -1,0 +1,31 @@
+export const CHANGE_DATA_SALES = 'CHANGE_DATA_SALES';
+export const ADD_SALE = 'ADD_SALE';
+
+export const GET_ERRORS = 'GET_ERRORS';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+
+export const GET_USERS = 'GET_USERS';
+
+export const CHANGE_DATA_COFFEE = 'CHANGE_DATA_COFFEE';
+export const ADD_COFFEE = 'ADD_COFFEE';
+
+export const SET_SIDEBAR_STATE = 'SET_SIDEBAR_STATE';
+export const SET_LOADER = 'SET_LOADER';
+
+export const CHANGE_DATA_OWN = 'CHANGE_DATA_OWN';
+export const ADD_OWN = 'ADD_OWN';
+
+export const SORT_SALE_BY_DAY = 'SORT_SALE_BY_DAY';
+export const SORT_SALE_BY_MONTH = 'SORT_SALE_BY_MONTH';
+export const SORT_SALE_BY_QUARTER = 'SORT_SALE_BY_QUARTER';
+export const SORT_SALE_BY_YEAR = 'SORT_SALE_BY_YEAR';
+
+export const SORT_OWN_BY_DAY = 'SORT_OWN_BY_DAY';
+export const SORT_OWN_BY_MONTH = 'SORT_OWN_BY_MONTH';
+export const SORT_OWN_BY_QUARTER = 'SORT_OWN_BY_QUARTER';
+export const SORT_OWN_BY_YEAR = 'SORT_OWN_BY_YEAR';
+
+export const SORT_COFFEE_BY_DAY = 'SORT_COFFEE_BY_DAY';
+export const SORT_COFFEE_BY_MONTH = 'SORT_COFFEE_BY_MONTH';
+export const SORT_COFFEE_BY_QUARTER = 'SORT_COFFEE_BY_QUARTER';
+export const SORT_COFFEE_BY_YEAR = 'SORT_COFFEE_BY_YEAR';
