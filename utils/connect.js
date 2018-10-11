@@ -6,7 +6,7 @@ const auth = config.db.user.length ? `${config.db.user}${pass}@` : "";
 
 // mongodb://test:test@localhost:27017/cache_db
 mongoose.connect(
-  `mongodb://${auth}${config.db.host}:${config.db.port}/${config.db.name}`,
+  `mongodb://${config.user}:${process.env.API_KEY}@${config.host}:${config.port}/${config.name}`,
   () => {
     console.log("DB IS STARTED!");
   }

@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production node app.js",
     "server": "nodemon app.js",
     "ui": "cd client && npm start",
-    "deploy": "rm -R build && cd client && npm run build && git add . && git commit -m 'deploy' && git push origin master",
+    "deploy": "rm -R build && cd client && npm run build",
     "dev": "npm run server & npm run ui",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
