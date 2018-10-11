@@ -51,6 +51,7 @@ const styles = theme => ({
 class Coffee extends Component {
   state = {
     open: false,
+    data: []
   };
 
   componentDidMount = () => {
