@@ -6,7 +6,7 @@ const auth = config.db.user.length ? `${config.db.user}${pass}@` : "";
 
 // mongodb://test:test@localhost:27017/cache_db
 mongoose.connect(
-  `mongodb://${config.user}:${process.env.API_KEY}@${config.host}:${config.port}/${config.name}`,
+  `mongodb://onipko:${process.env.API_KEY}@ds125683.mlab.com:25683/domcoffee`,
   () => {
     console.log("DB IS STARTED!");
   }
