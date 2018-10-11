@@ -37,8 +37,8 @@ app.use("/coffee", coffeeRouter);
 app.use("/users", usersRouter);
 app.use("/own", ownRouter);
 
-// const { PORT = 3000 } = process.env;
-const port = config.port;
+const { PORT = 3000 } = process.env;
+const { port = PORT } = config;
 if (!module.parent) {
   app.listen(port, () => {
     console.log(`SERVER IS STARTED ON PORT: ${port}`);
