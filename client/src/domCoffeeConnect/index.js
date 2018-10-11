@@ -4,7 +4,7 @@ const domCoffeeConnection = (endpoint, request, responseProcessor) => {
   try {
     axios
       .request({
-        url: `https://dom-coffee-app.herokuapp.com${endpoint}`,
+        url: `http://dom-coffee-app.herokuapp.com${endpoint}`,
         method: request.method,
         headers: request.headers,
         data: request.data,
