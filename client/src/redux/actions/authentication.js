@@ -11,7 +11,7 @@ export const setCurrentUser = decoded => ({
 
 export const registerUser = user => dispatch => {
   axios
-    .post('http://80.209.225.150:5000/users/register', user)
+    .post('https://dom-coffee-app.herokuapp.com/users/register', user)
     .then(() => history.push('/settings/users'))
     .catch(err => {
       dispatch({
@@ -23,7 +23,7 @@ export const registerUser = user => dispatch => {
 
 export const loginUser = user => dispatch => {
   axios
-    .post('http://80.209.225.150:5000/users/login', user)
+    .post('https://dom-coffee-app.herokuapp.com/users/login', user)
     .then(res => {
       const { token } = res.data;
       localStorage.setItem('jwtToken', token);
