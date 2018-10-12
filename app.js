@@ -37,8 +37,8 @@ app.use("/sales", salesRouter);
 app.use("/coffee", coffeeRouter);
 app.use("/users", usersRouter);
 app.use("/own", ownRouter);
-app.use("/app", (req, res, next) => {
-  res.sendFile(path.join(__dirname, "./build", "index.html"));
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, './build', 'index.html'));
 });
 app.use(express.static("./build"));
 
