@@ -37,10 +37,10 @@ app.use("/sales", salesRouter);
 app.use("/coffee", coffeeRouter);
 app.use("/users", usersRouter);
 app.use("/own", ownRouter);
+app.use(express.static("./build"));
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, './build', 'index.html'));
 });
-app.use(express.static("./build"));
 
 const { PORT = 5000 } = process.env;
 const { port = PORT } = config;
