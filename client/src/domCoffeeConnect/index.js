@@ -24,25 +24,25 @@ const domCoffeeConnection = (endpoint, request, responseProcessor) => {
 export default domCoffeeConnection;
 
 export const getSales = (requestData, responseProcessor) => {
-  domCoffeeConnection('/sales', requestData, responseProcessor);
+  domCoffeeConnection('/api/sales', requestData, responseProcessor);
 };
 
 export const addSale = (requestData, responseProcessor) => {
-  domCoffeeConnection('/sales', requestData, responseProcessor);
+  domCoffeeConnection('/api/sales', requestData, responseProcessor);
 };
 
 export const getOwn = (requestData, responseProcessor) => {
-  domCoffeeConnection('/own', requestData, responseProcessor);
+  domCoffeeConnection('/api/own', requestData, responseProcessor);
 };
 
 export const addOwn = (requestData, responseProcessor) => {
-  domCoffeeConnection('/own', requestData, responseProcessor);
+  domCoffeeConnection('/api/own', requestData, responseProcessor);
 };
 
 export const getCoffee = (requestData, responseProcessor) => {
-  domCoffeeConnection('/coffee', requestData, responseProcessor);
+  domCoffeeConnection('/api/coffee', requestData, responseProcessor);
 };
 
 export const addCoffee = (requestData, responseProcessor) => {
-  domCoffeeConnection('/coffee', requestData, responseProcessor);
+  domCoffeeConnection('/api/coffee', requestData, responseProcessor);
 };

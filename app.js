@@ -33,10 +33,10 @@ app.use((req, res, next) => {
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-app.use("/sales", salesRouter);
-app.use("/coffee", coffeeRouter);
-app.use("/users", usersRouter);
-app.use("/own", ownRouter);
+app.use("/api/sales", salesRouter);
+app.use("/api/coffee", coffeeRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/own", ownRouter);
 app.use(express.static("./build"));
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, './build', 'index.html'));
