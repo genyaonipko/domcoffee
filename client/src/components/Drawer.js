@@ -105,9 +105,10 @@ class DrawerBar extends Component {
       case '/coffee':
         return this.props.changeCoffeeDay();
       case '/dashboard':
-        return this.props.changeCoffeeDay();
-        return this.props.changeOwnDay();
-        return this.props.changeDay();
+        this.props.changeCoffeeDay();
+        this.props.changeOwnDay();
+        this.props.changeDay();
+        return 
       default:
         return '';
     }
@@ -122,9 +123,10 @@ class DrawerBar extends Component {
       case '/coffee':
         return this.props.changeCoffeeMonth();
       case '/dashboard':
-        return this.props.changeCoffeeMonth();
-        return this.props.changeOwnMonth();
-        return this.props.changeMonth();
+        this.props.changeCoffeeMonth();
+        this.props.changeOwnMonth();
+        this.props.changeMonth();
+        return 
       default:
         return '';
     }
@@ -139,9 +141,10 @@ class DrawerBar extends Component {
       case '/coffee':
         return this.props.changeCoffeeQuarter();
       case '/dashboard':
-        return this.props.changeCoffeeQuarter();
-        return this.props.changeOwnQuarter();
-        return this.props.changeQuarter();
+        this.props.changeCoffeeQuarter();
+        this.props.changeOwnQuarter();
+        this.props.changeQuarter();
+        return 
       default:
         return '';
     }
@@ -156,9 +159,10 @@ class DrawerBar extends Component {
       case '/coffee':
         return this.props.changeCoffeeYear();
       case '/dashboard':
-        return this.props.changeCoffeeYear();
-        return this.props.changeOwnYear();
-        return this.props.changeYear();
+        this.props.changeCoffeeYear();
+        this.props.changeOwnYear();
+        this.props.changeYear();
+        return 
       default:
         return '';
     }
@@ -173,9 +177,10 @@ class DrawerBar extends Component {
       case '/coffee':
         return this.props.getAllCoffee();
       case '/dashboard':
-        return this.props.getAllCoffee();
-        return this.props.getAllOwn();
-        return this.props.getAll();
+        this.props.getAllCoffee();
+        this.props.getAllOwn();
+        this.props.getAll();
+        return 
       default:
         return '';
     }

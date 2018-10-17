@@ -43,7 +43,7 @@ export const MainListItems = ({ role }) => (
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Учет кофе/вес" />
+      <ListItemText primary="Порции" />
     </ListItem>
     {role === 'admin' && (
       <ListItem button onClick={() => history.push('/settings')}>

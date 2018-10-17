@@ -55,8 +55,8 @@ class Dashboard extends React.Component {
       'Кол-во личного употребления',
     ];
 
-    return _.findKey(coffee, o => o !== 0) &&
-      _.findKey(sales, o => o !== 0) &&
+    return _.findKey(coffee, o => o !== 0) ||
+      _.findKey(sales, o => o !== 0) ||
       _.findKey(own, o => o !== 0) ? (
       <Fragment>
         <div className={classes.appBarSpacer} />

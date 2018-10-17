@@ -9,6 +9,7 @@ import YAxis from 'recharts/lib/cartesian/YAxis';
 import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 import Tooltip from 'recharts/lib/component/Tooltip';
 import Legend from 'recharts/lib/component/Legend';
+import _ from 'lodash';
 
 function SimpleLineChart(props) {
   const initialData = [
@@ -48,24 +49,30 @@ function SimpleLineChart(props) {
         <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <Tooltip />
         <Legend />
-        <Line
-          isAnimationActive={false}
-          type="monotone"
-          dataKey="Продажи"
-          stroke="#b4193d"
-        />
-        <Line
-          isAnimationActive={false}
-          type="monotone"
-          dataKey="Помол"
-          stroke="#5000ff"
-        />
-        <Line
-          isAnimationActive={false}
-          type="monotone"
-          dataKey="Личное"
-          stroke="#0A6519"
-        />
+        {_.findKey(props.data.sales, o => o !== 0) && (
+          <Line
+            isAnimationActive={false}
+            type="monotone"
+            dataKey="Продажи"
+            stroke="#b4193d"
+          />
+        )}
+        {_.findKey(props.data.coffee, o => o !== 0) && (
+          <Line
+            isAnimationActive={false}
+            type="monotone"
+            dataKey="Помол"
+            stroke="#5000ff"
+          />
+        )}
+        {_.findKey(props.data.own, o => o !== 0) && (
+          <Line
+            isAnimationActive={false}
+            type="monotone"
+            dataKey="Личное"
+            stroke="#0A6519"
+          />
+        )}
         {/* <Line type="monotone" dataKey="Orders" stroke="#b4193d" /> */}
       </LineChart>
     </ResponsiveContainer>

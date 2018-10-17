@@ -7,6 +7,7 @@ const usersRouter = require("./routes/user");
 const salesRouter = require("./routes/sales");
 const coffeeRouter = require("./routes/coffee");
 const ownRouter = require("./routes/own");
+const portionsRouter = require("./routes/portions");
 
 const config = require("./config");
 
@@ -37,6 +38,7 @@ app.use("/api/sales", salesRouter);
 app.use("/api/coffee", coffeeRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/own", ownRouter);
+app.use("/api/portions", portionsRouter);
 app.use(express.static("./build"));
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, './build', 'index.html'));
