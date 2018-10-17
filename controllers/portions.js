@@ -12,7 +12,7 @@ module.exports = {
     try {
       req.item = await Portions.create({
         key: randomString(),
-        own: req.body
+        portions: req.body
       });
       next();
     } catch (err) {
@@ -27,7 +27,7 @@ module.exports = {
         },
         {
           ...req.item,
-          own: req.body
+          portions: req.body
         },
         {
           new: true
