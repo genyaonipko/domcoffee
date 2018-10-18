@@ -14,6 +14,7 @@ import Loader from '../../components/Loader';
 import { getAllCoffeeAction } from '../../redux/actions/coffee';
 import { changeDataAction } from '../../redux/actions/sales';
 import { getAllOwnAction } from '../../redux/actions/own';
+import { changePortionsAction } from '../../redux/actions/portions';
 
 import SimpleLineChart from './components/LineChart';
 import SimpleTable from './components/Table';
@@ -45,14 +46,16 @@ class Dashboard extends React.Component {
     this.props.changeData();
     this.props.getAllCoffee();
     this.props.getAllOwn();
+    this.props.getAllPortions();
   };
 
-  renderContent = (sales, coffee, own, classes) => {
+  renderContent = (sales, coffee, own, portions, classes) => {
     const tableHeaders = [
       'Марка кофе',
       'Кол-во продаж',
       'Кол-во помола',
       'Кол-во личного употребления',
+      'Кол-во порций',
     ];
 
     return _.findKey(coffee, o => o !== 0) ||
@@ -64,14 +67,14 @@ class Dashboard extends React.Component {
           График по всем данным
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart data={{ sales, coffee, own }} />
+          <SimpleLineChart data={{ sales, coffee, own, portions }} />
         </Typography>
         <Typography variant="display1" gutterBottom>
           Вся информация
         </Typography>
         <div className={classes.tableContainer}>
           <SimpleTable
-            data={{ sales, coffee, own }}
+            data={{ sales, coffee, own, portions }}
             tableHeaders={tableHeaders}
           />
         </div>
@@ -84,7 +87,7 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { classes, sales, coffee, own, isLoading } = this.props;
+    const { classes, sales, coffee, own, portions, isLoading } = this.props;
 
     return (
       <Fragment>
@@ -93,7 +96,7 @@ class Dashboard extends React.Component {
           <AppBarComponent title="Дашбоард" />
           <main className={classes.content}>
             {!isLoading ? (
-              this.renderContent(sales, coffee, own, classes)
+              this.renderContent(sales, coffee, own, portions, classes)
             ) : (
               <Loader />
             )}
@@ -113,12 +116,15 @@ Dashboard.propTypes = {
   coffee: PropTypes.shape({}).isRequired,
   getAllOwn: PropTypes.func.isRequired,
   own: PropTypes.shape({}).isRequired,
+  portions: PropTypes.shape({}).isRequired,
+  getAllPortions: PropTypes.func.isRequired,
 };
 
 const mSTP = state => ({
   sales: state.sales,
   coffee: state.coffee,
   own: state.own,
+  portions: state.portions,
   isLoading: state.settings.isLoading,
 });
 
@@ -126,6 +132,7 @@ const mDTP = dispatch => ({
   getAllCoffee: () => dispatch(getAllCoffeeAction()),
   changeData: () => dispatch(changeDataAction()),
   getAllOwn: () => dispatch(getAllOwnAction()),
+  getAllPortions: () => dispatch(changePortionsAction()),
 });
 
 export default withRouter(

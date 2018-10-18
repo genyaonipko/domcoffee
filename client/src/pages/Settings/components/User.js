@@ -128,8 +128,8 @@ class User extends Component {
           {users.length ? (
             <List className={classes.list}>
               {users.map(item => (
-                <Fragment>
-                  <ListItem key={item.email} className={classes.listItem}>
+                <Fragment key={item.email}>
+                  <ListItem className={classes.listItem}>
                     <Avatar alt="Remy Sharp" src={item.avatar} />
                     <ListItemText
                       style={{ width: '15%' }}

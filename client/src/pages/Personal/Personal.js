@@ -95,7 +95,7 @@ class Personal extends Component {
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent {...this.props} title="Личное употребление" />
+          <AppBarComponent title="Личное употребление" />
           <main className={classes.content}>
             {!isLoading ? this.renderContent(own, classes) : <Loader />}
           </main>

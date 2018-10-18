@@ -5,6 +5,7 @@ import dataUsersReducer from './usersReducer';
 import errorReducer from './errorReducer';
 import authReducer from './authReducer';
 import coffeeReducer from './coffeeReducer';
+import portionsReducer from './portionsReducer';
 import settingsReducer from './settingsReducer';
 import ownReducer from './ownReducer';
 
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   sales: dataReducer,
   coffee: coffeeReducer,
   own: ownReducer,
+  portions: portionsReducer,
   error: errorReducer,
   auth: authReducer,
   users: dataUsersReducer,

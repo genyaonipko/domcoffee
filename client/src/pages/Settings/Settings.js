@@ -36,7 +36,7 @@ class Settings extends React.Component {
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent {...this.props} title="Настройки" />
+          <AppBarComponent title="Настройки" />
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Switch>

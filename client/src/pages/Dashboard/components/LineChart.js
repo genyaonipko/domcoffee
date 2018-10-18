@@ -38,6 +38,7 @@ function SimpleLineChart(props) {
     Продажи: props.data.sales[item.name],
     Помол: props.data.coffee[item.name],
     Личное: props.data.own[item.name],
+    Порции: props.data.portions[item.name],
   }));
 
   return (
@@ -71,6 +72,14 @@ function SimpleLineChart(props) {
             type="monotone"
             dataKey="Личное"
             stroke="#0A6519"
+          />
+        )}
+        {_.findKey(props.data.portions, o => o !== 0) && (
+          <Line
+            isAnimationActive={false}
+            type="monotone"
+            dataKey="Порции"
+            stroke="#4C0099"
           />
         )}
         {/* <Line type="monotone" dataKey="Orders" stroke="#b4193d" /> */}

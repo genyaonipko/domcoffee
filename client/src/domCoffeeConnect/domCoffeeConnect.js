@@ -53,4 +53,22 @@ export default class dcRequests {
       data,
     };
   }
+  static getPortions() {
+    return {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: null,
+    };
+  }
+  static addPortion(data) {
+    return {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+    };
+  }
 }

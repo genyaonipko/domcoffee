@@ -66,20 +66,20 @@ function dataReducer(state = initialState, action) {
       const filteredSales = action.payload.filter(
         item => moment(item.createdDate).date() === moment(Date.now()).date(),
       );
-      const sales = changeData(filteredSales);
+      const own = changeData(filteredSales);
       return {
         ...state,
-        ...sales,
+        ...own,
       };
     }
     case SORT_OWN_BY_MONTH: {
       const filteredSales = action.payload.filter(
         item => moment(item.createdDate).month() === moment(Date.now()).month(),
       );
-      const sales = changeData(filteredSales);
+      const own = changeData(filteredSales);
       return {
         ...state,
-        ...sales,
+        ...own,
       };
     }
     case SORT_OWN_BY_QUARTER: {
@@ -87,20 +87,20 @@ function dataReducer(state = initialState, action) {
         item =>
           moment(item.createdDate).quarter() === moment(Date.now()).quarter(),
       );
-      const sales = changeData(filteredSales);
+      const own = changeData(filteredSales);
       return {
         ...state,
-        ...sales,
+        ...own,
       };
     }
     case SORT_OWN_BY_YEAR: {
       const filteredSales = action.payload.filter(
         item => moment(item.createdDate).year() === moment(Date.now()).year(),
       );
-      const sales = changeData(filteredSales);
+      const own = changeData(filteredSales);
       return {
         ...state,
-        ...sales,
+        ...own,
       };
     }
     default:

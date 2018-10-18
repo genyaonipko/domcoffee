@@ -46,3 +46,11 @@ export const getCoffee = (requestData, responseProcessor) => {
 export const addCoffee = (requestData, responseProcessor) => {
   domCoffeeConnection('/api/coffee', requestData, responseProcessor);
 };
+
+export const getPortions = (requestData, responseProcessor) => {
+  domCoffeeConnection('/api/portions', requestData, responseProcessor);
+};
+
+export const addPortion = (requestData, responseProcessor) => {
+  domCoffeeConnection('/api/portions', requestData, responseProcessor);
+};
