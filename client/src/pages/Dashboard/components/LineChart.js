@@ -55,7 +55,7 @@ function SimpleLineChart(props) {
             isAnimationActive={false}
             type="monotone"
             dataKey="Продажи"
-            stroke="#b4193d"
+            stroke="#FF0000"
           />
         )}
         {_.findKey(props.data.coffee, o => o !== 0) && (
@@ -63,7 +63,7 @@ function SimpleLineChart(props) {
             isAnimationActive={false}
             type="monotone"
             dataKey="Помол"
-            stroke="#5000ff"
+            stroke="#009900"
           />
         )}
         {_.findKey(props.data.own, o => o !== 0) && (
@@ -71,7 +71,7 @@ function SimpleLineChart(props) {
             isAnimationActive={false}
             type="monotone"
             dataKey="Личное"
-            stroke="#0A6519"
+            stroke="#0000CC"
           />
         )}
         {_.findKey(props.data.portions, o => o !== 0) && (
@@ -79,7 +79,7 @@ function SimpleLineChart(props) {
             isAnimationActive={false}
             type="monotone"
             dataKey="Порции"
-            stroke="#4C0099"
+            stroke="#660066"
           />
         )}
         {/* <Line type="monotone" dataKey="Orders" stroke="#b4193d" /> */}

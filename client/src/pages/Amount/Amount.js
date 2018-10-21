@@ -72,7 +72,7 @@ class Amount extends React.Component {
           График по порциям
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart data={portions} legend="Порции" />
+          <SimpleLineChart color="#660066" data={portions} legend="Порции" />
         </Typography>
         <Typography variant="display1" gutterBottom>
           Порции

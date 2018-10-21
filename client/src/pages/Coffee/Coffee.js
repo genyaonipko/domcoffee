@@ -76,7 +76,7 @@ class Coffee extends Component {
           График по помолу
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart data={coffee} legend="Помол" />
+          <SimpleLineChart color="#009900" data={coffee} legend="Помол" />
         </Typography>
         <Typography variant="display1" gutterBottom>
           Помол

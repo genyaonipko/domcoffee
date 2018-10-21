@@ -71,7 +71,7 @@ class Personal extends Component {
           График по личному употреблению
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart legend="Личное" data={data} />
+          <SimpleLineChart color="#0000CC" legend="Личное" data={data} />
         </Typography>
         <Typography variant="display1" gutterBottom>
           Личное употребление

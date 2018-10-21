@@ -70,7 +70,7 @@ class Sales extends Component {
           График по продажам
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart data={data} legend="Продажи" />
+          <SimpleLineChart color="#FF0000" data={data} legend="Продажи" />
         </Typography>
         <Typography variant="display1" gutterBottom>
           Продажи
