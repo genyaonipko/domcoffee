@@ -13,6 +13,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Loader from '../../components/Loader'
 
 import { loginUser } from '../../redux/actions/authentication';
 
@@ -78,6 +79,7 @@ class Login extends Component {
     email: '',
     password: '',
     errors: {},
+    disabled: false,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -89,11 +91,15 @@ class Login extends Component {
   }
 
   submit = values => {
-    this.props.loginUser(values, this.props.history);
+    this.setState({ disabled: true, errors: {
+      password: '',
+      email: '',
+    }}, () => this.props.loginUser(values, this.props.history))
+    
   };
 
   render() {
-    const { errors } = this.state;
+    const { errors, disabled } = this.state;
     const { classes, handleSubmit } = this.props;
     return (
       <React.Fragment>
@@ -129,14 +135,16 @@ class Login extends Component {
                   <div className={classes.invalid}>{errors.password}</div>
                 )}
               </FormControl>
-              <Button
-                type="submit"
-                fullWidth
-                variant="raised"
-                color="primary"
-                className={classes.submit}>
-                Sign in
-              </Button>
+              {!errors.password && !errors.email && disabled ? <Loader /> : 
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="raised"
+                  color="primary"
+                  className={classes.submit}>
+                  Sign in
+                </Button>
+              }
             </form>
           </Paper>
         </main>

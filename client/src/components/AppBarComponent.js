@@ -9,11 +9,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import Avatar from '@material-ui/core/Avatar';
 import { logoutUser } from '../redux/actions/authentication';
 
 import { setSidebarState } from '../redux/actions/sidebar';
@@ -76,6 +75,9 @@ const styles = theme => ({
     width: 100,
     marginLeft: 32,
   },
+  avatar: {
+    backgroundColor: theme.palette.secondary.main,
+  }
 });
 
 class AppBarComponent extends Component {
@@ -85,6 +87,9 @@ class AppBarComponent extends Component {
     changeSidebar: PropTypes.func.isRequired,
     sidebar: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
   };
 
   handleDrawerOpen = () => {
@@ -92,7 +97,7 @@ class AppBarComponent extends Component {
   };
 
   render() {
-    const { classes, title, logout, sidebar } = this.props;
+    const { classes, title, logout, sidebar, user } = this.props;
 
     return (
       <div className={classes.root}>
@@ -120,11 +125,7 @@ class AppBarComponent extends Component {
               className={classes.title}>
               {title}
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            <Avatar className={classes.avatar}>{user.name.split(' ').map(item => item.charAt(0)).join('').toUpperCase()}</Avatar>
             <Button
               variant="contained"
               color="primary"
@@ -143,6 +144,7 @@ class AppBarComponent extends Component {
 const mSTP = state => ({
   role: getUserRole(state),
   sidebar: getSidebarState(state),
+  user: state.auth.user,
 });
 
 const mDTP = dispatch => ({
