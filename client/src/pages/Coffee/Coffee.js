@@ -116,6 +116,7 @@ class Coffee extends Component {
             onSubmit={values => this.props.onSubmit(values)}
             open={open}
             handleClose={this.handleClose}
+            title="помола"
           />
         </div>
       </Fragment>

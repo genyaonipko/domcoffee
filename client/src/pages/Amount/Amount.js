@@ -96,7 +96,7 @@ class Amount extends React.Component {
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Дашбоард" />
+          <AppBarComponent title="Порции" />
           <main className={classes.content}>
             {!isLoading ? this.renderContent(portions, classes) : <Loader />}
           </main>
@@ -112,6 +112,7 @@ class Amount extends React.Component {
             onSubmit={values => this.props.onSubmit(values)}
             open={open}
             handleClose={this.handleClose}
+            title="порций"
           />
         </div>
       </React.Fragment>

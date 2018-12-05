@@ -39,6 +39,7 @@ class FormDialog extends React.Component {
     onSubmit: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     classes: PropTypes.shape().isRequired,
+    title: PropTypes.string.isRequired,
   };
 
   submit = values => {
@@ -47,16 +48,16 @@ class FormDialog extends React.Component {
   };
 
   render() {
-    const { open, handleClose, classes, handleSubmit } = this.props;
+    const { open, handleClose, classes, handleSubmit, title } = this.props;
     return (
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Колличество продаж</DialogTitle>
+        <DialogTitle id="form-dialog-title">Колличество {title}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Добавьте пожалуйста продажи за сегодняшний день
+            Добавьте пожалуйста колличество {title} за сегодняшний день
           </DialogContentText>
           <form onSubmit={handleSubmit(this.submit)}>
             <div className={classes.mainArea}>

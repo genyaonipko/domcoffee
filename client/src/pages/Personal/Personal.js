@@ -111,6 +111,7 @@ class Personal extends Component {
             onSubmit={values => this.props.onSubmit(values)}
             open={open}
             handleClose={this.handleClose}
+            title="личного употребления"
           />
         </div>
       </Fragment>
