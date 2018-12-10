@@ -1,4 +1,4 @@
-const Own = require("../models/own");
+const Ownpacks = require("../models/ownpacks");
 const randomString = require("../utils/random-string");
 
 module.exports = {
@@ -10,9 +10,9 @@ module.exports = {
   },
   create: async (req, res, next) => {
     try {
-      req.item = await Own.create({
+      req.item = await Ownpacks.create({
         key: randomString(),
-        own: req.body
+        ownpacks: req.body
       });
       next();
     } catch (err) {
@@ -21,13 +21,13 @@ module.exports = {
   },
   async update(req, res, next) {
     try {
-      req.item = await Own.findOneAndUpdate(
+      req.item = await Ownpacks.findOneAndUpdate(
         {
           key: req.params.key
         },
         {
           ...req.item,
-          own: req.body
+          ownpacks: req.body
         },
         {
           new: true
@@ -40,7 +40,7 @@ module.exports = {
   },
   deleteOne: async (req, res, next) => {
     try {
-      req.item = await Own.findOneAndRemove({
+      req.item = await Ownpacks.findOneAndRemove({
         key: req.params.key
       });
       next();
@@ -50,7 +50,7 @@ module.exports = {
   },
   getAll: async (req, res, next) => {
     try {
-      req.item = await Own.find();
+      req.item = await Ownpacks.find();
       next();
     } catch (err) {
       next(err);
@@ -58,7 +58,7 @@ module.exports = {
   },
   getOne: (req, res, next) => {
     try {
-      req.item = Own.findOne({
+      req.item = Ownpacks.findOne({
         key: req.params.key
       });
       next();

@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
-const OwnSchema = new mongoose.Schema({
+const ownpacksSchema = new mongoose.Schema({
   key: {
     type: String,
     required: true,
     unique: true,
     lowercase: true
   },
-  own: {
+  ownpacks: {
     type: Object,
     required: true
   },
@@ -21,4 +21,4 @@ const OwnSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("own", OwnSchema);
+module.exports = mongoose.model("ownpacks", ownpacksSchema);

@@ -1,4 +1,4 @@
-const Sales = require("../models/sales");
+const Innerpacks = require("../models/innerpacks");
 const randomString = require("../utils/random-string");
 
 module.exports = {
@@ -10,9 +10,9 @@ module.exports = {
   },
   create: async (req, res, next) => {
     try {
-      req.item = await Sales.create({
+      req.item = await Innerpacks.create({
         key: randomString(),
-        sales: req.body
+        innerpacks: req.body
       });
       next();
     } catch (err) {
@@ -21,13 +21,13 @@ module.exports = {
   },
   async update(req, res, next) {
     try {
-      req.item = await Sales.findOneAndUpdate(
+      req.item = await Innerpacks.findOneAndUpdate(
         {
           key: req.params.key
         },
         {
           ...req.item,
-          sales: req.body
+          innerpacks: req.body
         },
         {
           new: true
@@ -40,7 +40,7 @@ module.exports = {
   },
   deleteOne: async (req, res, next) => {
     try {
-      req.item = await Sales.findOneAndRemove({
+      req.item = await Innerpacks.findOneAndRemove({
         key: req.params.key
       });
       next();
@@ -50,7 +50,7 @@ module.exports = {
   },
   getAll: async (req, res, next) => {
     try {
-      req.item = await Sales.find();
+      req.item = await Innerpacks.find();
       next();
     } catch (err) {
       next(err);
@@ -58,7 +58,7 @@ module.exports = {
   },
   getOne: (req, res, next) => {
     try {
-      req.item = Sales.findOne({
+      req.item = Innerpacks.findOne({
         key: req.params.key
       });
       next();

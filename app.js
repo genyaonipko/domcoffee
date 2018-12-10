@@ -6,11 +6,13 @@ const usersRouter = require("./routes/user");
 
 const packsRouter = require("./routes/packs");
 const degustationRouter = require("./routes/degustation");
-
-const salesRouter = require("./routes/sales");
 const coffeeRouter = require("./routes/coffee");
-const ownRouter = require("./routes/own");
 const portionsRouter = require("./routes/portions");
+const innercupsRouter = require("./routes/innercups");
+const innerpacksRouter = require("./routes/innerpacks");
+const owncupsRouter = require("./routes/owncups");
+const ownpacksRouter = require("./routes/ownpacks");
+
 
 const config = require("./config");
 
@@ -39,12 +41,15 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.use("/api/packs", packsRouter);
 app.use("/api/degustation", degustationRouter);
-
-app.use("/api/sales", salesRouter);
-app.use("/api/coffee", coffeeRouter);
-app.use("/api/users", usersRouter);
-app.use("/api/own", ownRouter);
 app.use("/api/portions", portionsRouter);
+app.use("/api/coffee", coffeeRouter);
+app.use("/api/innercups", innercupsRouter);
+app.use("/api/innerpacks", innerpacksRouter);
+app.use("/api/owncups", owncupsRouter);
+app.use("/api/ownpacks", ownpacksRouter);
+
+app.use("/api/users", usersRouter);
+
 app.use(express.static("./build"));
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, './build', 'index.html'));

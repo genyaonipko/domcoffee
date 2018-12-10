@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
-const SalesSchema = new mongoose.Schema({
+const owncupsSchema = new mongoose.Schema({
   key: {
     type: String,
     required: true,
     unique: true,
     lowercase: true
   },
-  sales: {
+  owncups: {
     type: Object,
     required: true
   },
@@ -21,4 +21,4 @@ const SalesSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("sales", SalesSchema);
+module.exports = mongoose.model("owncups", owncupsSchema);
