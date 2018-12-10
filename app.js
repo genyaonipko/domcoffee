@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 var cors = require("cors");
 const usersRouter = require("./routes/user");
 
+const packsRouter = require("./routes/packs");
+const degustationRouter = require("./routes/degustation");
+
 const salesRouter = require("./routes/sales");
 const coffeeRouter = require("./routes/coffee");
 const ownRouter = require("./routes/own");
@@ -33,6 +36,9 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+app.use("/api/packs", packsRouter);
+app.use("/api/degustation", degustationRouter);
 
 app.use("/api/sales", salesRouter);
 app.use("/api/coffee", coffeeRouter);
