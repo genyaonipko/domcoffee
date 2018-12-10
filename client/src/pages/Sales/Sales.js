@@ -1,23 +1,20 @@
+// /* eslint-disable */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 
-import _ from 'lodash';
-
-import SimpleLineChart from '../../components/Charts/LineChart';
-import SimpleTable from '../../components/Table';
 import AppBarComponent from '../../components/AppBarComponent';
 import FormDialog from '../../components/FormDialog';
 import { changeDataAction, addSaleAction } from '../../redux/actions/sales';
 // import * as api from '../../utils/api';
-import Loader from '../../components/Loader';
+import TabPages from '../../components/TabPage';
+import ChartPage from '../../components/ChartPage';
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     display: 'flex',
     flex: 1,
@@ -25,10 +22,9 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
     height: '100vh',
     overflow: 'auto',
-    paddingTop: 88,
+    paddingTop: 64,
   },
   chartContainer: {
     marginLeft: -22,
@@ -60,43 +56,42 @@ class Sales extends Component {
     this.setState({ open: false });
   };
 
-  renderContent = (data, classes) => {
+  renderContent = (data, classes, isLoading, restProps) => {
     const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
+    const tabTitles = ['Чашки', 'Помол'];
 
-    return _.findKey(data, o => o !== 0) ? (
-      <Fragment>
-        <div className={classes.appBarSpacer} />
-        <Typography variant="display1" gutterBottom>
-          График по продажам
-        </Typography>
-        <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart color="#FF0000" data={data} legend="Продажи" />
-        </Typography>
-        <Typography variant="display1" gutterBottom>
-          Продажи
-        </Typography>
-        <div className={classes.tableContainer}>
-          <SimpleTable data={data} tableHeaders={tableHeaders} />
-        </div>
-      </Fragment>
-    ) : (
-      <Typography variant="display1" gutterBottom>
-        Нет данных
-      </Typography>
+    return (
+      <TabPages tabTitles={tabTitles} classes={classes} {...restProps}>
+        <ChartPage
+          classes={classes}
+          data={data}
+          chartTitle="График по продажам"
+          tableTitle="Продажи"
+          tableHeaders={tableHeaders}
+          isLoading={isLoading}
+        />
+        <ChartPage
+          classes={classes}
+          chartTitle="График по продажам"
+          tableTitle="Продажи"
+          data={data}
+          tableHeaders={tableHeaders}
+          isLoading={isLoading}
+        />
+      </TabPages>
     );
   };
 
   render() {
     const { open } = this.state;
-    const { classes, isLoading, data } = this.props;
-
+    const { classes, isLoading, data, ...restProps } = this.props;
     return (
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
           <AppBarComponent title="Продажи" />
           <main className={classes.content}>
-            {!isLoading ? this.renderContent(data, classes) : <Loader />}
+            {this.renderContent(data, classes, isLoading, restProps)}
           </main>
           <Button
             variant="fab"
@@ -139,4 +134,4 @@ const mDTP = dispatch => ({
 export default connect(
   mSTP,
   mDTP,
-)(withStyles(styles)(Sales));
+)(withStyles(styles, { withTheme: true })(Sales));

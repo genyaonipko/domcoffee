@@ -21,29 +21,29 @@ export const MainListItems = ({ role }) => (
       </ListItemIcon>
       <ListItemText primary="Дашбоард" />
     </ListItem>
-    <ListItem button onClick={() => history.push('/sales')}>
+    <ListItem button onClick={() => history.push('/packs')}>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Продажи" />
+      <ListItemText primary="Пачки" />
     </ListItem>
-    <ListItem button onClick={() => history.push('/coffee')}>
+    <ListItem button onClick={() => history.push('/sales')}>
       <ListItemIcon>
         <CoffeeIcon />
       </ListItemIcon>
-      <ListItemText primary="Помол" />
+      <ListItemText primary="Продажи" />
+    </ListItem>
+    <ListItem button onClick={() => history.push('/inner')}>
+      <ListItemIcon>
+        <BarChartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Внутреннее" />
     </ListItem>
     <ListItem button onClick={() => history.push('/personal')}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="Личное" />
-    </ListItem>
-    <ListItem button onClick={() => history.push('/amount')}>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Порции" />
     </ListItem>
     {role === 'admin' && (
       <ListItem button onClick={() => history.push('/settings')}>

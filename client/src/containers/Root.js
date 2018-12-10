@@ -11,11 +11,12 @@ import history from '../utils/history';
 import setAuthToken from '../utils/setAuthToken';
 import { setCurrentUser, logoutUser } from '../redux/actions/authentication';
 import Login from '../pages/Login/Login';
-import Fixture from '../components/Fixture'
+import Fixture from '../components/Fixture';
 
 const screenWidth = window.innerWidth;
 
 const theme = createMuiTheme({
+  direction: 'ltr',
   palette: {
     primary: {
       light: blue[300],
@@ -26,7 +27,7 @@ const theme = createMuiTheme({
       light: orange[300],
       main: orange[500],
       dark: orange[700],
-    }
+    },
   },
 });
 
@@ -44,7 +45,7 @@ if (localStorage.jwtToken) {
 
 class Root extends Component {
   render() {
-    if (screenWidth < 768) return <Fixture />
+    if (screenWidth < 768) return <Fixture />;
     return (
       <Provider store={store}>
         <Router history={history}>

@@ -6,7 +6,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 const styles = {
   root: {
     flexGrow: 1,
-    marginTop: 16,
+    margin: 24,
   },
 };
 

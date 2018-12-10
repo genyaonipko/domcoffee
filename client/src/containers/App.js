@@ -37,6 +37,13 @@ class App extends Component {
           />
           <ProtectedRoute
             exact
+            path="/packs"
+            component={Coffee}
+            redirectTo="/login"
+            authenticated={authenticated}
+          />
+          <ProtectedRoute
+            exact
             path="/sales"
             component={Sales}
             redirectTo="/login"
@@ -44,8 +51,8 @@ class App extends Component {
           />
           <ProtectedRoute
             exact
-            path="/coffee"
-            component={Coffee}
+            path="/inner"
+            component={Amount}
             redirectTo="/login"
             authenticated={authenticated}
           />
@@ -53,13 +60,6 @@ class App extends Component {
             exact
             path="/personal"
             component={Personal}
-            redirectTo="/login"
-            authenticated={authenticated}
-          />
-          <ProtectedRoute
-            exact
-            path="/amount"
-            component={Amount}
             redirectTo="/login"
             authenticated={authenticated}
           />
