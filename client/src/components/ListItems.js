@@ -39,7 +39,7 @@ export const MainListItems = ({ role }) => (
       </ListItemIcon>
       <ListItemText primary="Внутреннее" />
     </ListItem>
-    <ListItem button onClick={() => history.push('/personal')}>
+    <ListItem button onClick={() => history.push('/own')}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>

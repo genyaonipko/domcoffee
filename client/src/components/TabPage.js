@@ -1,10 +1,12 @@
 /* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import { setTabIndex } from '../redux/actions/sidebar';
 
 const styles = theme => ({
   rootTabs: {
@@ -24,7 +26,7 @@ function TabContainer({ children, dir }) {
   );
 }
 
-export default class TabPage extends Component {
+class TabPage extends Component {
   static propTypes = {
     prop: PropTypes,
   };
@@ -35,10 +37,12 @@ export default class TabPage extends Component {
 
   handleChange = (event, value) => {
     this.setState({ value });
+    this.props.setTabIndex(value);
   };
 
   handleChangeIndex = index => {
     this.setState({ value: index });
+    this.props.setTabIndex(index);
   };
 
   render() {
@@ -70,3 +74,12 @@ export default class TabPage extends Component {
     );
   }
 }
+
+const mDTP = dispatch => ({
+  setTabIndex: index => dispatch(setTabIndex(index)),
+});
+
+export default connect(
+  null,
+  mDTP,
+)(TabPage);

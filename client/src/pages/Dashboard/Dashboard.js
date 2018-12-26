@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,14 +10,18 @@ import _ from 'lodash';
 
 import Loader from '../../components/Loader';
 
-import { getAllCoffeeAction } from '../../redux/actions/coffee';
-import { changeDataAction } from '../../redux/actions/sales';
-import { getAllOwnAction } from '../../redux/actions/own';
-import { changePortionsAction } from '../../redux/actions/portions';
+import { getAllCoffeeAction } from '../../redux/actions/sales/coffee';
+import { changeDataPacksAction } from '../../redux/actions/packs/packs';
+import { changeDataOwnpackAction } from '../../redux/actions/own/ownpacks';
+import { changePortionsAction } from '../../redux/actions/sales/portions';
 
 import SimpleLineChart from './components/LineChart';
 import SimpleTable from './components/Table';
 import AppBarComponent from '../../components/AppBarComponent';
+
+// import { reduceAllPositions } from './components/DashboardHelpers';
+
+import TabPages from '../../components/TabPage';
 
 const styles = theme => ({
   root: {
@@ -49,7 +52,30 @@ class Dashboard extends React.Component {
     this.props.getAllPortions();
   };
 
-  renderContent = (sales, coffee, own, portions, classes) => {
+  renderChartAndTable = (packs, tableHeaders, data, classes) =>
+    _.findKey(packs, o => o !== 0) ? (
+      <Fragment>
+        <div className={classes.appBarSpacer} />
+        <Typography variant="display1" gutterBottom>
+          График по всем данным
+        </Typography>
+        <Typography component="div" className={classes.chartContainer}>
+          <SimpleLineChart data={data} />
+        </Typography>
+        <Typography variant="display1" gutterBottom>
+          Вся информация
+        </Typography>
+        <div className={classes.tableContainer}>
+          <SimpleTable data={data} tableHeaders={tableHeaders} />
+        </div>
+      </Fragment>
+    ) : (
+      <Typography variant="display1" gutterBottom>
+        Нет данных
+      </Typography>
+    );
+
+  renderContent = (packs, coffee, own, portions, classes, restProps) => {
     const tableHeaders = [
       'Марка кофе',
       'Кол-во продаж',
@@ -58,37 +84,26 @@ class Dashboard extends React.Component {
       'Кол-во порций',
     ];
 
-    return _.findKey(coffee, o => o !== 0) ||
-      _.findKey(sales, o => o !== 0) ||
-      _.findKey(own, o => o !== 0) ||
-      _.findKey(portions, o => o !== 0) ? (
-      <Fragment>
-        <div className={classes.appBarSpacer} />
-        <Typography variant="display1" gutterBottom>
-          График по всем данным
-        </Typography>
-        <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart data={{ sales, coffee, own, portions }} />
-        </Typography>
-        <Typography variant="display1" gutterBottom>
-          Вся информация
-        </Typography>
-        <div className={classes.tableContainer}>
-          <SimpleTable
-            data={{ sales, coffee, own, portions }}
-            tableHeaders={tableHeaders}
-          />
-        </div>
-      </Fragment>
-    ) : (
-      <Typography variant="display1" gutterBottom>
-        Нет данных
-      </Typography>
+    const tab1Data = { packs };
+
+    // const tab1Inform = reduceAllPositions()
+    return (
+      <TabPages tabTitles={['Tab1', 'Tab2']} classes={classes} {...restProps}>
+        {this.renderChartAndTable(packs, tableHeaders, tab1Data, classes)}
+      </TabPages>
     );
   };
 
   render() {
-    const { classes, sales, coffee, own, portions, isLoading } = this.props;
+    const {
+      classes,
+      packs,
+      coffee,
+      own,
+      portions,
+      isLoading,
+      ...restProps
+    } = this.props;
 
     return (
       <Fragment>
@@ -97,7 +112,14 @@ class Dashboard extends React.Component {
           <AppBarComponent title="Дашбоард" />
           <main className={classes.content}>
             {!isLoading ? (
-              this.renderContent(sales, coffee, own, portions, classes)
+              this.renderContent(
+                packs,
+                coffee,
+                own,
+                portions,
+                classes,
+                restProps,
+              )
             ) : (
               <Loader />
             )}
@@ -113,7 +135,7 @@ Dashboard.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   changeData: PropTypes.func.isRequired,
   getAllCoffee: PropTypes.func.isRequired,
-  sales: PropTypes.shape({}).isRequired,
+  packs: PropTypes.shape({}).isRequired,
   coffee: PropTypes.shape({}).isRequired,
   getAllOwn: PropTypes.func.isRequired,
   own: PropTypes.shape({}).isRequired,
@@ -122,7 +144,7 @@ Dashboard.propTypes = {
 };
 
 const mSTP = state => ({
-  sales: state.sales,
+  packs: state.packs,
   coffee: state.coffee,
   own: state.own,
   portions: state.portions,
@@ -131,17 +153,15 @@ const mSTP = state => ({
 
 const mDTP = dispatch => ({
   getAllCoffee: () => dispatch(getAllCoffeeAction()),
-  changeData: () => dispatch(changeDataAction()),
-  getAllOwn: () => dispatch(getAllOwnAction()),
+  changeData: () => dispatch(changeDataPacksAction()),
+  getAllOwn: () => dispatch(changeDataOwnpackAction()),
   getAllPortions: () => dispatch(changePortionsAction()),
 });
 
-export default withRouter(
-  compose(
-    withStyles(styles),
-    connect(
-      mSTP,
-      mDTP,
-    ),
-  )(Dashboard),
-);
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  connect(
+    mSTP,
+    mDTP,
+  ),
+)(Dashboard);

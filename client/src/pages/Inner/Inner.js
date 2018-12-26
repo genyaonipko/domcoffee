@@ -1,4 +1,3 @@
-// /* eslint-disable */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -10,13 +9,13 @@ import AddIcon from '@material-ui/icons/Add';
 import AppBarComponent from '../../components/AppBarComponent';
 import FormDialog from '../../components/FormDialog';
 import {
-  getAllCoffeeAction,
-  addCoffeeAction,
-} from '../../redux/actions/sales/coffee';
+  changeDataInnerpackAction,
+  addInnerpackAction,
+} from '../../redux/actions/inner/innerpacks';
 import {
-  changePortionsAction,
-  addPortionsAction,
-} from '../../redux/actions/sales/portions';
+  changeDataInnercupAction,
+  addInnercupAction,
+} from '../../redux/actions/inner/innercups';
 // import * as api from '../../utils/api';
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
@@ -53,7 +52,7 @@ class Sales extends Component {
 
   componentDidMount = () => {
     this.props.changeData();
-    this.props.getAllPortions();
+    this.props.getAllPacks();
   };
 
   handleClickOpen = () => {
@@ -66,21 +65,21 @@ class Sales extends Component {
 
   handleSubmit = values => {
     if (!this.props.tabIndex) {
-      this.props.onSubmitPortions(values);
-    } else {
       this.props.onSubmit(values);
+    } else {
+      this.props.onSubmitPacks(values);
     }
   };
 
-  renderContent = (coffee, portions, classes, isLoading, restProps) => {
-    const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
-    const tabTitles = ['Чашки', 'Помол'];
+  renderContent = (innercups, innerpacks, classes, isLoading, restProps) => {
+    const tableHeaders = ['Марка кофе', 'Кол-во внутреннего'];
+    const tabTitles = ['Чашки', 'Пачки'];
 
     return (
       <TabPages tabTitles={tabTitles} classes={classes} {...restProps}>
         <ChartPage
           classes={classes}
-          data={portions}
+          data={innercups}
           chartTitle="График по чашкам"
           tableTitle="Чашки"
           tableHeaders={tableHeaders}
@@ -88,9 +87,9 @@ class Sales extends Component {
         />
         <ChartPage
           classes={classes}
-          chartTitle="График по помолу"
-          tableTitle="Помол"
-          data={coffee}
+          chartTitle="График по пачкам"
+          tableTitle="Пачки"
+          data={innerpacks}
           tableHeaders={tableHeaders}
           isLoading={isLoading}
         />
@@ -100,16 +99,16 @@ class Sales extends Component {
 
   render() {
     const { open } = this.state;
-    const { classes, isLoading, coffee, portions, ...restProps } = this.props;
+    const { classes, isLoading, innercups, innerpacks, ...restProps } = this.props;
     return (
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Продажи" barColor="#ab003c" />
+          <AppBarComponent title="Внутреннее" barColor="#26A69A" />
           <main className={classes.content}>
             {this.renderContent(
-              coffee,
-              portions,
+              innercups,
+              innerpacks,
               classes,
               isLoading,
               restProps,
@@ -137,7 +136,7 @@ class Sales extends Component {
 
 Sales.propTypes = {
   classes: PropTypes.shape().isRequired,
-  coffee: PropTypes.shape({}).isRequired,
+  innercups: PropTypes.shape({}).isRequired,
   changeData: PropTypes.func.isRequired,
   getAllPortions: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -145,17 +144,17 @@ Sales.propTypes = {
 };
 
 const mSTP = state => ({
-  coffee: state.coffee,
-  portions: state.portions,
+  innercups: state.innercups,
+  innerpacks: state.innerpacks,
   isLoading: state.settings.isLoading,
   tabIndex: state.settings.tabIndex,
 });
 
 const mDTP = dispatch => ({
-  changeData: () => dispatch(getAllCoffeeAction()),
-  getAllPortions: () => dispatch(changePortionsAction()),
-  onSubmit: obj => dispatch(addCoffeeAction(obj)),
-  onSubmitPortions: obj => dispatch(addPortionsAction(obj)),
+  changeData: () => dispatch(changeDataInnercupAction()),
+  getAllPacks: () => dispatch(changeDataInnerpackAction()),
+  onSubmit: obj => dispatch(addInnercupAction(obj)),
+  onSubmitPacks: obj => dispatch(addInnerpackAction(obj)),
 });
 
 export default connect(

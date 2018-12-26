@@ -1,24 +1,24 @@
 import {
-  CHANGE_DATA_OWN,
-  ADD_OWN,
+  CHANGE_DATA_DEGUSTATIONS,
+  ADD_DEGUSTATION,
   SET_LOADER,
-  SORT_OWN_BY_DAY,
-  SORT_OWN_BY_MONTH,
-  SORT_OWN_BY_QUARTER,
-  SORT_OWN_BY_YEAR,
-} from './actionTypes';
+  SORT_DEGUSTATION_BY_MONTH,
+  SORT_DEGUSTATION_BY_DAY,
+  SORT_DEGUSTATION_BY_QUARTER,
+  SORT_DEGUSTATION_BY_YEAR,
+} from '../actionTypes';
 
-import { getOwn, addOwn } from '../../domCoffeeConnect';
-import dcRequest from '../../domCoffeeConnect/domCoffeeConnect';
+import { getDegustations, addDegustation } from '../../../domCoffeeConnect';
+import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
 
-export const getAllOwnAction = () => dispatch => {
+export const changeDataDegustationAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getOwn(dcRequest.getOwn(), (data, error) => {
+  getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: CHANGE_DATA_OWN,
+        type: CHANGE_DATA_DEGUSTATIONS,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });
@@ -26,23 +26,23 @@ export const getAllOwnAction = () => dispatch => {
   });
 };
 
-export const addOwnAction = own => dispatch =>
-  addOwn(dcRequest.addSale(own), (data, error) => {
+export const addDegustationAction = degustation => dispatch =>
+  addDegustation(dcRequest.addDegustation(degustation), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({ type: ADD_OWN, payload: data.data.own });
+      dispatch({ type: ADD_DEGUSTATION, payload: data.data.degustation });
     }
   });
 
-export const changeOwnByMonthAction = () => dispatch => {
+export const changeDataByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getOwn(dcRequest.getOwn(), (data, error) => {
+  getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: SORT_OWN_BY_MONTH,
+        type: SORT_DEGUSTATION_BY_MONTH,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });
@@ -50,14 +50,14 @@ export const changeOwnByMonthAction = () => dispatch => {
   });
 };
 
-export const changeOwnByDayAction = () => dispatch => {
+export const changeDataByDayAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getOwn(dcRequest.getOwn(), (data, error) => {
+  getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: SORT_OWN_BY_DAY,
+        type: SORT_DEGUSTATION_BY_DAY,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });
@@ -65,14 +65,14 @@ export const changeOwnByDayAction = () => dispatch => {
   });
 };
 
-export const changeOwnByQuarterAction = () => dispatch => {
+export const changeDataByQuarterAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getOwn(dcRequest.getOwn(), (data, error) => {
+  getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: SORT_OWN_BY_QUARTER,
+        type: SORT_DEGUSTATION_BY_QUARTER,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });
@@ -80,14 +80,14 @@ export const changeOwnByQuarterAction = () => dispatch => {
   });
 };
 
-export const changeOwnByYearAction = () => dispatch => {
+export const changeDataByYearAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getOwn(dcRequest.getOwn(), (data, error) => {
+  getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: SORT_OWN_BY_YEAR,
+        type: SORT_DEGUSTATION_BY_YEAR,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });

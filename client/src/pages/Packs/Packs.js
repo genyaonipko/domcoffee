@@ -10,13 +10,13 @@ import AddIcon from '@material-ui/icons/Add';
 import AppBarComponent from '../../components/AppBarComponent';
 import FormDialog from '../../components/FormDialog';
 import {
-  getAllCoffeeAction,
-  addCoffeeAction,
-} from '../../redux/actions/sales/coffee';
+  changeDataDegustationAction,
+  addDegustationAction,
+} from '../../redux/actions/packs/degustation';
 import {
-  changePortionsAction,
-  addPortionsAction,
-} from '../../redux/actions/sales/portions';
+  changeDataPacksAction,
+  addPackAction,
+} from '../../redux/actions/packs/packs';
 // import * as api from '../../utils/api';
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
@@ -53,7 +53,7 @@ class Sales extends Component {
 
   componentDidMount = () => {
     this.props.changeData();
-    this.props.getAllPortions();
+    this.props.getAllDegustation();
   };
 
   handleClickOpen = () => {
@@ -66,31 +66,31 @@ class Sales extends Component {
 
   handleSubmit = values => {
     if (!this.props.tabIndex) {
-      this.props.onSubmitPortions(values);
-    } else {
       this.props.onSubmit(values);
+    } else {
+      this.props.onSubmitDegustation(values);
     }
   };
 
-  renderContent = (coffee, portions, classes, isLoading, restProps) => {
+  renderContent = (degustation, packs, classes, isLoading, restProps) => {
     const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
-    const tabTitles = ['Чашки', 'Помол'];
+    const tabTitles = ['Пачки', 'Дегустационная чашка'];
 
     return (
       <TabPages tabTitles={tabTitles} classes={classes} {...restProps}>
         <ChartPage
           classes={classes}
-          data={portions}
-          chartTitle="График по чашкам"
-          tableTitle="Чашки"
+          data={packs}
+          chartTitle="График по пачкам"
+          tableTitle="Пачки"
           tableHeaders={tableHeaders}
           isLoading={isLoading}
         />
         <ChartPage
           classes={classes}
-          chartTitle="График по помолу"
-          tableTitle="Помол"
-          data={coffee}
+          chartTitle="График по дегустационным чашкам"
+          tableTitle="Дегустационная чашки"
+          data={degustation}
           tableHeaders={tableHeaders}
           isLoading={isLoading}
         />
@@ -100,16 +100,16 @@ class Sales extends Component {
 
   render() {
     const { open } = this.state;
-    const { classes, isLoading, coffee, portions, ...restProps } = this.props;
+    const { classes, isLoading, degustation, packs, ...restProps } = this.props;
     return (
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Продажи" barColor="#ab003c" />
+          <AppBarComponent title="Пачки" barColor="#AB47BC" />
           <main className={classes.content}>
             {this.renderContent(
-              coffee,
-              portions,
+              degustation,
+              packs,
               classes,
               isLoading,
               restProps,
@@ -137,7 +137,7 @@ class Sales extends Component {
 
 Sales.propTypes = {
   classes: PropTypes.shape().isRequired,
-  coffee: PropTypes.shape({}).isRequired,
+  degustation: PropTypes.shape({}).isRequired,
   changeData: PropTypes.func.isRequired,
   getAllPortions: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -145,17 +145,17 @@ Sales.propTypes = {
 };
 
 const mSTP = state => ({
-  coffee: state.coffee,
-  portions: state.portions,
+  degustation: state.degustation,
+  packs: state.packs,
   isLoading: state.settings.isLoading,
   tabIndex: state.settings.tabIndex,
 });
 
 const mDTP = dispatch => ({
-  changeData: () => dispatch(getAllCoffeeAction()),
-  getAllPortions: () => dispatch(changePortionsAction()),
-  onSubmit: obj => dispatch(addCoffeeAction(obj)),
-  onSubmitPortions: obj => dispatch(addPortionsAction(obj)),
+  changeData: () => dispatch(changeDataPacksAction()),
+  getAllDegustation: () => dispatch(changeDataDegustationAction()),
+  onSubmit: obj => dispatch(addPackAction(obj)),
+  onSubmitDegustation: obj => dispatch(addDegustationAction(obj)),
 });
 
 export default connect(

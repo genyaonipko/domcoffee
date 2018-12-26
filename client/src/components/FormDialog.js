@@ -40,6 +40,13 @@ class FormDialog extends React.Component {
     handleSubmit: PropTypes.func.isRequired,
     classes: PropTypes.shape().isRequired,
     title: PropTypes.string.isRequired,
+    reset: PropTypes.func.isRequired,
+  };
+
+  componentDidUpdate = prevProps => {
+    if (this.props.open !== prevProps.open) {
+      this.props.reset();
+    }
   };
 
   submit = values => {
@@ -141,5 +148,5 @@ class FormDialog extends React.Component {
 
 export default compose(
   withStyles(styles),
-  reduxForm({ form: 'sales' }),
+  reduxForm({ form: 'sales', enableReinitialize: true }),
 )(FormDialog);

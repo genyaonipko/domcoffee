@@ -19,16 +19,16 @@ import {
   changeDataByMonthAction,
   changeDataByQuarterAction,
   changeDataByYearAction,
-  changeDataAction,
-} from '../redux/actions/sales';
+  changeDataPacksAction,
+} from '../redux/actions/packs/packs';
 
-import {
-  changeOwnByDayAction,
-  changeOwnByMonthAction,
-  changeOwnByQuarterAction,
-  changeOwnByYearAction,
-  getAllOwnAction,
-} from '../redux/actions/own';
+// import {
+//   changeOwnByDayAction,
+//   changeOwnByMonthAction,
+//   changeOwnByQuarterAction,
+//   changeOwnByYearAction,
+//   getAllOwnAction,
+// } from '../redux/actions/own/ownpacks';
 
 import {
   changeCoffeeByDayAction,
@@ -36,7 +36,7 @@ import {
   changeCoffeeByQuarterAction,
   changeCoffeeByYearAction,
   getAllCoffeeAction,
-} from '../redux/actions/coffee';
+} from '../redux/actions/sales/coffee';
 
 import {
   changePortionsByDayAction,
@@ -44,7 +44,7 @@ import {
   changePortionsByQuarterAction,
   changePortionsByYearAction,
   changePortionsAction,
-} from '../redux/actions/portions';
+} from '../redux/actions/sales/portions';
 
 const drawerWidth = 240;
 
@@ -272,14 +272,14 @@ const mDTP = dispatch => ({
   changeDay: () => dispatch(changeDataByDayAction()),
   changeQuarter: () => dispatch(changeDataByQuarterAction()),
   changeYear: () => dispatch(changeDataByYearAction()),
-  getAll: () => dispatch(changeDataAction()),
+  getAll: () => dispatch(changeDataPacksAction()),
 
   // own
-  changeOwnMonth: () => dispatch(changeOwnByMonthAction()),
-  changeOwnDay: () => dispatch(changeOwnByDayAction()),
-  changeOwnQuarter: () => dispatch(changeOwnByQuarterAction()),
-  changeOwnYear: () => dispatch(changeOwnByYearAction()),
-  getAllOwn: () => dispatch(getAllOwnAction()),
+  // changeOwnMonth: () => dispatch(changeOwnByMonthAction()),
+  // changeOwnDay: () => dispatch(changeOwnByDayAction()),
+  // changeOwnQuarter: () => dispatch(changeOwnByQuarterAction()),
+  // changeOwnYear: () => dispatch(changeOwnByYearAction()),
+  // getAllOwn: () => dispatch(getAllOwnAction()),
 
   // coffee
   changeCoffeeMonth: () => dispatch(changeCoffeeByMonthAction()),

@@ -90,6 +90,7 @@ class AppBarComponent extends Component {
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
     }).isRequired,
+    barColor: PropTypes.string.isRequired,
   };
 
   handleDrawerOpen = () => {
@@ -97,7 +98,7 @@ class AppBarComponent extends Component {
   };
 
   render() {
-    const { classes, title, logout, sidebar, user } = this.props;
+    const { classes, title, logout, sidebar, user, barColor } = this.props;
 
     return (
       <div className={classes.root}>
@@ -106,7 +107,8 @@ class AppBarComponent extends Component {
           className={classNames(
             classes.appBar,
             sidebar && classes.appBarShift,
-          )}>
+          )}
+          style={{ backgroundColor: barColor }}>
           <Toolbar disableGutters={!sidebar} className={classes.toolbar}>
             <IconButton
               color="inherit"

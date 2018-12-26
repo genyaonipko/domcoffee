@@ -48,7 +48,7 @@ function SimpleTable(props) {
   ];
   const dataMain = initialData.map(item => ({
     ...item,
-    Продажи: data.sales[item.name],
+    // Продажи: data.sales[item.name],
     Помол: data.coffee[item.name],
     Личное: data.own[item.name],
     Порции: data.portions[item.name],

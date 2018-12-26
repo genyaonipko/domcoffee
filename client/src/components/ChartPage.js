@@ -38,7 +38,7 @@ export default class ChartPage extends Component {
           {chartTitle}
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart color="#FF0000" data={data} legend="Продажи" />
+          <SimpleLineChart color="#FF0000" data={data} legend={tableTitle} />
         </Typography>
         <Typography variant="display1" gutterBottom>
           {tableTitle}

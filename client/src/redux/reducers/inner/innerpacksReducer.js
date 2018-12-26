@@ -1,12 +1,12 @@
 import moment from 'moment';
 import {
-  CHANGE_DATA_PORTIONS,
-  ADD_PORTION,
-  SORT_PORTION_BY_MONTH,
-  SORT_PORTION_BY_DAY,
-  SORT_PORTION_BY_QUARTER,
-  SORT_PORTION_BY_YEAR,
-} from '../actions/actionTypes';
+  CHANGE_DATA_INNERPACKS,
+  ADD_INNERPACK,
+  SORT_INNERPACK_BY_MONTH,
+  SORT_INNERPACK_BY_DAY,
+  SORT_INNERPACK_BY_QUARTER,
+  SORT_INNERPACK_BY_YEAR,
+} from '../../actions/actionTypes';
 
 const initialState = {
   balerina: 0,
@@ -33,29 +33,27 @@ const initialState = {
 const changeData = payload => {
   const keys = Object.keys(initialState);
   const concatObj = Object.assign({}, initialState);
-  const portions = payload.reduce((previousValue, currentItem) => {
+  const innerpacks = payload.reduce((previousValue, currentItem) => {
     for (let i = 0; i < keys.length; i += 1) {
-      const current = !Number.isNaN(+currentItem.portions[keys[i]])
-        ? +currentItem.portions[keys[i]]
+      const current = !Number.isNaN(+currentItem.innerpacks[keys[i]])
+        ? +currentItem.innerpacks[keys[i]]
         : 0;
       concatObj[keys[i]] = +previousValue[keys[i]] + current;
     }
     return { ...concatObj };
   }, initialState);
-  return portions;
+  return innerpacks;
 };
 
-function dataReducer(state = initialState, action) {
-  const keys = Object.keys(initialState);
+function innerpackssReducer(state = initialState, action) {
   switch (action.type) {
-    case CHANGE_DATA_PORTIONS: {
-      const portion = changeData(action.payload);
-      return { ...state, ...portion };
+    case CHANGE_DATA_INNERPACKS: {
+      const innerpacks = changeData(action.payload);
+      return { ...state, ...innerpacks };
     }
-    case ADD_PORTION: {
+    case ADD_INNERPACK: {
       const obj = { ...state };
-      console.log(action.payload);
-      keys.forEach(item => {
+      Object.keys(initialState).forEach(item => {
         const objItem = !Number.isNaN(+action.payload[item])
           ? +action.payload[item]
           : 0;
@@ -63,45 +61,45 @@ function dataReducer(state = initialState, action) {
       });
       return obj;
     }
-    case SORT_PORTION_BY_DAY: {
+    case SORT_INNERPACK_BY_DAY: {
       const filteredSales = action.payload.filter(
         item => moment(item.createdDate).date() === moment(Date.now()).date(),
       );
-      const portions = changeData(filteredSales);
+      const innerpacks = changeData(filteredSales);
       return {
         ...state,
-        ...portions,
+        ...innerpacks,
       };
     }
-    case SORT_PORTION_BY_MONTH: {
+    case SORT_INNERPACK_BY_MONTH: {
       const filteredSales = action.payload.filter(
         item => moment(item.createdDate).month() === moment(Date.now()).month(),
       );
-      const portions = changeData(filteredSales);
+      const innerpacks = changeData(filteredSales);
       return {
         ...state,
-        ...portions,
+        ...innerpacks,
       };
     }
-    case SORT_PORTION_BY_QUARTER: {
+    case SORT_INNERPACK_BY_QUARTER: {
       const filteredSales = action.payload.filter(
         item =>
           moment(item.createdDate).quarter() === moment(Date.now()).quarter(),
       );
-      const portions = changeData(filteredSales);
+      const innerpacks = changeData(filteredSales);
       return {
         ...state,
-        ...portions,
+        ...innerpacks,
       };
     }
-    case SORT_PORTION_BY_YEAR: {
+    case SORT_INNERPACK_BY_YEAR: {
       const filteredSales = action.payload.filter(
         item => moment(item.createdDate).year() === moment(Date.now()).year(),
       );
-      const portions = changeData(filteredSales);
+      const innerpacks = changeData(filteredSales);
       return {
         ...state,
-        ...portions,
+        ...innerpacks,
       };
     }
     default:
@@ -109,4 +107,4 @@ function dataReducer(state = initialState, action) {
   }
 }
 
-export default dataReducer;
+export default innerpackssReducer;

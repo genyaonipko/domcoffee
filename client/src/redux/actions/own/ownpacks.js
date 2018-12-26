@@ -1,24 +1,24 @@
 import {
-  CHANGE_DATA_SALES,
-  ADD_SALE,
+  CHANGE_DATA_OWNPACKS,
+  ADD_OWNPACK,
   SET_LOADER,
-  SORT_SALE_BY_MONTH,
-  SORT_SALE_BY_DAY,
-  SORT_SALE_BY_QUARTER,
-  SORT_SALE_BY_YEAR,
-} from './actionTypes';
+  SORT_OWNPACK_BY_MONTH,
+  SORT_OWNPACK_BY_DAY,
+  SORT_OWNPACK_BY_QUARTER,
+  SORT_OWNPACK_BY_YEAR,
+} from '../actionTypes';
 
-import { getSales, addSale } from '../../domCoffeeConnect';
-import dcRequest from '../../domCoffeeConnect/domCoffeeConnect';
+import { getOwnpacks, addOwnpack } from '../../../domCoffeeConnect';
+import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
 
-export const changeDataAction = () => dispatch => {
+export const changeDataOwnpackAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getSales(dcRequest.getSales(), (data, error) => {
+  getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: CHANGE_DATA_SALES,
+        type: CHANGE_DATA_OWNPACKS,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });
@@ -26,23 +26,23 @@ export const changeDataAction = () => dispatch => {
   });
 };
 
-export const addSaleAction = sale => dispatch =>
-  addSale(dcRequest.addSale(sale), (data, error) => {
+export const addOwnpackAction = ownpack => dispatch =>
+  addOwnpack(dcRequest.addOwnpack(ownpack), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({ type: ADD_SALE, payload: data.data.sales });
+      dispatch({ type: ADD_OWNPACK, payload: data.data.ownpacks });
     }
   });
 
 export const changeDataByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getSales(dcRequest.getSales(), (data, error) => {
+  getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: SORT_SALE_BY_MONTH,
+        type: SORT_OWNPACK_BY_MONTH,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });
@@ -52,12 +52,12 @@ export const changeDataByMonthAction = () => dispatch => {
 
 export const changeDataByDayAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getSales(dcRequest.getSales(), (data, error) => {
+  getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: SORT_SALE_BY_DAY,
+        type: SORT_OWNPACK_BY_DAY,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });
@@ -67,12 +67,12 @@ export const changeDataByDayAction = () => dispatch => {
 
 export const changeDataByQuarterAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getSales(dcRequest.getSales(), (data, error) => {
+  getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: SORT_SALE_BY_QUARTER,
+        type: SORT_OWNPACK_BY_QUARTER,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });
@@ -82,12 +82,12 @@ export const changeDataByQuarterAction = () => dispatch => {
 
 export const changeDataByYearAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
-  getSales(dcRequest.getSales(), (data, error) => {
+  getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({
-        type: SORT_SALE_BY_YEAR,
+        type: SORT_OWNPACK_BY_YEAR,
         payload: data.data,
       });
       dispatch({ type: SET_LOADER, payload: false });

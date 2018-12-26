@@ -1,19 +1,27 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import dataReducer from './salesReducer';
+import packsReducer from './packs/packsReducer';
+import degustationReducer from './packs/degustationReducer';
 import dataUsersReducer from './usersReducer';
 import errorReducer from './errorReducer';
 import authReducer from './authReducer';
-import coffeeReducer from './coffeeReducer';
-import portionsReducer from './portionsReducer';
+import coffeeReducer from './sales/coffeeReducer';
+import portionsReducer from './sales/portionsReducer';
 import settingsReducer from './settingsReducer';
-import ownReducer from './ownReducer';
+import owncupsReducer from './own/owncupsReducer';
+import ownpacksReducer from './own/ownpacksReducer';
+import innercupsReducer from './inner/innercupsReducer'
+import innerpacksReducer from './inner/innerpacksReducer'
 
 const rootReducer = combineReducers({
   form: formReducer,
-  sales: dataReducer,
+  packs: packsReducer,
+  degustation: degustationReducer,
+  innercups: innercupsReducer,
+  innerpacks: innerpacksReducer,
   coffee: coffeeReducer,
-  own: ownReducer,
+  owncups: owncupsReducer,
+  ownpacks: ownpacksReducer,
   portions: portionsReducer,
   error: errorReducer,
   auth: authReducer,

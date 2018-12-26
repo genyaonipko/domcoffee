@@ -1,5 +1,5 @@
 export default class dcRequests {
-  static getSales() {
+  static getPacks() {
     return {
       method: 'GET',
       headers: {
@@ -8,7 +8,25 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addSale(data) {
+  static addPack(data) {
+    return {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+    };
+  }
+  static getDegustations() {
+    return {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: null,
+    };
+  }
+  static addDegustation(data) {
     return {
       method: 'POST',
       headers: {
@@ -63,6 +81,78 @@ export default class dcRequests {
     };
   }
   static addPortion(data) {
+    return {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+    };
+  }
+  static getInnercups() {
+    return {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: null,
+    };
+  }
+  static addInnercup(data) {
+    return {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+    };
+  }
+  static getInnerpacks() {
+    return {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: null,
+    };
+  }
+  static addInnerpack(data) {
+    return {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+    };
+  }
+  static getOwncups() {
+    return {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: null,
+    };
+  }
+  static addOwncup(data) {
+    return {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+    };
+  }
+  static getOwnpacks() {
+    return {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: null,
+    };
+  }
+  static addOwnpack(data) {
     return {
       method: 'POST',
       headers: {
