@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -46,19 +47,24 @@ function SimpleTable(props) {
     { name: 'columbia' },
     { name: 'crema' },
   ];
-  const dataMain = initialData.map(item => ({
-    ...item,
-    // Продажи: data.sales[item.name],
-    Помол: data.coffee[item.name],
-    Личное: data.own[item.name],
-    Порции: data.portions[item.name],
-  }));
+  const dataMain = initialData.map(item => {
+    let dataObj = {};
+    props.data.forEach((obj, i) => {
+      dataObj = {
+        ...dataObj,
+        ...item,
+        [props.tableHeaders[i]]: obj[item.name],
+      };
+    });
+    return dataObj;
+  });
 
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
+            <TableCell key={0} />
             {tableHeaders &&
               tableHeaders.map(header => (
                 <TableCell key={header}>{header}</TableCell>
@@ -71,10 +77,10 @@ function SimpleTable(props) {
               <TableCell component="th" scope="row">
                 {n.name}
               </TableCell>
-              <TableCell>{n.Продажи}</TableCell>
-              <TableCell>{n.Помол}</TableCell>
-              <TableCell>{n.Личное}</TableCell>
-              <TableCell>{n.Порции}</TableCell>
+              {Object.keys(n).map(item => {
+                if (item === 'name') return;
+                return <TableCell>{n[item]}</TableCell>;
+              })}
             </TableRow>
           ))}
           <TableRow>

@@ -33,14 +33,34 @@ function SimpleLineChart(props) {
     { name: 'columbia' },
     { name: 'crema' },
   ];
-  const dataMain = initialData.map((item, i) => ({
-    ...item,
-    Продажи: props.data.sales[item.name],
-    Помол: props.data.coffee[item.name],
-    Личное: props.data.own[item.name],
-    Порции: props.data.portions[item.name],
-  }));
+  const dataMain = initialData.map(item => {
+    let dataObj = {};
+    props.data.forEach((obj, i) => {
+      dataObj = { ...dataObj, ...item, [props.tabTitles[i]]: obj[item.name] };
+    });
+    return dataObj;
+  });
 
+  const objLength = Object.keys(dataMain[0]).length - 1;
+
+  const renderCharts = () => {
+    const arrOfColors = ['#FF0000', '#009900', '#0000CC', '#660066'];
+    const arrForRender = [];
+    for (let i = 0; i < objLength; i++) {
+      console.log(i);
+      arrForRender.push(
+        <Line
+          isAnimationActive={false}
+          type="monotone"
+          dataKey={props.tabTitles[i]}
+          stroke={arrOfColors[i]}
+        />,
+      );
+    }
+    return arrForRender;
+  };
+
+  console.log(objLength);
   return (
     // 99% per https://github.com/recharts/recharts/issues/172
     <ResponsiveContainer width="99%" height={320}>
@@ -50,39 +70,7 @@ function SimpleLineChart(props) {
         <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <Tooltip />
         <Legend />
-        {_.findKey(props.data.sales, o => o !== 0) && (
-          <Line
-            isAnimationActive={false}
-            type="monotone"
-            dataKey="Продажи"
-            stroke="#FF0000"
-          />
-        )}
-        {_.findKey(props.data.coffee, o => o !== 0) && (
-          <Line
-            isAnimationActive={false}
-            type="monotone"
-            dataKey="Помол"
-            stroke="#009900"
-          />
-        )}
-        {_.findKey(props.data.own, o => o !== 0) && (
-          <Line
-            isAnimationActive={false}
-            type="monotone"
-            dataKey="Личное"
-            stroke="#0000CC"
-          />
-        )}
-        {_.findKey(props.data.portions, o => o !== 0) && (
-          <Line
-            isAnimationActive={false}
-            type="monotone"
-            dataKey="Порции"
-            stroke="#660066"
-          />
-        )}
-        {/* <Line type="monotone" dataKey="Orders" stroke="#b4193d" /> */}
+        {renderCharts()}
       </LineChart>
     </ResponsiveContainer>
   );

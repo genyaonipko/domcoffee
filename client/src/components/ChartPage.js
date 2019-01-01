@@ -20,6 +20,7 @@ export default class ChartPage extends Component {
       chartTitle,
       tableTitle,
       isLoading,
+      chartColor,
     } = this.props;
     if (isLoading) return <Loader />;
     if (!_.findKey(data, o => o !== 0)) {
@@ -38,7 +39,7 @@ export default class ChartPage extends Component {
           {chartTitle}
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart color="#FF0000" data={data} legend={tableTitle} />
+          <SimpleLineChart color={chartColor} data={data} legend={tableTitle} />
         </Typography>
         <Typography variant="display1" gutterBottom>
           {tableTitle}

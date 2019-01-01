@@ -1,4 +1,3 @@
-
 const initialState = {
   balerina: 0,
   gourme: 0,
@@ -26,8 +25,8 @@ export const reduceAllPositions = payload => {
   const concatObj = Object.assign({}, initialState);
   const dashboardInform = payload.reduce((previousValue, currentItem) => {
     for (let i = 0; i < keys.length; i += 1) {
-      const current = !Number.isNaN(+currentItem.dashboardInform[keys[i]])
-        ? +currentItem.dashboardInform[keys[i]]
+      const current = !Number.isNaN(+currentItem[keys[i]])
+        ? +currentItem[keys[i]]
         : 0;
       concatObj[keys[i]] = +previousValue[keys[i]] + current;
     }
@@ -36,4 +35,4 @@ export const reduceAllPositions = payload => {
   return dashboardInform;
 };
 
-export const o = 1
+export const o = 1;

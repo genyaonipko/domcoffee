@@ -84,6 +84,7 @@ class Sales extends Component {
           tableTitle="Чашки"
           tableHeaders={tableHeaders}
           isLoading={isLoading}
+          chartColor="#26A69A"
         />
         <ChartPage
           classes={classes}
@@ -92,6 +93,7 @@ class Sales extends Component {
           data={innerpacks}
           tableHeaders={tableHeaders}
           isLoading={isLoading}
+          chartColor="#26A69A"
         />
       </TabPages>
     );
@@ -99,7 +101,13 @@ class Sales extends Component {
 
   render() {
     const { open } = this.state;
-    const { classes, isLoading, innercups, innerpacks, ...restProps } = this.props;
+    const {
+      classes,
+      isLoading,
+      innercups,
+      innerpacks,
+      ...restProps
+    } = this.props;
     return (
       <Fragment>
         <CssBaseline />

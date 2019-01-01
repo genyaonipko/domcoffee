@@ -85,6 +85,7 @@ class Sales extends Component {
           tableTitle="Чашки"
           tableHeaders={tableHeaders}
           isLoading={isLoading}
+          chartColor="#ab003c"
         />
         <ChartPage
           classes={classes}
@@ -93,6 +94,7 @@ class Sales extends Component {
           data={coffee}
           tableHeaders={tableHeaders}
           isLoading={isLoading}
+          chartColor="#ab003c"
         />
       </TabPages>
     );

@@ -12,18 +12,22 @@ import Loader from '../../components/Loader';
 
 import { getAllCoffeeAction } from '../../redux/actions/sales/coffee';
 import { changeDataPacksAction } from '../../redux/actions/packs/packs';
+import { changeDataInnerpackAction } from '../../redux/actions/inner/innerpacks';
+import { changeDataInnercupAction } from '../../redux/actions/inner/innercups';
 import { changeDataOwnpackAction } from '../../redux/actions/own/ownpacks';
+import { changeDataOwncupAction } from '../../redux/actions/own/owncups';
 import { changePortionsAction } from '../../redux/actions/sales/portions';
+import { changeDataDegustationAction } from '../../redux/actions/packs/degustation';
 
 import SimpleLineChart from './components/LineChart';
 import SimpleTable from './components/Table';
 import AppBarComponent from '../../components/AppBarComponent';
 
-// import { reduceAllPositions } from './components/DashboardHelpers';
+import { reduceAllPositions } from './components/DashboardHelpers';
 
 import TabPages from '../../components/TabPage';
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     display: 'flex',
     flex: 1,
@@ -31,10 +35,9 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
     height: '100vh',
     overflow: 'auto',
-    paddingTop: 88,
+    paddingTop: 64,
   },
   chartContainer: {
     marginLeft: -22,
@@ -46,50 +49,78 @@ const styles = theme => ({
 
 class Dashboard extends React.Component {
   componentDidMount = () => {
-    this.props.changeData();
-    this.props.getAllCoffee();
-    this.props.getAllOwn();
-    this.props.getAllPortions();
+    Promise.all([
+      this.props.changeData(),
+      this.props.getAllCoffee(),
+      this.props.getAllOwn(),
+      this.props.getAllPortions(),
+      this.props.getAllInnerPacks(),
+      this.props.getAllDegustation(),
+      this.props.getAllInnerCups(),
+      this.props.getAllOwnCups(),
+    ]);
   };
 
-  renderChartAndTable = (packs, tableHeaders, data, classes) =>
-    _.findKey(packs, o => o !== 0) ? (
-      <Fragment>
+  renderChartAndTable = (data, tabTitles, classes) =>
+    data.map(item => _.findKey(item, o => o !== 0)) ? (
+      <div style={{ margin: 24 }}>
         <div className={classes.appBarSpacer} />
         <Typography variant="display1" gutterBottom>
           График по всем данным
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart data={data} />
+          <SimpleLineChart tabTitles={tabTitles} data={data} />
         </Typography>
         <Typography variant="display1" gutterBottom>
           Вся информация
         </Typography>
         <div className={classes.tableContainer}>
-          <SimpleTable data={data} tableHeaders={tableHeaders} />
+          <SimpleTable data={data} tableHeaders={tabTitles} />
         </div>
-      </Fragment>
+      </div>
     ) : (
       <Typography variant="display1" gutterBottom>
         Нет данных
       </Typography>
     );
 
-  renderContent = (packs, coffee, own, portions, classes, restProps) => {
-    const tableHeaders = [
-      'Марка кофе',
-      'Кол-во продаж',
-      'Кол-во помола',
-      'Кол-во личного употребления',
-      'Кол-во порций',
+  renderContent = (
+    packs,
+    portions,
+    coffee,
+    innerpacks,
+    ownpacks,
+    innercups,
+    owncups,
+    degustation,
+    classes,
+    restProps,
+  ) => {
+    const packsNoPay = reduceAllPositions([coffee, innerpacks, ownpacks]);
+    const cupsNoPay = reduceAllPositions([degustation, innercups, owncups]);
+
+    const tab1Data = [packs, portions, packsNoPay, cupsNoPay];
+    const tab1Titles = [
+      'Пачки за деньги',
+      'Чашки за деньги',
+      'Пачки бесплатно',
+      'Чашки бесплатно',
     ];
 
-    const tab1Data = { packs };
+    const cupsToPay = reduceAllPositions([
+      degustation,
+      innercups,
+      owncups,
+      portions,
+    ]);
 
-    // const tab1Inform = reduceAllPositions()
+    const tab2Data = [coffee, cupsToPay];
+    const tab2Titles = ['Помол', 'Чашки'];
+
     return (
       <TabPages tabTitles={['Tab1', 'Tab2']} classes={classes} {...restProps}>
-        {this.renderChartAndTable(packs, tableHeaders, tab1Data, classes)}
+        {this.renderChartAndTable(tab1Data, tab1Titles, classes)}
+        {this.renderChartAndTable(tab2Data, tab2Titles, classes)}
       </TabPages>
     );
   };
@@ -99,8 +130,12 @@ class Dashboard extends React.Component {
       classes,
       packs,
       coffee,
-      own,
+      innerpacks,
+      ownpacks,
       portions,
+      innercups,
+      owncups,
+      degustation,
       isLoading,
       ...restProps
     } = this.props;
@@ -114,9 +149,13 @@ class Dashboard extends React.Component {
             {!isLoading ? (
               this.renderContent(
                 packs,
-                coffee,
-                own,
                 portions,
+                coffee,
+                innerpacks,
+                ownpacks,
+                innercups,
+                owncups,
+                degustation,
                 classes,
                 restProps,
               )
@@ -146,7 +185,11 @@ Dashboard.propTypes = {
 const mSTP = state => ({
   packs: state.packs,
   coffee: state.coffee,
-  own: state.own,
+  innerpacks: state.innerpacks,
+  innercups: state.innercups,
+  ownpacks: state.ownpacks,
+  owncups: state.owncups,
+  degustation: state.degustation,
   portions: state.portions,
   isLoading: state.settings.isLoading,
 });
@@ -156,6 +199,10 @@ const mDTP = dispatch => ({
   changeData: () => dispatch(changeDataPacksAction()),
   getAllOwn: () => dispatch(changeDataOwnpackAction()),
   getAllPortions: () => dispatch(changePortionsAction()),
+  getAllInnerPacks: () => dispatch(changeDataInnerpackAction()),
+  getAllDegustation: () => dispatch(changeDataDegustationAction()),
+  getAllInnerCups: () => dispatch(changeDataInnercupAction()),
+  getAllOwnCups: () => dispatch(changeDataOwncupAction()),
 });
 
 export default compose(
