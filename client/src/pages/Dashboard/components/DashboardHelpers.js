@@ -2,6 +2,7 @@ const initialState = {
   balerina: 0,
   gourme: 0,
   orient: 0,
+  symphony: 0,
   servus: 0,
   sera: 0,
   rose: 0,

@@ -16,6 +16,7 @@ function SimpleLineChart(props) {
     { name: 'balerina' },
     { name: 'gourme' },
     { name: 'orient' },
+    { name: 'symphony' },
     { name: 'servus' },
     { name: 'sera' },
     { name: 'rose' },

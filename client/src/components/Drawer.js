@@ -14,21 +14,6 @@ import { MainListItems, SecondaryListItems } from '../components/ListItems';
 import { getSidebarState, getUserRole } from '../redux/selectors';
 
 import { setSidebarState } from '../redux/actions/sidebar';
-import {
-  changeDataByDayAction,
-  changeDataByMonthAction,
-  changeDataByQuarterAction,
-  changeDataByYearAction,
-  changeDataPacksAction,
-} from '../redux/actions/packs/packs';
-
-// import {
-//   changeOwnByDayAction,
-//   changeOwnByMonthAction,
-//   changeOwnByQuarterAction,
-//   changeOwnByYearAction,
-//   getAllOwnAction,
-// } from '../redux/actions/own/ownpacks';
 
 import {
   changeCoffeeByDayAction,
@@ -45,6 +30,22 @@ import {
   changePortionsByYearAction,
   changePortionsAction,
 } from '../redux/actions/sales/portions';
+
+import {
+  changeDataByDayAction,
+  changeDataByMonthAction,
+  changeDataByQuarterAction,
+  changeDataByYearAction,
+  changeDataPacksAction,
+} from '../redux/actions/packs/packs';
+
+import {
+  degustationByDayAction,
+  degustationByMonthAction,
+  degustationByQuarterAction,
+  degustationByYearAction,
+  changeDataDegustationAction,
+} from '../redux/actions/packs/degustation';
 
 const drawerWidth = 240;
 
@@ -93,12 +94,12 @@ class DrawerBar extends Component {
     changeYear: PropTypes.func.isRequired,
     getAll: PropTypes.func.isRequired,
 
-    // own
-    changeOwnMonth: PropTypes.func.isRequired,
-    changeOwnDay: PropTypes.func.isRequired,
-    changeOwnQuarter: PropTypes.func.isRequired,
-    changeOwnYear: PropTypes.func.isRequired,
-    getAllOwn: PropTypes.func.isRequired,
+    // degustation
+    changeDegustationMonth: PropTypes.func.isRequired,
+    changeDegustationDay: PropTypes.func.isRequired,
+    changeDegustationQuarter: PropTypes.func.isRequired,
+    changeDegustationYear: PropTypes.func.isRequired,
+    getAllDegustation: PropTypes.func.isRequired,
 
     // coffee
     changeCoffeeMonth: PropTypes.func.isRequired,
@@ -121,17 +122,23 @@ class DrawerBar extends Component {
 
   getAll = () => {
     switch (this.props.location.pathname) {
+      case '/packs':
+        return Promise.all([
+          this.props.getAll(),
+          this.props.getAllDegustation(),
+        ]);
       case '/sales':
-        return this.props.getAll();
-      case '/personal':
-        return this.props.getAllOwn();
-      case '/coffee':
-        return this.props.getAllCoffee();
-      case '/amount':
-        return this.props.getAllPortions();
+        return Promise.all([
+          this.props.getAllPortions(),
+          this.props.getAllCoffee(),
+        ]);
+      case '/inner':
+        return this.props.getAllDegustation();
+      case '/own':
+        return '';
       case '/dashboard':
         this.props.getAllCoffee();
-        this.props.getAllOwn();
+        this.props.getAllDegustation();
         this.props.getAll();
         return this.props.getAllPortions();
       default:
@@ -141,17 +148,23 @@ class DrawerBar extends Component {
 
   changeDay = () => {
     switch (this.props.location.pathname) {
+      case '/packs':
+        return Promise.all([
+          this.props.changeDay(),
+          this.props.changeDegustationDay(),
+        ]);
       case '/sales':
-        return this.props.changeDay();
-      case '/personal':
-        return this.props.changeOwnDay();
-      case '/coffee':
+        return Promise.all([
+          this.props.changeCoffeeDay(),
+          this.props.changePortionsDay(),
+        ]);
+      case '/inner':
         return this.props.changeCoffeeDay();
-      case '/amount':
+      case '/own':
         return this.props.changePortionsDay();
       case '/dashboard':
         this.props.changeCoffeeDay();
-        this.props.changeOwnDay();
+        this.props.changeDegustationDay();
         this.props.changeDay();
         return this.props.changePortionsDay();
       default:
@@ -161,17 +174,23 @@ class DrawerBar extends Component {
 
   changeMonth = () => {
     switch (this.props.location.pathname) {
+      case '/packs':
+        return Promise.all([
+          this.props.changeMonth(),
+          this.props.changeDegustationMonth(),
+        ]);
       case '/sales':
-        return this.props.changeMonth();
-      case '/personal':
-        return this.props.changeOwnMonth();
-      case '/coffee':
+        return Promise.all([
+          this.props.changeCoffeeMonth(),
+          this.props.changePortionsMonth(),
+        ]);
+      case '/inner':
         return this.props.changeCoffeeMonth();
-      case '/amount':
+      case '/own':
         return this.props.changePortionsMonth();
       case '/dashboard':
         this.props.changeCoffeeMonth();
-        this.props.changeOwnMonth();
+        this.props.changeDegustationMonth();
         this.props.changeMonth();
         return this.props.changePortionsMonth();
       default:
@@ -181,17 +200,23 @@ class DrawerBar extends Component {
 
   changeQuarter = () => {
     switch (this.props.location.pathname) {
+      case '/packs':
+        return Promise.all([
+          this.props.changeQuarter(),
+          this.props.changeDegustationQuarter(),
+        ]);
       case '/sales':
-        return this.props.changeQuarter();
-      case '/personal':
-        return this.props.changeOwnQuarter();
-      case '/coffee':
+        return Promise.all([
+          this.props.changeCoffeeQuarter(),
+          this.props.changePortionsQuarter(),
+        ]);
+      case '/inner':
         return this.props.changeCoffeeQuarter();
-      case '/amount':
+      case '/own':
         return this.props.changePortionsQuarter();
       case '/dashboard':
         this.props.changeCoffeeQuarter();
-        this.props.changeOwnQuarter();
+        this.props.changeDegustationQuarter();
         this.props.changeQuarter();
         return this.props.changePortionsQuarter();
       default:
@@ -201,17 +226,23 @@ class DrawerBar extends Component {
 
   changeYear = () => {
     switch (this.props.location.pathname) {
+      case '/packs':
+        return Promise.all([
+          this.props.changeYear(),
+          this.props.changeDegustationYear(),
+        ]);
       case '/sales':
-        return this.props.changeYear();
-      case '/personal':
-        return this.props.changeOwnYear();
-      case '/coffee':
+        return Promise.all([
+          this.props.changeCoffeeYear(),
+          this.props.changePortionsYear(),
+        ]);
+      case '/inner':
         return this.props.changeCoffeeYear();
-      case '/amount':
+      case '/own':
         return this.props.changePortionsYear();
       case '/dashboard':
         this.props.changeCoffeeYear();
-        this.props.changeOwnYear();
+        this.props.changeDegustationYear();
         this.props.changeYear();
         return this.props.changePortionsYear();
       default:
@@ -274,12 +305,12 @@ const mDTP = dispatch => ({
   changeYear: () => dispatch(changeDataByYearAction()),
   getAll: () => dispatch(changeDataPacksAction()),
 
-  // own
-  // changeOwnMonth: () => dispatch(changeOwnByMonthAction()),
-  // changeOwnDay: () => dispatch(changeOwnByDayAction()),
-  // changeOwnQuarter: () => dispatch(changeOwnByQuarterAction()),
-  // changeOwnYear: () => dispatch(changeOwnByYearAction()),
-  // getAllOwn: () => dispatch(getAllOwnAction()),
+  // degustation
+  changeDegustationMonth: () => dispatch(degustationByMonthAction()),
+  changeDegustationDay: () => dispatch(degustationByDayAction()),
+  changeDegustationQuarter: () => dispatch(degustationByQuarterAction()),
+  changeDegustationYear: () => dispatch(degustationByYearAction()),
+  getAllDegustation: () => dispatch(changeDataDegustationAction()),
 
   // coffee
   changeCoffeeMonth: () => dispatch(changeCoffeeByMonthAction()),

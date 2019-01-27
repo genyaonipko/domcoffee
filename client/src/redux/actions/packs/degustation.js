@@ -35,7 +35,7 @@ export const addDegustationAction = degustation => dispatch =>
     }
   });
 
-export const changeDataByMonthAction = () => dispatch => {
+export const degustationByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
@@ -50,7 +50,7 @@ export const changeDataByMonthAction = () => dispatch => {
   });
 };
 
-export const changeDataByDayAction = () => dispatch => {
+export const degustationByDayAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
@@ -65,7 +65,7 @@ export const changeDataByDayAction = () => dispatch => {
   });
 };
 
-export const changeDataByQuarterAction = () => dispatch => {
+export const degustationByQuarterAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
@@ -80,7 +80,7 @@ export const changeDataByQuarterAction = () => dispatch => {
   });
 };
 
-export const changeDataByYearAction = () => dispatch => {
+export const degustationByYearAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {

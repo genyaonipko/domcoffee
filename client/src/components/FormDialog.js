@@ -78,8 +78,8 @@ class FormDialog extends React.Component {
                 <Field component={InputTextField} name="gourme" label="Гурме" />
                 <Field
                   component={InputTextField}
-                  name="orient"
-                  label="Ориент"
+                  name="symphony"
+                  label="Симфония"
                 />
                 <Field
                   component={InputTextField}
@@ -129,6 +129,11 @@ class FormDialog extends React.Component {
                   label="Колумбия"
                 />
                 <Field component={InputTextField} name="crema" label="Крема" />
+                <Field
+                  component={InputTextField}
+                  name="orient"
+                  label="Ориент"
+                />
               </div>
             </div>
             <DialogActions>
