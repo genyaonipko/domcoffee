@@ -27,7 +27,7 @@ export const changePortionsAction = () => dispatch => {
 };
 
 export const addPortionsAction = portion => (dispatch, getState) => {
-  const dateTransaction = getState().settings;
+  const { dateTransaction } = getState().settings;
   addPortion(dcRequest.addPortion(portion, dateTransaction), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
