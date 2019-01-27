@@ -8,13 +8,16 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addPack(data) {
+  static addPack(data, dateTransaction) {
     return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data: {
+        data,
+        dateTransaction,
+      },
     };
   }
   static getDegustations() {
@@ -26,13 +29,16 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addDegustation(data) {
+  static addDegustation(data, dateTransaction) {
     return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data: {
+        data,
+        dateTransaction,
+      },
     };
   }
   static getOwn() {
@@ -44,13 +50,16 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addOwn(data) {
+  static addOwn(data, dateTransaction) {
     return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data: {
+        data,
+        dateTransaction,
+      },
     };
   }
   static getCoffee() {
@@ -62,13 +71,16 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addCoffee(data) {
+  static addCoffee(data, dateTransaction) {
     return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data: {
+        data,
+        dateTransaction,
+      },
     };
   }
   static getPortions() {
@@ -80,13 +92,16 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addPortion(data) {
+  static addPortion(data, dateTransaction) {
     return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data: {
+        data,
+        dateTransaction,
+      },
     };
   }
   static getInnercups() {
@@ -98,13 +113,16 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addInnercup(data) {
+  static addInnercup(data, dateTransaction) {
     return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data: {
+        data,
+        dateTransaction,
+      },
     };
   }
   static getInnerpacks() {
@@ -116,13 +134,16 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addInnerpack(data) {
+  static addInnerpack(data, dateTransaction) {
     return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data: {
+        data,
+        dateTransaction,
+      },
     };
   }
   static getOwncups() {
@@ -134,13 +155,16 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addOwncup(data) {
+  static addOwncup(data, dateTransaction) {
     return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data: {
+        data,
+        dateTransaction,
+      },
     };
   }
   static getOwnpacks() {
@@ -152,13 +176,16 @@ export default class dcRequests {
       data: null,
     };
   }
-  static addOwnpack(data) {
+  static addOwnpack(data, dateTransaction) {
     return {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data: {
+        data,
+        dateTransaction,
+      },
     };
   }
 }

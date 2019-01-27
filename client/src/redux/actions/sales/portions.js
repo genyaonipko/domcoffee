@@ -26,14 +26,16 @@ export const changePortionsAction = () => dispatch => {
   });
 };
 
-export const addPortionsAction = portion => dispatch =>
-  addPortion(dcRequest.addPortion(portion), (data, error) => {
+export const addPortionsAction = portion => (dispatch, getState) => {
+  const dateTransaction = getState().settings;
+  addPortion(dcRequest.addPortion(portion, dateTransaction), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({ type: ADD_PORTION, payload: data.data.portions });
     }
   });
+};
 
 export const changePortionsByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });

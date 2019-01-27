@@ -1,4 +1,4 @@
-// /* eslint-disable */
+/* eslint-disable */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -66,9 +66,9 @@ class Sales extends Component {
 
   handleSubmit = values => {
     if (!this.props.tabIndex) {
-      this.props.onSubmitPortions(values);
+      this.props.onSubmitPortions(values, this.props.dateTransaction);
     } else {
-      this.props.onSubmit(values);
+      this.props.onSubmit(values, this.props.dateTransaction);
     }
   };
 
@@ -151,6 +151,7 @@ const mSTP = state => ({
   portions: state.portions,
   isLoading: state.settings.isLoading,
   tabIndex: state.settings.tabIndex,
+  dateTransaction: state.settings.dateTransaction,
 });
 
 const mDTP = dispatch => ({

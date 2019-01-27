@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
@@ -13,7 +14,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Loader from '../../components/Loader'
+import Loader from '../../components/Loader';
 
 import { loginUser } from '../../redux/actions/authentication';
 
@@ -91,11 +92,16 @@ class Login extends Component {
   }
 
   submit = values => {
-    this.setState({ disabled: true, errors: {
-      password: '',
-      email: '',
-    }}, () => this.props.loginUser(values, this.props.history))
-    
+    this.setState(
+      {
+        disabled: true,
+        errors: {
+          password: '',
+          email: '',
+        },
+      },
+      () => this.props.loginUser(values, this.props.history),
+    );
   };
 
   render() {
@@ -135,7 +141,9 @@ class Login extends Component {
                   <div className={classes.invalid}>{errors.password}</div>
                 )}
               </FormControl>
-              {!errors.password && !errors.email && disabled ? <Loader /> : 
+              {!errors.password && !errors.email && disabled ? (
+                <Loader />
+              ) : (
                 <Button
                   type="submit"
                   fullWidth
@@ -144,7 +152,7 @@ class Login extends Component {
                   className={classes.submit}>
                   Sign in
                 </Button>
-              }
+              )}
             </form>
           </Paper>
         </main>
