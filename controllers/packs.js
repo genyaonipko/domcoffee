@@ -1,8 +1,6 @@
 const Packs = require("../models/packs");
 const randomString = require("../utils/random-string");
 
-
-
 module.exports = {
   send: (req, res, next) => {
     const { item } = req;
@@ -14,7 +12,8 @@ module.exports = {
     try {
       req.item = await Packs.create({
         key: randomString(),
-        packs: req.body
+        packs: req.body.data,
+        createdDate: req.body.dateTransaction
       });
       next();
     } catch (err) {

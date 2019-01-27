@@ -12,7 +12,8 @@ module.exports = {
     try {
       req.item = await Coffee.create({
         key: randomString(),
-        coffee: req.body
+        coffee: req.body.data,
+        createdDate: req.body.dateTransaction
       });
       next();
     } catch (err) {

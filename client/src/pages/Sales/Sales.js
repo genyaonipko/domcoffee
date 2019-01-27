@@ -66,9 +66,9 @@ class Sales extends Component {
 
   handleSubmit = values => {
     if (!this.props.tabIndex) {
-      this.props.onSubmitPortions(values, this.props.dateTransaction);
+      this.props.onSubmitPortions(values);
     } else {
-      this.props.onSubmit(values, this.props.dateTransaction);
+      this.props.onSubmit(values);
     }
   };
 
@@ -151,7 +151,6 @@ const mSTP = state => ({
   portions: state.portions,
   isLoading: state.settings.isLoading,
   tabIndex: state.settings.tabIndex,
-  dateTransaction: state.settings.dateTransaction,
 });
 
 const mDTP = dispatch => ({

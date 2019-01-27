@@ -12,7 +12,8 @@ module.exports = {
     try {
       req.item = await Degustation.create({
         key: randomString(),
-        degustation: req.body
+        degustation: req.body.data,
+        createdDate: req.body.dateTransaction
       });
       next();
     } catch (err) {

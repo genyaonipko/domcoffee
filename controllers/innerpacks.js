@@ -12,7 +12,8 @@ module.exports = {
     try {
       req.item = await Innerpacks.create({
         key: randomString(),
-        innerpacks: req.body
+        innerpacks: req.body.data,
+        createdDate: req.body.dateTransaction
       });
       next();
     } catch (err) {
