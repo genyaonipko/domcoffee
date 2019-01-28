@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,7 +16,6 @@ import {
   changeDataInnercupAction,
   addInnercupAction,
 } from '../../redux/actions/inner/innercups';
-// import * as api from '../../utils/api';
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
 
@@ -144,12 +142,21 @@ class Sales extends Component {
 }
 
 Sales.propTypes = {
+  // settings
   classes: PropTypes.shape().isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  tabIndex: PropTypes.number.isRequired,
+
+  // data
   innercups: PropTypes.shape({}).isRequired,
+  innerpacks: PropTypes.shape({}).isRequired,
+
+  // function
   changeData: PropTypes.func.isRequired,
+  getAllPacks: PropTypes.func.isRequired,
   getAllPortions: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  onSubmitPacks: PropTypes.func.isRequired,
 };
 
 const mSTP = state => ({

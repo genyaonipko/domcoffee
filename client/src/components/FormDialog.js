@@ -1,9 +1,9 @@
-/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
 import { Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -13,9 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import { DatePicker } from 'material-ui-pickers';
 import 'moment/locale/ru';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 
 import { dateAction } from '../redux/actions/helpers';
@@ -44,6 +42,12 @@ const InputTextField = ({ input, label, autoFocus, ...rest }) => (
   />
 );
 
+InputTextField.propTypes = {
+  input: PropTypes.shape({}).isRequired,
+  label: PropTypes.string.isRequired,
+  autoFocus: PropTypes.bool.isRequired,
+};
+
 class FormDialog extends React.Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
@@ -71,14 +75,13 @@ class FormDialog extends React.Component {
     this.props.handleClose();
   };
 
-  handleDate = date => {
-    return this.setState(
+  handleDate = date =>
+    this.setState(
       {
         date,
       },
       () => this.props.changeDate(date),
     );
-  };
 
   render() {
     const { open, handleClose, classes, handleSubmit, title } = this.props;

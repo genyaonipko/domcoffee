@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -78,10 +77,12 @@ function SimpleTable(props) {
               <TableCell component="th" scope="row">
                 {n.name}
               </TableCell>
-              {Object.keys(n).map(item => {
-                if (item === 'name') return;
-                return <TableCell>{n[item]}</TableCell>;
-              })}
+              {Object.keys(n).map(
+                item =>
+                  item !== 'name' && (
+                    <TableCell key={item}>{n[item]}</TableCell>
+                  ),
+              )}
             </TableRow>
           ))}
           <TableRow>
@@ -114,7 +115,7 @@ function SimpleTable(props) {
 SimpleTable.propTypes = {
   classes: PropTypes.shape().isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  data: PropTypes.shape({}).isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
 };
 
 export default withStyles(styles)(SimpleTable);

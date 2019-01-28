@@ -77,7 +77,7 @@ const styles = theme => ({
   },
   avatar: {
     backgroundColor: theme.palette.secondary.main,
-  }
+  },
 });
 
 class AppBarComponent extends Component {
@@ -90,7 +90,11 @@ class AppBarComponent extends Component {
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
     }).isRequired,
-    barColor: PropTypes.string.isRequired,
+    barColor: PropTypes.string,
+  };
+
+  static defaultProps = {
+    barColor: null,
   };
 
   handleDrawerOpen = () => {
@@ -104,10 +108,7 @@ class AppBarComponent extends Component {
       <div className={classes.root}>
         <AppBar
           position="absolute"
-          className={classNames(
-            classes.appBar,
-            sidebar && classes.appBarShift,
-          )}
+          className={classNames(classes.appBar, sidebar && classes.appBarShift)}
           style={{ backgroundColor: barColor }}>
           <Toolbar disableGutters={!sidebar} className={classes.toolbar}>
             <IconButton
@@ -121,13 +122,19 @@ class AppBarComponent extends Component {
               <MenuIcon />
             </IconButton>
             <Typography
-              variant="title"
+              variant="h6"
               color="inherit"
               noWrap
               className={classes.title}>
               {title}
             </Typography>
-            <Avatar className={classes.avatar}>{user.name.split(' ').map(item => item.charAt(0)).join('').toUpperCase()}</Avatar>
+            <Avatar className={classes.avatar}>
+              {user.name
+                .split(' ')
+                .map(item => item.charAt(0))
+                .join('')
+                .toUpperCase()}
+            </Avatar>
             <Button
               variant="contained"
               color="primary"

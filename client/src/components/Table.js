@@ -36,13 +36,13 @@ function SimpleTable(props) {
           <TableRow>
             {tableHeaders &&
               tableHeaders.map(header => (
-                <TableCell key={header}>{header}</TableCell>
+                <TableCell key={`item_${header}`}>{header}</TableCell>
               ))}
           </TableRow>
         </TableHead>
         <TableBody>
           {Object.keys(data).map(n => (
-            <TableRow key={n}>
+            <TableRow key={`item_th_${n}`}>
               <TableCell component="th" scope="row">
                 {n}
               </TableCell>

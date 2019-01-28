@@ -1,5 +1,5 @@
-/* eslint-disable */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
 const ProtectedRoute = ({
@@ -17,12 +17,17 @@ const ProtectedRoute = ({
         <Redirect
           to={{
             pathname: redirectTo,
-            state: { from: props.location },
           }}
         />
       )
     }
   />
 );
+
+ProtectedRoute.propTypes = {
+  component: PropTypes.func.isRequired,
+  authenticated: PropTypes.bool.isRequired,
+  redirectTo: PropTypes.string.isRequired,
+};
 
 export default ProtectedRoute;

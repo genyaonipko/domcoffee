@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,6 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 
 import _ from 'lodash';
+import { equals } from 'ramda';
 
 import Loader from '../../components/Loader';
 
@@ -62,17 +62,19 @@ class Dashboard extends React.Component {
     ]);
   };
 
+  shouldComponentUpdate = nextProps => !equals(this.props, nextProps);
+
   renderChartAndTable = (data, tabTitles, classes) =>
     data.map(item => _.findKey(item, o => o !== 0)) ? (
       <div style={{ margin: 24 }}>
         <div className={classes.appBarSpacer} />
-        <Typography variant="display1" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           График по всем данным
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
           <SimpleLineChart tabTitles={tabTitles} data={data} />
         </Typography>
-        <Typography variant="display1" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           Вся информация
         </Typography>
         <div className={classes.tableContainer}>
@@ -80,7 +82,7 @@ class Dashboard extends React.Component {
         </div>
       </div>
     ) : (
-      <Typography variant="display1" gutterBottom>
+      <Typography variant="h2" gutterBottom>
         Нет данных
       </Typography>
     );
@@ -171,16 +173,29 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
+  // settings
   classes: PropTypes.shape().isRequired,
   isLoading: PropTypes.bool.isRequired,
-  changeData: PropTypes.func.isRequired,
-  getAllCoffee: PropTypes.func.isRequired,
+
+  // data
   packs: PropTypes.shape({}).isRequired,
-  coffee: PropTypes.shape({}).isRequired,
-  getAllOwn: PropTypes.func.isRequired,
-  own: PropTypes.shape({}).isRequired,
   portions: PropTypes.shape({}).isRequired,
+  degustation: PropTypes.shape({}).isRequired,
+  coffee: PropTypes.shape({}).isRequired,
+  innercups: PropTypes.shape({}).isRequired,
+  innerpacks: PropTypes.shape({}).isRequired,
+  owncups: PropTypes.shape({}).isRequired,
+  ownpacks: PropTypes.shape({}).isRequired,
+
+  // functions
+  changeData: PropTypes.func.isRequired,
+  getAllOwn: PropTypes.func.isRequired,
+  getAllCoffee: PropTypes.func.isRequired,
   getAllPortions: PropTypes.func.isRequired,
+  getAllInnerPacks: PropTypes.func.isRequired,
+  getAllDegustation: PropTypes.func.isRequired,
+  getAllInnerCups: PropTypes.func.isRequired,
+  getAllOwnCups: PropTypes.func.isRequired,
 };
 
 const mSTP = state => ({

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
@@ -75,6 +74,19 @@ const InputTextField = ({
   />
 );
 
+InputTextField.propTypes = {
+  input: PropTypes.shape({}).isRequired,
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  autoFocus: PropTypes.bool,
+  autoComplete: PropTypes.string.isRequired,
+};
+
+InputTextField.defaultProps = {
+  name: null,
+  autoFocus: null,
+};
+
 class Login extends Component {
   state = {
     email: '',
@@ -115,7 +127,7 @@ class Login extends Component {
             <Avatar className={classes.avatar}>
               <LockIcon />
             </Avatar>
-            <Typography variant="headline">Sign in</Typography>
+            <Typography variant="h5">Sign in</Typography>
             <form className={classes.form} onSubmit={handleSubmit(this.submit)}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
@@ -124,6 +136,7 @@ class Login extends Component {
                   autoComplete="email"
                   autoFocus
                   component={InputTextField}
+                  type="text"
                 />
                 {errors.email && (
                   <div className={classes.invalid}>{errors.email}</div>
@@ -147,7 +160,7 @@ class Login extends Component {
                 <Button
                   type="submit"
                   fullWidth
-                  variant="raised"
+                  variant="contained"
                   color="primary"
                   className={classes.submit}>
                   Sign in

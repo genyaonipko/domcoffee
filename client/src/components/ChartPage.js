@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -9,7 +8,13 @@ import Loader from '../components/Loader';
 
 export default class ChartPage extends Component {
   static propTypes = {
-    prop: PropTypes,
+    classes: PropTypes.shape({}).isRequired,
+    data: PropTypes.shape({}).isRequired,
+    tableHeaders: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    chartTitle: PropTypes.string.isRequired,
+    tableTitle: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    chartColor: PropTypes.string.isRequired,
   };
 
   render() {
@@ -26,7 +31,7 @@ export default class ChartPage extends Component {
     if (!_.findKey(data, o => o !== 0)) {
       return (
         <div style={{ margin: 24 }}>
-          <Typography variant="display1" gutterBottom>
+          <Typography variant="h2" gutterBottom>
             Нет данных
           </Typography>
         </div>
@@ -35,13 +40,13 @@ export default class ChartPage extends Component {
     return (
       <div style={{ margin: 24 }}>
         <div className={classes.appBarSpacer} />
-        <Typography variant="display1" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           {chartTitle}
         </Typography>
         <Typography component="div" className={classes.chartContainer}>
           <SimpleLineChart color={chartColor} data={data} legend={tableTitle} />
         </Typography>
-        <Typography variant="display1" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           {tableTitle}
         </Typography>
         <div className={classes.tableContainer}>

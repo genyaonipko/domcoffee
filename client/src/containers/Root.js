@@ -16,6 +16,10 @@ import Fixture from '../components/Fixture';
 const screenWidth = window.innerWidth;
 
 const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+    suppressDeprecationWarnings: true,
+  },
   direction: 'ltr',
   palette: {
     primary: {

@@ -1,6 +1,5 @@
-/* eslint-disable */
-
 import React from 'react';
+import PropTypes from 'prop-types';
 import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
 import LineChart from 'recharts/lib/chart/LineChart';
 import Line from 'recharts/lib/cartesian/Line';
@@ -9,7 +8,6 @@ import YAxis from 'recharts/lib/cartesian/YAxis';
 import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 import Tooltip from 'recharts/lib/component/Tooltip';
 import Legend from 'recharts/lib/component/Legend';
-import _ from 'lodash';
 
 function SimpleLineChart(props) {
   const initialData = [
@@ -47,9 +45,10 @@ function SimpleLineChart(props) {
   const renderCharts = () => {
     const arrOfColors = ['#FF0000', '#009900', '#0000CC', '#660066'];
     const arrForRender = [];
-    for (let i = 0; i < objLength; i++) {
+    for (let i = 0; i < objLength; i += 1) {
       arrForRender.push(
         <Line
+          key={`item_${i}`}
           isAnimationActive={false}
           type="monotone"
           dataKey={props.tabTitles[i]}
@@ -60,7 +59,6 @@ function SimpleLineChart(props) {
     return arrForRender;
   };
 
-  console.log(objLength);
   return (
     // 99% per https://github.com/recharts/recharts/issues/172
     <ResponsiveContainer width="99%" height={320}>
@@ -75,5 +73,10 @@ function SimpleLineChart(props) {
     </ResponsiveContainer>
   );
 }
+
+SimpleLineChart.propTypes = {
+  data: PropTypes.oneOfType([PropTypes.array, PropTypes.any]).isRequired,
+  tabTitles: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+};
 
 export default SimpleLineChart;

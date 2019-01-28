@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
@@ -18,6 +17,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Divider from '@material-ui/core/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
+import Fab from '@material-ui/core/Fab';
 
 import { getAllUser, deleteUserAction } from '../../../redux/actions/user';
 
@@ -110,17 +110,13 @@ class User extends Component {
     return (
       <div className={classes.user}>
         <div className={classes.top}>
-          <Button
-            variant="fab"
+          <Fab
             color="secondary"
             aria-label="Back"
             onClick={() => history.push('/settings')}>
             <ArrowBack />
-          </Button>
-          <Typography
-            className={classes.userTitle}
-            variant="display1"
-            gutterBottom>
+          </Fab>
+          <Typography className={classes.userTitle} variant="h4" gutterBottom>
             Пользователи
           </Typography>
         </div>
@@ -205,14 +201,13 @@ class User extends Component {
           keyItem={key}
         />
         <SnackBar visible={visible} />
-        <Button
-          variant="fab"
+        <Fab
           color="primary"
           aria-label="Add"
           className={classes.button}
           onClick={this.handleClick}>
           <AddIcon />
-        </Button>
+        </Fab>
       </div>
     );
   }

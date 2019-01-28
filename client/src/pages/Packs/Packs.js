@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -138,12 +137,21 @@ class Sales extends Component {
 }
 
 Sales.propTypes = {
+  // settings
   classes: PropTypes.shape().isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  tabIndex: PropTypes.number.isRequired,
+
+  // data
   degustation: PropTypes.shape({}).isRequired,
+  packs: PropTypes.shape({}).isRequired,
+
+  // function
   changeData: PropTypes.func.isRequired,
   getAllPortions: PropTypes.func.isRequired,
+  getAllDegustation: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  onSubmitDegustation: PropTypes.func.isRequired,
 };
 
 const mSTP = state => ({

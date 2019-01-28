@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -34,6 +33,13 @@ const InputTextField = ({ input, label, type, autoFocus, ...rest }) => (
     {...rest}
   />
 );
+
+InputTextField.propTypes = {
+  input: PropTypes.shape({}).isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  autoFocus: PropTypes.bool.isRequired,
+};
 
 class UpdateUserForm extends React.Component {
   static propTypes = {
@@ -77,12 +83,14 @@ class UpdateUserForm extends React.Component {
                 label="Имя"
               />
               <Field
+                autoFocus={false}
                 component={InputTextField}
                 type="email"
                 name="email"
                 label="Электронная почта"
               />
               <Field
+                autoFocus={false}
                 component={InputTextField}
                 type="text"
                 name="date"
@@ -110,7 +118,7 @@ const mDTP = dispatch => ({
 
 export default compose(
   withStyles(styles),
-  reduxForm({ form: 'sales' }),
+  reduxForm({ form: 'updateUser' }),
   connect(
     null,
     mDTP,

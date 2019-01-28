@@ -1,14 +1,15 @@
-/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 import { setTabIndex } from '../redux/actions/sidebar';
 
-const styles = theme => ({
+const styles = () => ({
   rootTabs: {
     flex: 1,
     flexDirection: 'column',
@@ -18,17 +19,25 @@ const styles = theme => ({
   },
 });
 
-function TabContainer({ children, dir }) {
-  return (
-    <Typography component="div" dir={dir}>
-      {children}
-    </Typography>
-  );
-}
+const TabContainer = ({ children, dir }) => (
+  <Typography component="div" dir={dir}>
+    {children}
+  </Typography>
+);
+
+TabContainer.propTypes = {
+  children: PropTypes.shape({}).isRequired,
+  dir: PropTypes.string.isRequired,
+};
 
 class TabPage extends Component {
   static propTypes = {
-    prop: PropTypes,
+    setTabIndex: PropTypes.func.isRequired,
+    classes: PropTypes.shape({}).isRequired,
+    tabTitles: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    children: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+    theme: PropTypes.shape({}).isRequired,
+    tabIndex: PropTypes.number.isRequired,
   };
 
   handleChange = (event, value) => {
@@ -40,28 +49,30 @@ class TabPage extends Component {
   };
 
   render() {
-    const { classes, theme, tabTitles, children } = this.props;
+    const { classes, theme, tabTitles, children, tabIndex } = this.props;
     const childrenArr = React.Children.toArray(children);
     return (
       <div className={classes.rootTabs}>
         <div className={classes.tabs}>
           <Tabs
-            value={this.props.tabIndex}
+            value={tabIndex}
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-            fullWidth>
+            variant="fullWidth">
             {tabTitles.map(title => (
-              <Tab label={title} />
+              <Tab key={`item_${title}`} label={title} />
             ))}
           </Tabs>
         </div>
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={this.props.tabIndex}
+          index={tabIndex}
           onChangeIndex={this.handleChangeIndex}>
-          {childrenArr.map(child => (
-            <TabContainer dir={theme.direction}>{child}</TabContainer>
+          {childrenArr.map((child, i) => (
+            <TabContainer key={`item_${i + 1}_tab`} dir={theme.direction}>
+              {child}
+            </TabContainer>
           ))}
         </SwipeableViews>
       </div>
@@ -77,7 +88,10 @@ const mDTP = dispatch => ({
   setTabIndex: index => dispatch(setTabIndex(index)),
 });
 
-export default connect(
-  mSTP,
-  mDTP,
+export default compose(
+  withStyles(styles),
+  connect(
+    mSTP,
+    mDTP,
+  ),
 )(TabPage);

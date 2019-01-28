@@ -1,7 +1,5 @@
-/* eslint-disable */
-
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
 import LineChart from 'recharts/lib/chart/LineChart';
 import Line from 'recharts/lib/cartesian/Line';
@@ -28,7 +26,12 @@ function SimpleLineChart(props) {
         <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <Tooltip />
         <Legend />
-        <Line isAnimationActive={false} type="monotone" dataKey={props.legend} stroke={props.color} />
+        <Line
+          isAnimationActive={false}
+          type="monotone"
+          dataKey={props.legend}
+          stroke={props.color}
+        />
         {/* <Line type="monotone" dataKey="Orders" stroke="#b4193d" /> */}
       </LineChart>
     </ResponsiveContainer>
@@ -37,6 +40,8 @@ function SimpleLineChart(props) {
 
 SimpleLineChart.propTypes = {
   color: PropTypes.string.isRequired,
-}
+  data: PropTypes.shape({}).isRequired,
+  legend: PropTypes.string.isRequired,
+};
 
 export default SimpleLineChart;

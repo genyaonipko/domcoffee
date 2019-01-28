@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -41,11 +40,20 @@ const InputTextField = ({ input, label, autoFocus, type, ...rest }) => (
   />
 );
 
+InputTextField.propTypes = {
+  input: PropTypes.shape({}).isRequired,
+  label: PropTypes.string.isRequired,
+  autoFocus: PropTypes.bool.isRequired,
+  type: PropTypes.string.isRequired,
+};
+
 class Register extends React.Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     history: PropTypes.shape({}).isRequired,
+    classes: PropTypes.shape().isRequired,
+    errors: PropTypes.shape({}).isRequired,
   };
 
   state = {
@@ -69,7 +77,7 @@ class Register extends React.Component {
     const { classes, handleSubmit, history } = this.props;
     return (
       <div className={classes.wrapper}>
-        <Typography variant="display1" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           Добавьте пользователя
         </Typography>
         <form onSubmit={handleSubmit(this.submit)}>
@@ -89,6 +97,7 @@ class Register extends React.Component {
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <Field
+                autoFocus={false}
                 component={InputTextField}
                 name="email"
                 label="Адрес электронной почты*"
@@ -101,6 +110,7 @@ class Register extends React.Component {
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <Field
+                autoFocus={false}
                 component={InputTextField}
                 name="password"
                 label="Пароль*"
@@ -113,6 +123,7 @@ class Register extends React.Component {
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <Field
+                autoFocus={false}
                 component={InputTextField}
                 name="password_confirm"
                 label="Подтвердите пароль*"
@@ -138,11 +149,6 @@ class Register extends React.Component {
     );
   }
 }
-
-Register.propTypes = {
-  classes: PropTypes.shape().isRequired,
-  errors: PropTypes.shape({}).isRequired,
-};
 
 const mSTP = state => ({
   errors: state.error,
