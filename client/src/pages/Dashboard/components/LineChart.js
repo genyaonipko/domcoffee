@@ -48,7 +48,6 @@ function SimpleLineChart(props) {
     const arrOfColors = ['#FF0000', '#009900', '#0000CC', '#660066'];
     const arrForRender = [];
     for (let i = 0; i < objLength; i++) {
-      console.log(i);
       arrForRender.push(
         <Line
           isAnimationActive={false}

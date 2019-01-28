@@ -25,14 +25,15 @@ export const getAllCoffeeAction = () => dispatch => {
   });
 };
 
-export const addCoffeeAction = coffee => dispatch =>
-  addCoffee(dcRequest.addCoffee(coffee), (data, error) => {
+export const addCoffeeAction = coffee => (dispatch, getState) => {
+  const { dateTransaction } = getState().settings;
+  addCoffee(dcRequest.addCoffee(coffee, dateTransaction), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({ type: ADD_COFFEE, payload: data.data.coffee });
     }
-  });
+  })};
 
 export const changeCoffeeByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });

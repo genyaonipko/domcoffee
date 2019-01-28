@@ -13,7 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { MainListItems, SecondaryListItems } from '../components/ListItems';
 import { getSidebarState, getUserRole } from '../redux/selectors';
 
-import { setSidebarState } from '../redux/actions/sidebar';
+import { setSidebarState, setTabIndex } from '../redux/actions/sidebar';
 
 import {
   changeCoffeeByDayAction,
@@ -86,6 +86,7 @@ class DrawerBar extends Component {
     sidebar: PropTypes.bool.isRequired,
     changeSidebar: PropTypes.func.isRequired,
     role: PropTypes.string.isRequired,
+    changeTabBar: PropTypes.func.isRequired,
 
     // sales
     changeMonth: PropTypes.func.isRequired,
@@ -273,7 +274,10 @@ class DrawerBar extends Component {
         </div>
         <Divider />
         <List>
-          <MainListItems role={this.props.role} />
+          <MainListItems
+            role={this.props.role}
+            changeTabBar={this.props.changeTabBar}
+          />
         </List>
         <Divider />
         <List>
@@ -297,6 +301,7 @@ const mSTP = state => ({
 
 const mDTP = dispatch => ({
   changeSidebar: bool => dispatch(setSidebarState(bool)),
+  changeTabBar: index => dispatch(setTabIndex(index)),
 
   // sales
   changeMonth: () => dispatch(changeDataByMonthAction()),

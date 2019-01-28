@@ -26,14 +26,16 @@ export const changeDataPacksAction = () => dispatch => {
   });
 };
 
-export const addPackAction = packs => dispatch =>
-  addPack(dcRequest.addPack(packs), (data, error) => {
+export const addPackAction = packs => (dispatch, getState) => {
+  const { dateTransaction } = getState().settings;
+  addPack(dcRequest.addPack(packs, dateTransaction), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({ type: ADD_PACKS, payload: data.data.packs });
     }
   });
+};
 
 export const changeDataByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });

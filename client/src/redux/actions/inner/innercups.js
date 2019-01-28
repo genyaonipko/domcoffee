@@ -26,14 +26,19 @@ export const changeDataInnercupAction = () => dispatch => {
   });
 };
 
-export const addInnercupAction = innercup => dispatch =>
-  addInnercup(dcRequest.addInnercup(innercup), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch({ type: ADD_INNERCUP, payload: data.data.innercups });
-    }
-  });
+export const addInnercupAction = innercup => (dispatch, getState) => {
+  const { dateTransaction } = getState().settings;
+  addInnercup(
+    dcRequest.addInnercup(innercup, dateTransaction),
+    (data, error) => {
+      if (error !== undefined) {
+        dispatch(console.log(error));
+      } else if (data !== undefined) {
+        dispatch({ type: ADD_INNERCUP, payload: data.data.innercups });
+      }
+    },
+  );
+};
 
 export const changeDataByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });

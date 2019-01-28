@@ -26,14 +26,19 @@ export const changeDataDegustationAction = () => dispatch => {
   });
 };
 
-export const addDegustationAction = degustation => dispatch =>
-  addDegustation(dcRequest.addDegustation(degustation), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch({ type: ADD_DEGUSTATION, payload: data.data.degustation });
-    }
-  });
+export const addDegustationAction = degustation => (dispatch, getState) => {
+  const { dateTransaction } = getState().settings;
+  addDegustation(
+    dcRequest.addDegustation(degustation, dateTransaction),
+    (data, error) => {
+      if (error !== undefined) {
+        dispatch(console.log(error));
+      } else if (data !== undefined) {
+        dispatch({ type: ADD_DEGUSTATION, payload: data.data.degustation });
+      }
+    },
+  );
+};
 
 export const degustationByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });

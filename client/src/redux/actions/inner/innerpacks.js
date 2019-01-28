@@ -26,14 +26,19 @@ export const changeDataInnerpackAction = () => dispatch => {
   });
 };
 
-export const addInnerpackAction = innerpack => dispatch =>
-  addInnerpack(dcRequest.addInnerpack(innerpack), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch({ type: ADD_INNERPACK, payload: data.data.innerpacks });
-    }
-  });
+export const addInnerpackAction = innerpack => (dispatch, getState) => {
+  const { dateTransaction } = getState().settings;
+  addInnerpack(
+    dcRequest.addInnerpack(innerpack, dateTransaction),
+    (data, error) => {
+      if (error !== undefined) {
+        dispatch(console.log(error));
+      } else if (data !== undefined) {
+        dispatch({ type: ADD_INNERPACK, payload: data.data.innerpacks });
+      }
+    },
+  );
+};
 
 export const changeDataByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });

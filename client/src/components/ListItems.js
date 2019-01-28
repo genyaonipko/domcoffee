@@ -13,33 +13,58 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import history from '../utils/history';
 
-export const MainListItems = ({ role }) => (
+export const MainListItems = ({ role, changeTabBar }) => (
   <div>
-    <ListItem button onClick={() => history.push('/dashboard')}>
+    <ListItem
+      button
+      onClick={() => {
+        changeTabBar(0);
+        history.push('/dashboard');
+      }}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Дашбоард" />
     </ListItem>
-    <ListItem button onClick={() => history.push('/packs')}>
+    <ListItem
+      button
+      onClick={() => {
+        changeTabBar(0);
+        history.push('/packs');
+      }}>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Пачки" />
     </ListItem>
-    <ListItem button onClick={() => history.push('/sales')}>
+    <ListItem
+      button
+      onClick={() => {
+        changeTabBar(0);
+        history.push('/sales');
+      }}>
       <ListItemIcon>
         <CoffeeIcon />
       </ListItemIcon>
       <ListItemText primary="Продажи" />
     </ListItem>
-    <ListItem button onClick={() => history.push('/inner')}>
+    <ListItem
+      button
+      onClick={() => {
+        changeTabBar(0);
+        history.push('/inner');
+      }}>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Внутреннее" />
     </ListItem>
-    <ListItem button onClick={() => history.push('/own')}>
+    <ListItem
+      button
+      onClick={() => {
+        changeTabBar(0);
+        history.push('/own');
+      }}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
@@ -58,6 +83,7 @@ export const MainListItems = ({ role }) => (
 
 MainListItems.propTypes = {
   role: PropTypes.string.isRequired,
+  changeTabBar: PropTypes.func.isRequired,
 };
 
 export const SecondaryListItems = props => (

@@ -26,14 +26,16 @@ export const changeDataOwnpackAction = () => dispatch => {
   });
 };
 
-export const addOwnpackAction = ownpack => dispatch =>
-  addOwnpack(dcRequest.addOwnpack(ownpack), (data, error) => {
+export const addOwnpackAction = ownpack => (dispatch, getState) => {
+  const { dateTransaction } = getState().settings;
+  addOwnpack(dcRequest.addOwnpack(ownpack, dateTransaction), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({ type: ADD_OWNPACK, payload: data.data.ownpacks });
     }
   });
+};
 
 export const changeDataByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });

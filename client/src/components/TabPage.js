@@ -31,17 +31,11 @@ class TabPage extends Component {
     prop: PropTypes,
   };
 
-  state = {
-    value: 0,
-  };
-
   handleChange = (event, value) => {
-    this.setState({ value });
     this.props.setTabIndex(value);
   };
 
   handleChangeIndex = index => {
-    this.setState({ value: index });
     this.props.setTabIndex(index);
   };
 
@@ -52,7 +46,7 @@ class TabPage extends Component {
       <div className={classes.rootTabs}>
         <div className={classes.tabs}>
           <Tabs
-            value={this.state.value}
+            value={this.props.tabIndex}
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
@@ -64,7 +58,7 @@ class TabPage extends Component {
         </div>
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={this.state.value}
+          index={this.props.tabIndex}
           onChangeIndex={this.handleChangeIndex}>
           {childrenArr.map(child => (
             <TabContainer dir={theme.direction}>{child}</TabContainer>
@@ -75,11 +69,15 @@ class TabPage extends Component {
   }
 }
 
+const mSTP = state => ({
+  tabIndex: state.settings.tabIndex,
+});
+
 const mDTP = dispatch => ({
   setTabIndex: index => dispatch(setTabIndex(index)),
 });
 
 export default connect(
-  null,
+  mSTP,
   mDTP,
 )(TabPage);

@@ -1,16 +1,16 @@
-import moment from 'moment'
+import moment from 'moment';
 import {
   SET_SIDEBAR_STATE,
   SET_LOADER,
   SET_INDEX_TAB,
-  SET_DATE_TRANSACTION
+  SET_DATE_TRANSACTION,
 } from '../actions/actionTypes';
 
 const initialState = {
   sidebar: true,
   isLoading: false,
   tabIndex: 0,
-  dateTransaction: moment()
+  dateTransaction: moment(),
 };
 
 function settingsReducer(state = initialState, action) {

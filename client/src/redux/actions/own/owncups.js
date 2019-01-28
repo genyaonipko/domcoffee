@@ -26,14 +26,16 @@ export const changeDataOwncupAction = () => dispatch => {
   });
 };
 
-export const addOwncupAction = owncup => dispatch =>
-  addOwncup(dcRequest.addOwncup(owncup), (data, error) => {
+export const addOwncupAction = owncup => (dispatch, getState) => {
+  const { dateTransaction } = getState().settings;
+  addOwncup(dcRequest.addOwncup(owncup, dateTransaction), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch({ type: ADD_OWNCUP, payload: data.data.owncups });
     }
   });
+};
 
 export const changeDataByMonthAction = () => dispatch => {
   dispatch({ type: SET_LOADER, payload: true });
