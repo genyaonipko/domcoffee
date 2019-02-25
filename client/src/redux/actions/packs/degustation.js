@@ -1,27 +1,25 @@
-import {
-  CHANGE_DATA_DEGUSTATIONS,
-  ADD_DEGUSTATION,
-  SET_LOADER,
-  SORT_DEGUSTATION_BY_MONTH,
-  SORT_DEGUSTATION_BY_DAY,
-  SORT_DEGUSTATION_BY_QUARTER,
-  SORT_DEGUSTATION_BY_YEAR,
-} from '../actionTypes';
-
+import { createActions } from 'reduxsauce'
 import { getDegustations, addDegustation } from '../../../domCoffeeConnect';
 import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
 
+const { Creators } = createActions({
+  changeDataDegustations: ['payload'],
+  setLoader: ['payload'],
+  addDegustation: ['payload'],
+  sortDegustationDataByDay: ['payload'],
+  sortDegustationDataByMonth: ['payload'],
+  sortDegustationDataByQuarter: ['payload'],
+  sortDegustationDataByYear: ['payload'],
+}, {})
+
 export const changeDataDegustationAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+  dispatch(Creators.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: CHANGE_DATA_DEGUSTATIONS,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.changeDataDegustations(data.data));
+      dispatch(Creators.setLoader(false));
     }
   });
 };
@@ -34,68 +32,56 @@ export const addDegustationAction = degustation => (dispatch, getState) => {
       if (error !== undefined) {
         dispatch(console.log(error));
       } else if (data !== undefined) {
-        dispatch({ type: ADD_DEGUSTATION, payload: data.data.degustation });
+        dispatch(Creators.addDegustation(data.data.degustation));
       }
     },
   );
 };
 
 export const degustationByMonthAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+  dispatch(Creators.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_DEGUSTATION_BY_MONTH,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortDegustationDataByMonth(data.data));
+      dispatch(Creators.setLoader(false));
     }
   });
 };
 
 export const degustationByDayAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+  dispatch(Creators.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_DEGUSTATION_BY_DAY,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortDegustationDataByDay(data.data));
+      dispatch(Creators.setLoader(false));
     }
   });
 };
 
 export const degustationByQuarterAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+  dispatch(Creators.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_DEGUSTATION_BY_QUARTER,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortDegustationDataByQuarter(data.data));
+      dispatch(Creators.setLoader(false));
     }
   });
 };
 
 export const degustationByYearAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+  dispatch(Creators.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_DEGUSTATION_BY_YEAR,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortDegustationDataByYear(data.data));
+      dispatch(Creators.setLoader(false));
     }
   });
 };

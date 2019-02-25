@@ -22,54 +22,48 @@ const styles = {
   },
 };
 
-function SimpleTable(props) {
-  const { classes, tableHeaders, data } = props;
-
-  const concatData = Object.values(data).reduce(
-    (previousValue, currentItem) => previousValue + currentItem,
-    0,
-  );
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            {tableHeaders &&
-              tableHeaders.map(header => (
-                <TableCell key={`item_${header}`}>{header}</TableCell>
-              ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Object.keys(data).map(n => (
-            <TableRow key={`item_th_${n}`}>
-              <TableCell component="th" scope="row">
-                {n}
-              </TableCell>
-              <TableCell>{data[n]}</TableCell>
-            </TableRow>
-          ))}
-          <TableRow>
-            <TableCell
-              style={{ fontWeight: 900, fontSize: 18 }}
-              component="th"
-              scope="row">
-              Итого
+const SimpleTable = ({ classes, tableHeaders, data, legend, concatData }) => (
+  <Paper className={classes.root}>
+    <Table className={classes.table}>
+      <TableHead>
+        <TableRow>
+          {tableHeaders &&
+            tableHeaders.map(header => (
+              <TableCell key={`item_${header}`}>{header}</TableCell>
+            ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {data.map(n => (
+          <TableRow key={`item_th_${n.name}`}>
+            <TableCell component="th" scope="row">
+              {n.name}
             </TableCell>
-            <TableCell style={{ fontWeight: 900, fontSize: 18 }}>
-              {concatData}
-            </TableCell>
+            <TableCell>{n[legend]}</TableCell>
           </TableRow>
-        </TableBody>
-      </Table>
-    </Paper>
-  );
-}
+        ))}
+        <TableRow>
+          <TableCell
+            style={{ fontWeight: 900, fontSize: 18 }}
+            component="th"
+            scope="row">
+            Итого
+          </TableCell>
+          <TableCell style={{ fontWeight: 900, fontSize: 18 }}>
+            {concatData}
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </Paper>
+);
 
 SimpleTable.propTypes = {
   classes: PropTypes.shape().isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  data: PropTypes.shape({}).isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+  legend: PropTypes.string.isRequired,
+  concatData: PropTypes.number.isRequired,
 };
 
-export default withStyles(styles)(SimpleTable);
+export default withStyles(styles)(React.memo(SimpleTable));

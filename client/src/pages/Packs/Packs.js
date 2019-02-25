@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AddIcon from '@material-ui/icons/Add';
+import { bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
 
 import AppBarComponent from '../../components/AppBarComponent';
 import FormDialog from '../../components/FormDialog';
@@ -16,6 +18,17 @@ import {
   changeDataPacksAction,
   addPackAction,
 } from '../../redux/actions/packs/packs';
+
+import {
+  selectPacksForChart,
+  selectDegustationForChart,
+  concatDataPacks,
+  concatDataDegustation,
+} from '../../redux/reducers/packs/selectors';
+import {
+  selectTabIndex,
+  selectLoader,
+} from '../../redux/reducers/settingsSelector';
 // import * as api from '../../utils/api';
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
@@ -45,13 +58,13 @@ const styles = () => ({
   },
 });
 
-class Sales extends Component {
+class Packs extends Component {
   state = {
     open: false,
   };
 
   componentDidMount = () => {
-    this.props.changeData();
+    this.props.getAllPacks();
     this.props.getAllDegustation();
   };
 
@@ -65,13 +78,39 @@ class Sales extends Component {
 
   handleSubmit = values => {
     if (!this.props.tabIndex) {
-      this.props.onSubmit(values);
+      this.props.onSubmitPacks(values);
     } else {
       this.props.onSubmitDegustation(values);
     }
   };
 
-  renderContent = (degustation, packs, classes, isLoading, restProps) => {
+  renderFormDialog = () => {
+    const { open } = this.state;
+    return (
+      <FormDialog
+        onSubmit={values => this.handleSubmit(values)}
+        open={open}
+        handleClose={this.handleClose}
+        title="продаж"
+      />
+    );
+  };
+
+  renderFabButton = () => {
+    const { classes } = this.props;
+    return (
+      <Fab
+        color="primary"
+        aria-label="Add"
+        className={classes.button}
+        onClick={this.handleClickOpen}>
+        <AddIcon />
+      </Fab>
+    );
+  };
+
+  renderContent = () => {
+    const { degustation, packs, classes, isLoading, ...restProps } = this.props;
     const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
     const tabTitles = ['Пачки', 'Дегустационная чашка'];
 
@@ -85,90 +124,78 @@ class Sales extends Component {
           tableHeaders={tableHeaders}
           isLoading={isLoading}
           chartColor="#AB47BC"
+          concatData={this.props.concatDataPacks}
         />
         <ChartPage
           classes={classes}
           chartTitle="График по дегустационным чашкам"
-          tableTitle="Дегустационная чашки"
+          tableTitle="Дегустационные чашки"
           data={degustation}
           tableHeaders={tableHeaders}
           isLoading={isLoading}
           chartColor="#AB47BC"
+          concatData={this.props.concatDataDegustation}
         />
       </TabPages>
     );
   };
 
   render() {
-    const { open } = this.state;
-    const { classes, isLoading, degustation, packs, ...restProps } = this.props;
+    const { classes } = this.props;
     return (
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
           <AppBarComponent title="Пачки" barColor="#AB47BC" />
-          <main className={classes.content}>
-            {this.renderContent(
-              degustation,
-              packs,
-              classes,
-              isLoading,
-              restProps,
-            )}
-          </main>
-          <Button
-            variant="fab"
-            color="primary"
-            aria-label="Add"
-            className={classes.button}
-            onClick={this.handleClickOpen}>
-            <AddIcon />
-          </Button>
-          <FormDialog
-            onSubmit={values => this.handleSubmit(values)}
-            open={open}
-            handleClose={this.handleClose}
-            title="продаж"
-          />
+          <main className={classes.content}>{this.renderContent()}</main>
+          {this.renderFabButton()}
+          {this.renderFormDialog()}
         </div>
       </Fragment>
     );
   }
 }
 
-Sales.propTypes = {
+Packs.propTypes = {
   // settings
   classes: PropTypes.shape().isRequired,
   isLoading: PropTypes.bool.isRequired,
   tabIndex: PropTypes.number.isRequired,
 
   // data
-  degustation: PropTypes.shape({}).isRequired,
-  packs: PropTypes.shape({}).isRequired,
+  degustation: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+  packs: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+  concatDataPacks: PropTypes.number.isRequired,
+  concatDataDegustation: PropTypes.number.isRequired,
 
   // function
-  changeData: PropTypes.func.isRequired,
-  getAllPortions: PropTypes.func.isRequired,
+  getAllPacks: PropTypes.func.isRequired,
   getAllDegustation: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmitPacks: PropTypes.func.isRequired,
   onSubmitDegustation: PropTypes.func.isRequired,
 };
 
-const mSTP = state => ({
-  degustation: state.degustation,
-  packs: state.packs,
-  isLoading: state.settings.isLoading,
-  tabIndex: state.settings.tabIndex,
+const mSTP = createStructuredSelector({
+  degustation: selectDegustationForChart,
+  packs: selectPacksForChart,
+  isLoading: selectLoader,
+  tabIndex: selectTabIndex,
+  concatDataPacks,
+  concatDataDegustation,
 });
 
-const mDTP = dispatch => ({
-  changeData: () => dispatch(changeDataPacksAction()),
-  getAllDegustation: () => dispatch(changeDataDegustationAction()),
-  onSubmit: obj => dispatch(addPackAction(obj)),
-  onSubmitDegustation: obj => dispatch(addDegustationAction(obj)),
-});
+const mDTP = dispatch =>
+  bindActionCreators(
+    {
+      getAllPacks: changeDataPacksAction,
+      getAllDegustation: changeDataDegustationAction,
+      onSubmitPacks: addPackAction,
+      onSubmitDegustation: addDegustationAction,
+    },
+    dispatch,
+  );
 
 export default connect(
   mSTP,
   mDTP,
-)(withStyles(styles, { withTheme: true })(Sales));
+)(withStyles(styles, { withTheme: true })(Packs));

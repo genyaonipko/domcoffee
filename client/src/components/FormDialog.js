@@ -45,8 +45,12 @@ const InputTextField = ({ input, label, autoFocus, ...rest }) => (
 InputTextField.propTypes = {
   input: PropTypes.shape({}).isRequired,
   label: PropTypes.string.isRequired,
-  autoFocus: PropTypes.bool.isRequired,
+  autoFocus: PropTypes.bool,
 };
+
+InputTextField.defaultProps = {
+  autoFocus: false,
+}
 
 class FormDialog extends React.Component {
   static propTypes = {

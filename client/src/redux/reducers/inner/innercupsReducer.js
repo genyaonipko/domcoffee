@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {
   CHANGE_DATA_INNERCUPS,
   ADD_INNERCUP,
@@ -7,6 +6,12 @@ import {
   SORT_INNERCUP_BY_QUARTER,
   SORT_INNERCUP_BY_YEAR,
 } from '../../actions/actionTypes';
+import {
+  filterDataByDay,
+  filterDataByMonth,
+  filterDataByQuarter,
+  filterDataByYear,
+} from '../../../utils/helpers';
 
 const initialState = {
   balerina: 0,
@@ -64,7 +69,7 @@ function innercupssReducer(state = initialState, action) {
     }
     case SORT_INNERCUP_BY_DAY: {
       const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).date() === moment(Date.now()).date(),
+        item => filterDataByDay(item.createdDate)
       );
       const innercups = changeData(filteredSales);
       return {
@@ -74,7 +79,7 @@ function innercupssReducer(state = initialState, action) {
     }
     case SORT_INNERCUP_BY_MONTH: {
       const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).month() === moment(Date.now()).month(),
+        item => filterDataByMonth(item.createdDate)
       );
       const innercups = changeData(filteredSales);
       return {
@@ -84,8 +89,7 @@ function innercupssReducer(state = initialState, action) {
     }
     case SORT_INNERCUP_BY_QUARTER: {
       const filteredSales = action.payload.filter(
-        item =>
-          moment(item.createdDate).quarter() === moment(Date.now()).quarter(),
+        item => filterDataByQuarter(item.createdDate)
       );
       const innercups = changeData(filteredSales);
       return {
@@ -95,7 +99,7 @@ function innercupssReducer(state = initialState, action) {
     }
     case SORT_INNERCUP_BY_YEAR: {
       const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).year() === moment(Date.now()).year(),
+        item => filterDataByYear(item.createdDate)
       );
       const innercups = changeData(filteredSales);
       return {
