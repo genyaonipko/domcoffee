@@ -9,7 +9,8 @@ import App from './App';
 import store from '../redux/store';
 import history from '../utils/history';
 import setAuthToken from '../utils/setAuthToken';
-import { setCurrentUser, logoutUser } from '../redux/actions/authentication';
+import { logoutUser } from '../redux/actions/authentication';
+import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
 import Login from '../pages/Login/Login';
 import Fixture from '../components/Fixture';
 
@@ -38,7 +39,7 @@ const theme = createMuiTheme({
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
   const decoded = jwtDecode(localStorage.jwtToken);
-  store.dispatch(setCurrentUser(decoded));
+  store.dispatch(AdditionalActions.setCurrentUser(decoded));
 
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {

@@ -10,14 +10,7 @@ import { createStructuredSelector } from 'reselect';
 
 import AppBarComponent from '../../components/AppBarComponent';
 import FormDialog from '../../components/FormDialog';
-import {
-  changeDataDegustationAction,
-  addDegustationAction,
-} from '../../redux/actions/packs/degustation';
-import {
-  changeDataPacksAction,
-  addPackAction,
-} from '../../redux/actions/packs/packs';
+import PacksActions from '../../redux/actions/packs';
 
 import {
   selectPacksForChart,
@@ -29,7 +22,7 @@ import {
   selectTabIndex,
   selectLoader,
 } from '../../redux/reducers/settingsSelector';
-// import * as api from '../../utils/api';
+
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
 
@@ -187,10 +180,10 @@ const mSTP = createStructuredSelector({
 const mDTP = dispatch =>
   bindActionCreators(
     {
-      getAllPacks: changeDataPacksAction,
-      getAllDegustation: changeDataDegustationAction,
-      onSubmitPacks: addPackAction,
-      onSubmitDegustation: addDegustationAction,
+      getAllPacks: PacksActions.changeDataPacksAction,
+      getAllDegustation: PacksActions.changeDataDegustationAction,
+      onSubmitPacks: PacksActions.addPackAction,
+      onSubmitDegustation: PacksActions.addDegustationAction,
     },
     dispatch,
   );

@@ -13,7 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { MainListItems, SecondaryListItems } from '../components/ListItems';
 import { getSidebarState, getUserRole } from '../redux/selectors';
 
-import { setSidebarState, setTabIndex } from '../redux/actions/sidebar';
+import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
 
 import {
   changeCoffeeByDayAction,
@@ -300,8 +300,8 @@ const mSTP = state => ({
 });
 
 const mDTP = dispatch => ({
-  changeSidebar: bool => dispatch(setSidebarState(bool)),
-  changeTabBar: index => dispatch(setTabIndex(index)),
+  changeSidebar: bool => dispatch(AdditionalActions.setSidebarState(bool)),
+  changeTabBar: index => dispatch(AdditionalActions.setIndexTab(index)),
 
   // sales
   changeMonth: () => dispatch(changeDataByMonthAction()),

@@ -15,7 +15,7 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import { logoutUser } from '../redux/actions/authentication';
 
-import { setSidebarState } from '../redux/actions/sidebar';
+import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
 
 import { getSidebarState, getUserRole } from '../redux/selectors';
 
@@ -158,7 +158,7 @@ const mSTP = state => ({
 
 const mDTP = dispatch => ({
   logout: () => dispatch(logoutUser()),
-  changeSidebar: bool => dispatch(setSidebarState(bool)),
+  changeSidebar: bool => dispatch(AdditionalActions.setSidebarState(bool)),
 });
 
 export default compose(

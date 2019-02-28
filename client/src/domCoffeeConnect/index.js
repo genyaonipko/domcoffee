@@ -14,7 +14,7 @@ const domCoffeeConnection = (endpoint, request, responseProcessor) => {
         responseProcessor(response.data, undefined);
       })
       .catch(error => {
-        console.log('Error data: ', error);
+        responseProcessor(undefined, error.response.data);
       });
   } catch (error) {
     console.log('Error data: ', error);
@@ -85,4 +85,9 @@ export const getPortions = (requestData, responseProcessor) => {
 
 export const addPortion = (requestData, responseProcessor) => {
   domCoffeeConnection('/api/portions', requestData, responseProcessor);
+};
+
+export const loginUserRequest = (requestData, responseProcessor) => {
+  console.log(requestData)
+  domCoffeeConnection('/api/users/login', requestData, responseProcessor);
 };

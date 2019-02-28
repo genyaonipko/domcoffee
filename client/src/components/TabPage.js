@@ -7,7 +7,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import { setTabIndex } from '../redux/actions/sidebar';
+import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
 
 const styles = () => ({
   rootTabs: {
@@ -85,7 +85,7 @@ const mSTP = state => ({
 });
 
 const mDTP = dispatch => ({
-  setTabIndex: index => dispatch(setTabIndex(index)),
+  setTabIndex: index => dispatch(AdditionalActions.setIndexTab(index)),
 });
 
 export default compose(

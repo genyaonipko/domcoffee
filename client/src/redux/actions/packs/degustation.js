@@ -1,6 +1,7 @@
 import { createActions } from 'reduxsauce'
 import { getDegustations, addDegustation } from '../../../domCoffeeConnect';
 import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
+import { Creators as AdditionalActions } from '../additional/additional'
 
 const { Creators } = createActions({
   changeDataDegustations: ['payload'],
@@ -13,13 +14,13 @@ const { Creators } = createActions({
 }, {})
 
 export const changeDataDegustationAction = () => dispatch => {
-  dispatch(Creators.setLoader(true));
+  dispatch(AdditionalActions.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch(Creators.changeDataDegustations(data.data));
-      dispatch(Creators.setLoader(false));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
@@ -39,49 +40,49 @@ export const addDegustationAction = degustation => (dispatch, getState) => {
 };
 
 export const degustationByMonthAction = () => dispatch => {
-  dispatch(Creators.setLoader(true));
+  dispatch(AdditionalActions.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch(Creators.sortDegustationDataByMonth(data.data));
-      dispatch(Creators.setLoader(false));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
 export const degustationByDayAction = () => dispatch => {
-  dispatch(Creators.setLoader(true));
+  dispatch(AdditionalActions.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch(Creators.sortDegustationDataByDay(data.data));
-      dispatch(Creators.setLoader(false));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
 export const degustationByQuarterAction = () => dispatch => {
-  dispatch(Creators.setLoader(true));
+  dispatch(AdditionalActions.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch(Creators.sortDegustationDataByQuarter(data.data));
-      dispatch(Creators.setLoader(false));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
 export const degustationByYearAction = () => dispatch => {
-  dispatch(Creators.setLoader(true));
+  dispatch(AdditionalActions.setLoader(true));
   getDegustations(dcRequest.getDegustations(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
       dispatch(Creators.sortDegustationDataByYear(data.data));
-      dispatch(Creators.setLoader(false));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };

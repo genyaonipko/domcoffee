@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_USERS } from './actionTypes';
+import { GET_USERS } from '../actionTypes';
 
 export const getAllUser = () => dispatch => {
   axios

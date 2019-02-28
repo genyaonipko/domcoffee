@@ -188,4 +188,16 @@ export default class dcRequests {
       },
     };
   }
+  static loginUserRequest(data) {
+    return {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        email: data.email,
+        password: data.password,
+      },
+    };
+  }
 }
