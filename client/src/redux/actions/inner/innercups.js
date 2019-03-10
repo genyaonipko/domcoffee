@@ -1,27 +1,26 @@
-import {
-  CHANGE_DATA_INNERCUPS,
-  ADD_INNERCUP,
-  SET_LOADER,
-  SORT_INNERCUP_BY_MONTH,
-  SORT_INNERCUP_BY_DAY,
-  SORT_INNERCUP_BY_QUARTER,
-  SORT_INNERCUP_BY_YEAR,
-} from '../actionTypes';
-
+import { createActions } from 'reduxsauce'
 import { getInnercups, addInnercup } from '../../../domCoffeeConnect';
 import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
+import { Creators as AdditionalActions } from '../additional/additional'
+
+const { Creators } = createActions({
+  changeDataInnercups: ['payload'],
+  setLoader: ['payload'],
+  addInnercup: ['payload'],
+  sortInnercupDataByDay: ['payload'],
+  sortInnercupDataByMonth: ['payload'],
+  sortInnercupDataByQuarter: ['payload'],
+  sortInnercupDataByYear: ['payload'],
+}, {})
 
 export const changeDataInnercupAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+  dispatch(AdditionalActions.setLoader(true));
   getInnercups(dcRequest.getInnercups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: CHANGE_DATA_INNERCUPS,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.changeDataInnercups(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
@@ -34,68 +33,56 @@ export const addInnercupAction = innercup => (dispatch, getState) => {
       if (error !== undefined) {
         dispatch(console.log(error));
       } else if (data !== undefined) {
-        dispatch({ type: ADD_INNERCUP, payload: data.data.innercups });
+        dispatch(Creators.addInnercup(data.data.innercup));
       }
     },
   );
 };
 
-export const changeDataByMonthAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const innercupByMonthAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getInnercups(dcRequest.getInnercups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_INNERCUP_BY_MONTH,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortInnercupDataByMonth(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByDayAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const innercupByDayAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getInnercups(dcRequest.getInnercups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_INNERCUP_BY_DAY,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortInnercupDataByDay(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByQuarterAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const innercupByQuarterAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getInnercups(dcRequest.getInnercups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_INNERCUP_BY_QUARTER,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortInnercupDataByQuarter(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByYearAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const innercupByYearAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getInnercups(dcRequest.getInnercups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_INNERCUP_BY_YEAR,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortInnercupDataByYear(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };

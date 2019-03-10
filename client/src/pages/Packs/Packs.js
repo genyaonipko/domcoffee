@@ -19,9 +19,8 @@ import {
   concatDataDegustation,
 } from '../../redux/reducers/packs/selectors';
 import {
-  selectTabIndex,
-  selectLoader,
-} from '../../redux/reducers/settingsSelector';
+  additionalSelectors
+} from '../../redux/reducers/additionalReducer';
 
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
@@ -171,8 +170,8 @@ Packs.propTypes = {
 const mSTP = createStructuredSelector({
   degustation: selectDegustationForChart,
   packs: selectPacksForChart,
-  isLoading: selectLoader,
-  tabIndex: selectTabIndex,
+  isLoading: additionalSelectors.selectLoader,
+  tabIndex: additionalSelectors.selectTabIndex,
   concatDataPacks,
   concatDataDegustation,
 });

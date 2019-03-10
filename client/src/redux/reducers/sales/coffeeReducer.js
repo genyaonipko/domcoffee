@@ -1,14 +1,18 @@
-import moment from 'moment';
-import {
-  CHANGE_DATA_COFFEE,
-  ADD_COFFEE,
-  SORT_COFFEE_BY_DAY,
-  SORT_COFFEE_BY_MONTH,
-  SORT_COFFEE_BY_QUARTER,
-  SORT_COFFEE_BY_YEAR,
-} from '../../actions/actionTypes';
+import Immutable from 'seamless-immutable'
+import { createReducer } from 'reduxsauce'
+import Types from '../../actions/actionTypes';
 
-const initialState = {
+import {
+  filterDataByDay,
+  filterDataByMonth,
+  filterDataByQuarter,
+  filterDataByYear,
+  changeData,
+  reduceAdded,
+} from '../../../utils/helpers';
+
+/* -------------------- INITIAL_STATE ------------------  */
+const INITIAL_STATE = Immutable.from({
   balerina: 0,
   gourme: 0,
   orient: 0,
@@ -29,93 +33,48 @@ const initialState = {
   efiopia: 0,
   columbia: 0,
   crema: 0,
-};
+});
 
-const changeData = payload => {
-  const keys = Object.keys(initialState);
-  const concatObj = Object.assign({}, initialState);
-  const coffee = payload.reduce((previousValue, currentItem) => {
-    for (let i = 0; i < keys.length; i += 1) {
-      const current = !Number.isNaN(+currentItem.coffee[keys[i]])
-        ? +currentItem.coffee[keys[i]]
-        : 0;
-      concatObj[keys[i]] = +previousValue[keys[i]] + current;
-    }
-    return { ...concatObj };
-  }, initialState);
-  return coffee;
-};
-
-function dataReducer(state = initialState, action) {
-  const keys = Object.keys(initialState);
-  switch (action.type) {
-    case CHANGE_DATA_COFFEE: {
-      const concatObj = Object.assign({}, initialState);
-      const coffee = action.payload.reduce((previousValue, currentItem) => {
-        for (let i = 0; i < keys.length; i += 1) {
-          const current = !Number.isNaN(+currentItem.coffee[keys[i]])
-            ? +currentItem.coffee[keys[i]]
-            : 0;
-          concatObj[keys[i]] = +previousValue[keys[i]] + current;
-        }
-        return concatObj;
-      }, initialState);
-      return coffee;
-    }
-    case ADD_COFFEE: {
-      const obj = { ...state };
-      keys.forEach(item => {
-        const objItem = !Number.isNaN(+action.payload[item])
-          ? +action.payload[item]
-          : 0;
-        obj[item] = +state[item] + objItem;
-      });
-      return obj;
-    }
-    case SORT_COFFEE_BY_DAY: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).date() === moment(Date.now()).date(),
-      );
-      const sales = changeData(filteredSales);
-      return {
-        ...state,
-        ...sales,
-      };
-    }
-    case SORT_COFFEE_BY_MONTH: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).month() === moment(Date.now()).month(),
-      );
-      const sales = changeData(filteredSales);
-      return {
-        ...state,
-        ...sales,
-      };
-    }
-    case SORT_COFFEE_BY_QUARTER: {
-      const filteredSales = action.payload.filter(
-        item =>
-          moment(item.createdDate).quarter() === moment(Date.now()).quarter(),
-      );
-      const sales = changeData(filteredSales);
-      return {
-        ...state,
-        ...sales,
-      };
-    }
-    case SORT_COFFEE_BY_YEAR: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).year() === moment(Date.now()).year(),
-      );
-      const sales = changeData(filteredSales);
-      return {
-        ...state,
-        ...sales,
-      };
-    }
-    default:
-      return state;
-  }
+/* -------------------- Handlers ------------------  */
+export const getCoffeeDataSuccess = (state = INITIAL_STATE, action) => {
+  const coffee = changeData(action.payload, INITIAL_STATE, 'coffee');
+  return state.merge(coffee);
 }
 
-export default dataReducer;
+export const addCoffeeDataSuccess = (state = INITIAL_STATE, action) => reduceAdded(state, INITIAL_STATE, action);
+
+export const sortCoffeeDataByDay = (state = INITIAL_STATE, action) => {
+  let coffee = filterDataByDay(action.payload);
+  coffee = changeData(coffee, INITIAL_STATE, 'coffee');
+  return state.merge(coffee);
+}
+
+export const sortCoffeeDataByMonth = (state = INITIAL_STATE, action) => {
+  let coffee = filterDataByMonth(action.payload);
+  coffee = changeData(coffee, INITIAL_STATE, 'coffee');
+  return state.merge(coffee);
+}
+
+export const sortCoffeeDataByQuarter = (state = INITIAL_STATE, action) => {
+  let coffee = filterDataByQuarter(action.payload);
+  coffee = changeData(coffee, INITIAL_STATE, 'coffee');
+  return state.merge(coffee);
+}
+
+export const sortCoffeeDataByYear = (state = INITIAL_STATE, action) => {
+  let coffee = filterDataByYear(action.payload);
+  coffee = changeData(coffee, INITIAL_STATE, 'coffee');
+  return state.merge(coffee);
+}
+
+export const HANDLERS = {
+  [Types.CHANGE_DATA_COFFEE]: getCoffeeDataSuccess,
+  [Types.ADD_COFFEE]: addCoffeeDataSuccess,
+  [Types.SORT_COFFEE_BY_DAY]: sortCoffeeDataByDay,
+  [Types.SORT_COFFEE_BY_MONTH]: sortCoffeeDataByMonth,
+  [Types.SORT_COFFEE_BY_QUARTER]: sortCoffeeDataByQuarter,
+  [Types.SORT_COFFEE_BY_YEAR]: sortCoffeeDataByYear,
+}
+
+/* -------------------- Create Reducer ------------------  */
+export default createReducer(INITIAL_STATE, HANDLERS);

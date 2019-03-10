@@ -71,7 +71,7 @@ export const getOwnpacks = (requestData, responseProcessor) => {
   domCoffeeConnection('/api/ownpacks', requestData, responseProcessor);
 };
 
-export const getCoffee = (requestData, responseProcessor) => {
+export const getCoffees = (requestData, responseProcessor) => {
   domCoffeeConnection('/api/coffee', requestData, responseProcessor);
 };
 
@@ -88,6 +88,17 @@ export const addPortion = (requestData, responseProcessor) => {
 };
 
 export const loginUserRequest = (requestData, responseProcessor) => {
-  console.log(requestData)
   domCoffeeConnection('/api/users/login', requestData, responseProcessor);
+};
+
+export const getUsersRequest = (requestData, responseProcessor) => {
+  domCoffeeConnection('/api/users/all', requestData, responseProcessor);
+};
+
+export const deleteUserRequest = (requestData, responseProcessor) => {
+  domCoffeeConnection(`/api/users/${requestData.keys.key}`, requestData, responseProcessor);
+};
+
+export const updateUserRequest = (requestData, responseProcessor) => {
+  domCoffeeConnection(`/api/users/${requestData.keys.key}`, requestData, responseProcessor);
 };

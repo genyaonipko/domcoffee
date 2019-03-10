@@ -1,98 +1,88 @@
-import {
-  CHANGE_DATA_PORTIONS,
-  ADD_PORTION,
-  SET_LOADER,
-  SORT_PORTION_BY_MONTH,
-  SORT_PORTION_BY_DAY,
-  SORT_PORTION_BY_QUARTER,
-  SORT_PORTION_BY_YEAR,
-} from '../actionTypes';
-
+import { createActions } from 'reduxsauce'
 import { getPortions, addPortion } from '../../../domCoffeeConnect';
 import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
+import { Creators as AdditionalActions } from '../additional/additional'
 
-export const changePortionsAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+const { Creators } = createActions({
+  changeDataPortions: ['payload'],
+  setLoader: ['payload'],
+  addPortion: ['payload'],
+  sortPortionDataByDay: ['payload'],
+  sortPortionDataByMonth: ['payload'],
+  sortPortionDataByQuarter: ['payload'],
+  sortPortionDataByYear: ['payload'],
+}, {})
+
+export const changeDataPortionAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getPortions(dcRequest.getPortions(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: CHANGE_DATA_PORTIONS,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.changeDataPortions(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const addPortionsAction = portion => (dispatch, getState) => {
+export const addPortionAction = portion => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
-  addPortion(dcRequest.addPortion(portion, dateTransaction), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch({ type: ADD_PORTION, payload: data.data.portions });
-    }
-  });
+  addPortion(
+    dcRequest.addPortion(portion, dateTransaction),
+    (data, error) => {
+      if (error !== undefined) {
+        dispatch(console.log(error));
+      } else if (data !== undefined) {
+        dispatch(Creators.addPortion(data.data.portion));
+      }
+    },
+  );
 };
 
-export const changePortionsByMonthAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const portionByMonthAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getPortions(dcRequest.getPortions(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_PORTION_BY_MONTH,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortPortionDataByMonth(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changePortionsByDayAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const portionByDayAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getPortions(dcRequest.getPortions(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_PORTION_BY_DAY,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortPortionDataByDay(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changePortionsByQuarterAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const portionByQuarterAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getPortions(dcRequest.getPortions(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_PORTION_BY_QUARTER,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortPortionDataByQuarter(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changePortionsByYearAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const portionByYearAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getPortions(dcRequest.getPortions(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_PORTION_BY_YEAR,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortPortionDataByYear(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };

@@ -1,96 +1,88 @@
-import {
-  CHANGE_DATA_COFFEE,
-  ADD_COFFEE,
-  SET_LOADER,
-  SORT_COFFEE_BY_DAY,
-  SORT_COFFEE_BY_MONTH,
-  SORT_COFFEE_BY_QUARTER,
-  SORT_COFFEE_BY_YEAR,
-} from '../actionTypes';
-import { getCoffee, addCoffee } from '../../../domCoffeeConnect/index';
+import { createActions } from 'reduxsauce'
+import { getCoffees, addCoffee } from '../../../domCoffeeConnect';
 import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
+import { Creators as AdditionalActions } from '../additional/additional'
 
-export const getAllCoffeeAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
-  getCoffee(dcRequest.getCoffee(), (data, error) => {
+const { Creators } = createActions({
+  changeDataCoffees: ['payload'],
+  setLoader: ['payload'],
+  addCoffee: ['payload'],
+  sortCoffeeDataByDay: ['payload'],
+  sortCoffeeDataByMonth: ['payload'],
+  sortCoffeeDataByQuarter: ['payload'],
+  sortCoffeeDataByYear: ['payload'],
+}, {})
+
+export const changeDataCoffeeAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
+  getCoffees(dcRequest.getCoffees(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: CHANGE_DATA_COFFEE,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.changeDataCoffees(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
 export const addCoffeeAction = coffee => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
-  addCoffee(dcRequest.addCoffee(coffee, dateTransaction), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch({ type: ADD_COFFEE, payload: data.data.coffee });
-    }
-  })};
+  addCoffee(
+    dcRequest.addCoffee(coffee, dateTransaction),
+    (data, error) => {
+      if (error !== undefined) {
+        dispatch(console.log(error));
+      } else if (data !== undefined) {
+        dispatch(Creators.addCoffee(data.data.coffee));
+      }
+    },
+  );
+};
 
-export const changeCoffeeByMonthAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
-  getCoffee(dcRequest.getCoffee(), (data, error) => {
+export const coffeeByMonthAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
+  getCoffees(dcRequest.getCoffees(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_COFFEE_BY_MONTH,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortCoffeeDataByMonth(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeCoffeeByDayAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
-  getCoffee(dcRequest.getCoffee(), (data, error) => {
+export const coffeeByDayAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
+  getCoffees(dcRequest.getCoffees(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_COFFEE_BY_DAY,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortCoffeeDataByDay(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeCoffeeByQuarterAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
-  getCoffee(dcRequest.getCoffee(), (data, error) => {
+export const coffeeByQuarterAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
+  getCoffees(dcRequest.getCoffees(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_COFFEE_BY_QUARTER,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortCoffeeDataByQuarter(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeCoffeeByYearAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
-  getCoffee(dcRequest.getCoffee(), (data, error) => {
+export const coffeeByYearAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
+  getCoffees(dcRequest.getCoffees(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_COFFEE_BY_YEAR,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortCoffeeDataByYear(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };

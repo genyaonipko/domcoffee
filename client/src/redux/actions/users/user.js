@@ -1,23 +1,46 @@
-import axios from 'axios';
-import { GET_USERS } from '../actionTypes';
+import { createActions } from 'reduxsauce';
+import {
+  getUsersRequest,
+  deleteUserRequest,
+  updateUserRequest,
+} from '../../../domCoffeeConnect';
+import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
 
-export const getAllUser = () => dispatch => {
-  axios
-    .get('https://dom-coffee-app.herokuapp.com/api/users/all')
-    .then(res => dispatch({ type: GET_USERS, payload: res.data.data }))
-    .catch(err => console.log(err));
+export const { Creators } = createActions(
+  {
+    getUsers: ['payload'],
+  },
+  {},
+);
+
+const getAllUser = () => dispatch => {
+  getUsersRequest(dcRequest.getUsersRequest(), (data, error) => {
+    if (error !== undefined) {
+      dispatch(console.log(error));
+    } else if (data !== undefined) {
+      dispatch(Creators.getUsers(data.data));
+    }
+  });
 };
 
-export const deleteUserAction = key => dispatch => {
-  axios
-    .delete(`https://dom-coffee-app.herokuapp.com/api/users/${key}`)
-    .then(() => dispatch(getAllUser()))
-    .catch(err => console.log(err));
+const deleteUserAction = key => dispatch => {
+  deleteUserRequest(dcRequest.deleteUserRequest(key), (data, error) => {
+    if (error !== undefined) {
+      dispatch(console.log(error));
+    } else if (data !== undefined) {
+      dispatch(getAllUser());
+    }
+  });
 };
 
-export const updateUser = (key, user) => dispatch => {
-  axios
-    .put(`https://dom-coffee-app.herokuapp.com/api/users/${key}`, user)
-    .then(() => dispatch(getAllUser()))
-    .catch(err => console.log(err));
+const updateUser = (key, user) => dispatch => {
+  updateUserRequest(dcRequest.updateUserRequest(key, user), (data, error) => {
+    if (error !== undefined) {
+      dispatch(console.log(error));
+    } else if (data !== undefined) {
+      dispatch(getAllUser());
+    }
+  });
 };
+
+export default { getAllUser, deleteUserAction, updateUser }

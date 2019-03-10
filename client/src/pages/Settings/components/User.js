@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
+// import { createStructuredSelector } from 'reselect';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-
 import Fab from '@material-ui/core/Fab';
 
-import {
-  getAllUser,
-  deleteUserAction,
-} from '../../../redux/actions/users/user';
+import UsersActions from '../../../redux/actions/users/user';
 
 import Alert from '../../../components/Alert';
 import SnackBar from '../../../components/SnackBar';
@@ -150,13 +147,21 @@ User.propTypes = {
   deleteUser: PropTypes.func.isRequired,
 };
 
+// const mSTP = createStructuredSelector({
+//   users: selectDegustationForChart,
+// });
+
+const mDTP = dispatch =>
+  bindActionCreators(
+    {
+      getAllUser: UsersActions.getAllUser,
+      deleteUser: UsersActions.deleteUserAction,
+    },
+    dispatch,
+  );
+
 const mSTP = state => ({
   users: state.users,
-});
-
-const mDTP = dispatch => ({
-  getAllUser: () => dispatch(getAllUser()),
-  deleteUser: key => dispatch(deleteUserAction(key)),
 });
 
 export default compose(

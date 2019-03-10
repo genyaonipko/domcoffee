@@ -7,4 +7,5 @@ export const { Creators } = createActions({
   setLoader: ['payload'],
   getErrors: ['payload'],
   setCurrentUser: ['payload'],
+  setDateTransaction: ['payload'],
 }, {})

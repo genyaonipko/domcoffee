@@ -62,7 +62,7 @@ export default class dcRequests {
       },
     };
   }
-  static getCoffee() {
+  static getCoffees() {
     return {
       method: 'GET',
       headers: {
@@ -198,6 +198,39 @@ export default class dcRequests {
         email: data.email,
         password: data.password,
       },
+    };
+  }
+  static getUsersRequest() {
+    return {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: null,
+    };
+  }
+  static deleteUserRequest(key) {
+    return {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: null,
+      keys: {
+        key,
+      }
+    };
+  }
+  static updateUserRequest(key, data) {
+    return {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+      keys: {
+        key,
+      }
     };
   }
 }
