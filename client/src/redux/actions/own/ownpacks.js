@@ -13,7 +13,7 @@ const { Creators } = createActions({
   sortPackDataByYear: ['payload'],
 }, {})
 
-export const changeDataPackAction = () => dispatch => {
+export const changeDataOwnpackAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
@@ -25,21 +25,21 @@ export const changeDataPackAction = () => dispatch => {
   });
 };
 
-export const addPackAction = coffee => (dispatch, getState) => {
+export const addOwnpackAction = ownpacks => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
   addPack(
-    dcRequest.addPack(coffee, dateTransaction),
+    dcRequest.addPack(ownpacks, dateTransaction),
     (data, error) => {
       if (error !== undefined) {
         dispatch(console.log(error));
       } else if (data !== undefined) {
-        dispatch(Creators.addPack(data.data.coffee));
+        dispatch(Creators.addPack(data.data.ownpacks));
       }
     },
   );
 };
 
-export const coffeeByMonthAction = () => dispatch => {
+export const ownpacksByMonthAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
@@ -51,7 +51,7 @@ export const coffeeByMonthAction = () => dispatch => {
   });
 };
 
-export const coffeeByDayAction = () => dispatch => {
+export const ownpacksByDayAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
@@ -63,7 +63,7 @@ export const coffeeByDayAction = () => dispatch => {
   });
 };
 
-export const coffeeByQuarterAction = () => dispatch => {
+export const ownpacksByQuarterAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
@@ -75,7 +75,7 @@ export const coffeeByQuarterAction = () => dispatch => {
   });
 };
 
-export const coffeeByYearAction = () => dispatch => {
+export const ownpacksByYearAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {

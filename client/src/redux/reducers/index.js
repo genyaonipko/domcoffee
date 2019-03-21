@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import packsReducer from './packs/packsReducer';
 import degustationReducer from './packs/degustationReducer';
-import dataUsersReducer from './usersReducer';
+import { dataUsersReducer } from './usersReducer';
 import authReducer from './authReducer';
 import coffeeReducer from './sales/coffeeReducer';
 import portionsReducer from './sales/portionsReducer';

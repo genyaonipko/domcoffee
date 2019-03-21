@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -9,16 +10,21 @@ import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import { equals } from 'ramda';
 
+
 import Loader from '../../components/Loader';
 
-import { getAllCoffeeAction } from '../../redux/actions/sales/coffee';
-import { changeDataPacksAction } from '../../redux/actions/packs/packs';
-import { changeDataInnerpackAction } from '../../redux/actions/inner/innerpacks';
-import { changeDataInnercupAction } from '../../redux/actions/inner/innercups';
-import { changeDataOwnpackAction } from '../../redux/actions/own/ownpacks';
-import { changeDataOwncupAction } from '../../redux/actions/own/owncups';
-import { changePortionsAction } from '../../redux/actions/sales/portions';
-import { changeDataDegustationAction } from '../../redux/actions/packs/degustation';
+import SalesActions from '../../redux/actions/sales';
+import PacksActions from '../../redux/actions/packs';
+import InnerActions from '../../redux/actions/inner';
+import OwnActions from '../../redux/actions/own';
+
+import { selectPortionsForChart, selectCoffeeForChart } from '../../redux/reducers/sales/selectors'
+import { selectPacksForChart, selectDegustationForChart } from '../../redux/reducers/packs/selectors'
+import { selectOwncupsForChart, selectOwnpacksForChart } from '../../redux/reducers/own/selectors'
+import { selectInnercupsForChart, selectInnerpacksForChart } from '../../redux/reducers/inner/selectors'
+import {
+  additionalSelectors
+} from '../../redux/reducers/additionalReducer';
 
 import SimpleLineChart from './components/LineChart';
 import SimpleTable from './components/Table';
@@ -87,18 +93,20 @@ class Dashboard extends React.Component {
       </Typography>
     );
 
-  renderContent = (
-    packs,
-    portions,
-    coffee,
-    innerpacks,
-    ownpacks,
-    innercups,
-    owncups,
-    degustation,
-    classes,
-    restProps,
-  ) => {
+  renderContent = () => {
+    const {
+      classes,
+      packs,
+      coffee,
+      innerpacks,
+      ownpacks,
+      portions,
+      innercups,
+      owncups,
+      degustation,
+      isLoading,
+      ...restProps
+    } = this.props;
     const packsNoPay = reduceAllPositions([coffee, innerpacks, ownpacks]);
     const cupsNoPay = reduceAllPositions([degustation, innercups, owncups]);
 
@@ -129,19 +137,7 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const {
-      classes,
-      packs,
-      coffee,
-      innerpacks,
-      ownpacks,
-      portions,
-      innercups,
-      owncups,
-      degustation,
-      isLoading,
-      ...restProps
-    } = this.props;
+    const { classes, isLoading } = this.props;
 
     return (
       <Fragment>
@@ -150,18 +146,7 @@ class Dashboard extends React.Component {
           <AppBarComponent title="Дашбоард" />
           <main className={classes.content}>
             {!isLoading ? (
-              this.renderContent(
-                packs,
-                portions,
-                coffee,
-                innerpacks,
-                ownpacks,
-                innercups,
-                owncups,
-                degustation,
-                classes,
-                restProps,
-              )
+              this.renderContent()
             ) : (
               <Loader />
             )}
@@ -198,28 +183,32 @@ Dashboard.propTypes = {
   getAllOwnCups: PropTypes.func.isRequired,
 };
 
-const mSTP = state => ({
-  packs: state.packs,
-  coffee: state.coffee,
-  innerpacks: state.innerpacks,
-  innercups: state.innercups,
-  ownpacks: state.ownpacks,
-  owncups: state.owncups,
-  degustation: state.degustation,
-  portions: state.portions,
-  isLoading: state.settings.isLoading,
+const mSTP = createStructuredSelector({
+  portions: selectPortionsForChart,
+  coffee: selectCoffeeForChart,
+  packs: selectPacksForChart,
+  degustation: selectDegustationForChart,
+  innerpacks: selectInnerpacksForChart,
+  innercups: selectInnercupsForChart,
+  ownpacks: selectOwnpacksForChart,
+  owncups: selectOwncupsForChart,
+  isLoading: additionalSelectors.selectLoader,
 });
 
-const mDTP = dispatch => ({
-  getAllCoffee: () => dispatch(getAllCoffeeAction()),
-  changeData: () => dispatch(changeDataPacksAction()),
-  getAllOwn: () => dispatch(changeDataOwnpackAction()),
-  getAllPortions: () => dispatch(changePortionsAction()),
-  getAllInnerPacks: () => dispatch(changeDataInnerpackAction()),
-  getAllDegustation: () => dispatch(changeDataDegustationAction()),
-  getAllInnerCups: () => dispatch(changeDataInnercupAction()),
-  getAllOwnCups: () => dispatch(changeDataOwncupAction()),
-});
+const mDTP = dispatch =>
+  bindActionCreators(
+    {
+      getAllCoffee: SalesActions.changeDataCoffeeAction,
+      getAllPortions: SalesActions.changeDataPortionAction,
+      changeData: PacksActions.changeDataPacksAction,
+      getAllOwn: OwnActions.changeDataOwnpackAction,
+      getAllInnerPacks: InnerActions.changeDataInnerpackAction,
+      getAllDegustation: PacksActions.changeDataDegustationAction,
+      getAllInnerCups: InnerActions.changeDataInnercupAction,
+      getAllOwnCups: OwnActions.changeDataOwncupAction,
+    },
+    dispatch,
+  );
 
 export default compose(
   withStyles(styles, { withTheme: true }),

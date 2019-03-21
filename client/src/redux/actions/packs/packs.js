@@ -12,7 +12,7 @@ const { Creators } = createActions({
   sortPacksByYear: ['payload'],
 }, {})
 
-export const changeDataPacksAction = () => dispatch => {
+export const changeDataPackAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {

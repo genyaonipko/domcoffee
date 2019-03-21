@@ -1,5 +1,3 @@
-import additionalReducer from './additionalReducer';
-import additionalSelectors from './additionalSelectors';
-import errorReducer from './errorReducer';
-
-export default { additionalReducer, additionalSelectors, errorReducer };
+export { default as additionalReducer } from './additionalReducer';
+export { default as additionalSelectors } from './additionalSelectors';
+export { default as errorReducer } from './errorReducer';
