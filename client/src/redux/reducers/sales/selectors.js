@@ -9,7 +9,7 @@ export const selectCoffeeForChart = createSelector(
     coffee &&
     Object.keys(coffee).map(item => ({
       name: item,
-      Пачки: +coffee[item],
+      Помол: +coffee[item],
     })),
 );
 
@@ -19,7 +19,7 @@ export const selectPortionsForChart = createSelector(
     portions &&
     Object.keys(portions).map(item => ({
       name: item,
-      'Дегустационные чашки': +portions[item],
+      Порции: +portions[item],
     })),
 );
 

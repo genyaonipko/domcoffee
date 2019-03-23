@@ -104,15 +104,15 @@ class Sales extends Component {
   renderContent = () => {
     const { portions, coffee, classes, isLoading, ...restProps } = this.props;
     const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
-    const tabTitles = ['Пачки', 'Дегустационная чашка'];
+    const tabTitles = ['Помол', 'Порции'];
 
     return (
       <TabPages tabTitles={tabTitles} classes={classes} {...restProps}>
         <ChartPage
           classes={classes}
           data={coffee}
-          chartTitle="График по пачкам"
-          tableTitle="Пачки"
+          chartTitle="График по помолу"
+          tableTitle="Помол"
           tableHeaders={tableHeaders}
           isLoading={isLoading}
           chartColor="#AB47BC"
@@ -120,8 +120,8 @@ class Sales extends Component {
         />
         <ChartPage
           classes={classes}
-          chartTitle="График по дегустационным чашкам"
-          tableTitle="Дегустационные чашки"
+          chartTitle="График по порциям"
+          tableTitle="Порции"
           data={portions}
           tableHeaders={tableHeaders}
           isLoading={isLoading}
