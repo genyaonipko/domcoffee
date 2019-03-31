@@ -12,7 +12,7 @@ const { Creators } = createActions({
   sortPacksByYear: ['payload'],
 }, {})
 
-export const changeDataPackAction = () => dispatch => {
+export const changeDataPacksAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
@@ -35,7 +35,7 @@ export const addPackAction = packs => (dispatch, getState) => {
   });
 };
 
-export const changeDataByMonthAction = () => dispatch => {
+export const packsByMonthAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
@@ -47,7 +47,7 @@ export const changeDataByMonthAction = () => dispatch => {
   });
 };
 
-export const changeDataByDayAction = () => dispatch => {
+export const packsByDayAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
@@ -59,7 +59,7 @@ export const changeDataByDayAction = () => dispatch => {
   });
 };
 
-export const changeDataByQuarterAction = () => dispatch => {
+export const packsByQuarterAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
@@ -71,7 +71,7 @@ export const changeDataByQuarterAction = () => dispatch => {
   });
 };
 
-export const changeDataByYearAction = () => dispatch => {
+export const packsByYearAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
