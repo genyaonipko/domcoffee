@@ -28,7 +28,8 @@ export const changeDataDegustationAction = () => dispatch => {
 export const addDegustationAction = degustation => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
   addDegustation(
-    dcRequest.addDegustation(degustation, dateTransaction),
+    // eslint-disable-next-line
+    dcRequest.addDegustation(degustation, dateTransaction._d),
     (data, error) => {
       if (error !== undefined) {
         dispatch(console.log(error));

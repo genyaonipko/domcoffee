@@ -4,7 +4,7 @@ import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
 import { Creators as AdditionalActions } from '../additional/additional'
 
 const { Creators } = createActions({
-  changeDataOwncups: ['payload'],
+  changeDataOwncup: ['payload'],
   setLoader: ['payload'],
   addOwncup: ['payload'],
   sortOwncupDataByDay: ['payload'],
@@ -19,7 +19,7 @@ export const changeDataOwncupAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.changeDataOwncups(data.data));
+      dispatch(Creators.changeDataOwncup(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -28,12 +28,13 @@ export const changeDataOwncupAction = () => dispatch => {
 export const addOwncupAction = owncup => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
   addOwncup(
-    dcRequest.addOwncup(owncup, dateTransaction),
+    // eslint-disable-next-line
+    dcRequest.addOwncup(owncup, dateTransaction._d),
     (data, error) => {
       if (error !== undefined) {
         dispatch(console.log(error));
       } else if (data !== undefined) {
-        dispatch(Creators.addOwncup(data.data.owncup));
+        dispatch(Creators.addOwncup(data.data.owncups));
       }
     },
   );

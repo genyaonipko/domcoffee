@@ -21,7 +21,7 @@ export const filterDataByYear = payload => payload.filter(
 export const changeData = (payload, initialState, type) => {
   const keys = Object.keys(initialState);
   const concatObj = Object.assign({}, initialState);
-  const degustation = payload.reduce((previousValue, currentItem) => {
+  const data = payload.reduce((previousValue, currentItem) => {
     for (let i = 0; i < keys.length; i += 1) {
       const current = !Number.isNaN(+currentItem[type][keys[i]])
         ? +currentItem[type][keys[i]]
@@ -30,7 +30,7 @@ export const changeData = (payload, initialState, type) => {
     }
     return { ...concatObj };
   }, initialState);
-  return degustation;
+  return data;
 };
 
 export const reduceAdded = (state, initialState, action) => {

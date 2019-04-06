@@ -4,7 +4,7 @@ import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
 import { Creators as AdditionalActions } from '../additional/additional'
 
 const { Creators } = createActions({
-  changeDataPortions: ['payload'],
+  changeDataPortion: ['payload'],
   setLoader: ['payload'],
   addPortion: ['payload'],
   sortPortionDataByDay: ['payload'],
@@ -19,7 +19,7 @@ export const changeDataPortionAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.changeDataPortions(data.data));
+      dispatch(Creators.changeDataPortion(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -28,12 +28,13 @@ export const changeDataPortionAction = () => dispatch => {
 export const addPortionAction = portion => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
   addPortion(
-    dcRequest.addPortion(portion, dateTransaction),
+    // eslint-disable-next-line
+    dcRequest.addPortion(portion, dateTransaction._d),
     (data, error) => {
       if (error !== undefined) {
         dispatch(console.log(error));
       } else if (data !== undefined) {
-        dispatch(Creators.addPortion(data.data.portion));
+        dispatch(Creators.addPortion(data.data.portions));
       }
     },
   );

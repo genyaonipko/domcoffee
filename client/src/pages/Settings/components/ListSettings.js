@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import Divider from '@material-ui/core/Divider';
+import * as authSelectors from '../../../redux/reducers/authReducer/selectors';
 
 const ListSettings = ({ history }) => (
   <List component="nav">
@@ -26,8 +28,8 @@ ListSettings.propTypes = {
   history: PropTypes.shape({}).isRequired,
 };
 
-const mSTP = state => ({
-  role: state.auth.user.role,
+const mSTP = createStructuredSelector({
+  role: authSelectors.selectRole,
 });
 
 export default connect(mSTP)(ListSettings);

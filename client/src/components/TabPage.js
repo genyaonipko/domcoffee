@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import SwipeableViews from 'react-swipeable-views';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
+import { additionalSelectors } from '../redux/reducers/additionalReducer';
 
 const styles = () => ({
   rootTabs: {
@@ -80,13 +82,13 @@ class TabPage extends Component {
   }
 }
 
-const mSTP = state => ({
-  tabIndex: state.settings.tabIndex,
+const mSTP = createStructuredSelector({
+  tabIndex: additionalSelectors.selectTabIndex,
 });
 
-const mDTP = dispatch => ({
-  setTabIndex: index => dispatch(AdditionalActions.setIndexTab(index)),
-});
+const mDTP = dispatch => bindActionCreators({
+  setTabIndex: AdditionalActions.setIndexTab,
+}, dispatch);
 
 export default compose(
   withStyles(styles),

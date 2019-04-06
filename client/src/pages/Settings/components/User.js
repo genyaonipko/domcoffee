@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-// import { createStructuredSelector } from 'reselect';
+import { createStructuredSelector } from 'reselect';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Typography from '@material-ui/core/Typography';
@@ -10,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 
 import UsersActions from '../../../redux/actions/users/user';
+import { additionalSelectors } from '../../../redux/reducers/additionalReducer';
 
 import Alert from '../../../components/Alert';
 import SnackBar from '../../../components/SnackBar';
@@ -160,8 +161,8 @@ const mDTP = dispatch =>
     dispatch,
   );
 
-const mSTP = state => ({
-  users: state.users,
+const mSTP = createStructuredSelector({
+  users: additionalSelectors.selectUsers,
 });
 
 export default compose(

@@ -59,6 +59,8 @@ function SimpleLineChart(props) {
     return arrForRender;
   };
 
+  console.log(dataMain)
+
   return (
     // 99% per https://github.com/recharts/recharts/issues/172
     <ResponsiveContainer width="99%" height={320}>

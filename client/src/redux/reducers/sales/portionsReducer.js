@@ -37,7 +37,7 @@ const INITIAL_STATE = Immutable.from({
 
 /* -------------------- Handlers ------------------  */
 export const getPortionDataSuccess = (state = INITIAL_STATE, action) => {
-  const portion = changeData(action.payload, INITIAL_STATE, 'portion');
+  const portion = changeData(action.payload, INITIAL_STATE, 'portions');
   return state.merge(portion);
 }
 
@@ -45,25 +45,25 @@ export const addPortionDataSuccess = (state = INITIAL_STATE, action) => reduceAd
 
 export const sortPortionDataByDay = (state = INITIAL_STATE, action) => {
   let portion = filterDataByDay(action.payload);
-  portion = changeData(portion, INITIAL_STATE, 'portion');
+  portion = changeData(portion, INITIAL_STATE, 'portions');
   return state.merge(portion);
 }
 
 export const sortPortionDataByMonth = (state = INITIAL_STATE, action) => {
   let portion = filterDataByMonth(action.payload);
-  portion = changeData(portion, INITIAL_STATE, 'portion');
+  portion = changeData(portion, INITIAL_STATE, 'portions');
   return state.merge(portion);
 }
 
 export const sortPortionDataByQuarter = (state = INITIAL_STATE, action) => {
   let portion = filterDataByQuarter(action.payload);
-  portion = changeData(portion, INITIAL_STATE, 'portion');
+  portion = changeData(portion, INITIAL_STATE, 'portions');
   return state.merge(portion);
 }
 
 export const sortPortionDataByYear = (state = INITIAL_STATE, action) => {
   let portion = filterDataByYear(action.payload);
-  portion = changeData(portion, INITIAL_STATE, 'portion');
+  portion = changeData(portion, INITIAL_STATE, 'portions');
   return state.merge(portion);
 }
 

@@ -18,10 +18,7 @@ import PacksActions from '../../redux/actions/packs';
 import InnerActions from '../../redux/actions/inner';
 import OwnActions from '../../redux/actions/own';
 
-import { selectPortionsForChart, selectCoffeeForChart } from '../../redux/reducers/sales/selectors'
-import { selectPacksForChart, selectDegustationForChart } from '../../redux/reducers/packs/selectors'
-import { selectOwncupsForChart, selectOwnpacksForChart } from '../../redux/reducers/own/selectors'
-import { selectInnercupsForChart, selectInnerpacksForChart } from '../../redux/reducers/inner/selectors'
+import { selectDashboardTab1 } from '../../redux/reducers/dashboardReducer/selectors';
 import {
   additionalSelectors
 } from '../../redux/reducers/additionalReducer';
@@ -29,8 +26,6 @@ import {
 import SimpleLineChart from './components/LineChart';
 import SimpleTable from './components/Table';
 import AppBarComponent from '../../components/AppBarComponent';
-
-import { reduceAllPositions } from './components/DashboardHelpers';
 
 import TabPages from '../../components/TabPage';
 
@@ -54,7 +49,7 @@ const styles = () => ({
   },
 });
 
-class Dashboard extends React.Component {
+class Dashboard extends React.PureComponent {
   componentDidMount = () => {
     Promise.all([
       this.props.changeData(),
@@ -96,42 +91,21 @@ class Dashboard extends React.Component {
   renderContent = () => {
     const {
       classes,
-      packs,
-      coffee,
-      innerpacks,
-      ownpacks,
-      portions,
-      innercups,
-      owncups,
-      degustation,
+      dashboardTab1,
       isLoading,
       ...restProps
     } = this.props;
-    const packsNoPay = reduceAllPositions([coffee, innerpacks, ownpacks]);
-    const cupsNoPay = reduceAllPositions([degustation, innercups, owncups]);
-
-    const tab1Data = [packs, portions, packsNoPay, cupsNoPay];
     const tab1Titles = [
       'Пачки за деньги',
       'Чашки за деньги',
       'Пачки бесплатно',
       'Чашки бесплатно',
     ];
-
-    const cupsToPay = reduceAllPositions([
-      degustation,
-      innercups,
-      owncups,
-      portions,
-    ]);
-
-    const tab2Data = [coffee, cupsToPay];
-    const tab2Titles = ['Помол', 'Чашки'];
+    // const tab2Titles = ['Помол', 'Чашки'];
 
     return (
       <TabPages tabTitles={['Tab1', 'Tab2']} classes={classes} {...restProps}>
-        {this.renderChartAndTable(tab1Data, tab1Titles, classes)}
-        {this.renderChartAndTable(tab2Data, tab2Titles, classes)}
+        {this.renderChartAndTable(dashboardTab1, tab1Titles, classes)}
       </TabPages>
     );
   };
@@ -163,14 +137,7 @@ Dashboard.propTypes = {
   isLoading: PropTypes.bool.isRequired,
 
   // data
-  packs: PropTypes.shape({}).isRequired,
-  portions: PropTypes.shape({}).isRequired,
-  degustation: PropTypes.shape({}).isRequired,
-  coffee: PropTypes.shape({}).isRequired,
-  innercups: PropTypes.shape({}).isRequired,
-  innerpacks: PropTypes.shape({}).isRequired,
-  owncups: PropTypes.shape({}).isRequired,
-  ownpacks: PropTypes.shape({}).isRequired,
+  dashboardTab1: PropTypes.arrayOf(PropTypes.arrayOf({})).isRequired,
 
   // functions
   changeData: PropTypes.func.isRequired,
@@ -184,15 +151,8 @@ Dashboard.propTypes = {
 };
 
 const mSTP = createStructuredSelector({
-  portions: selectPortionsForChart,
-  coffee: selectCoffeeForChart,
-  packs: selectPacksForChart,
-  degustation: selectDegustationForChart,
-  innerpacks: selectInnerpacksForChart,
-  innercups: selectInnercupsForChart,
-  ownpacks: selectOwnpacksForChart,
-  owncups: selectOwncupsForChart,
   isLoading: additionalSelectors.selectLoader,
+  dashboardTab1: selectDashboardTab1,
 });
 
 const mDTP = dispatch =>

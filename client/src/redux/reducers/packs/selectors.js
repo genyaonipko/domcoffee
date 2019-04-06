@@ -19,7 +19,7 @@ export const selectDegustationForChart = createSelector(
     degustation &&
     Object.keys(degustation).map(item => ({
       name: item,
-      Чашки: +degustation[item],
+      'Дегустационные чашки': +degustation[item],
     })),
 );
 

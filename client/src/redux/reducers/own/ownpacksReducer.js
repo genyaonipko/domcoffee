@@ -37,7 +37,7 @@ const INITIAL_STATE = Immutable.from({
 
 /* -------------------- Handlers ------------------  */
 export const getOwnpackDataSuccess = (state = INITIAL_STATE, action) => {
-  const ownpack = changeData(action.payload, INITIAL_STATE, 'ownpack');
+  const ownpack = changeData(action.payload, INITIAL_STATE, 'ownpacks');
   return state.merge(ownpack);
 }
 
@@ -45,25 +45,25 @@ export const addOwnpackDataSuccess = (state = INITIAL_STATE, action) => reduceAd
 
 export const sortOwnpackDataByDay = (state = INITIAL_STATE, action) => {
   let ownpack = filterDataByDay(action.payload);
-  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpack');
+  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpacks');
   return state.merge(ownpack);
 }
 
 export const sortOwnpackDataByMonth = (state = INITIAL_STATE, action) => {
   let ownpack = filterDataByMonth(action.payload);
-  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpack');
+  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpacks');
   return state.merge(ownpack);
 }
 
 export const sortOwnpackDataByQuarter = (state = INITIAL_STATE, action) => {
   let ownpack = filterDataByQuarter(action.payload);
-  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpack');
+  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpacks');
   return state.merge(ownpack);
 }
 
 export const sortOwnpackDataByYear = (state = INITIAL_STATE, action) => {
   let ownpack = filterDataByYear(action.payload);
-  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpack');
+  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpacks');
   return state.merge(ownpack);
 }
 

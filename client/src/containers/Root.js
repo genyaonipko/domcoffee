@@ -11,7 +11,6 @@ import history from '../utils/history';
 import setAuthToken from '../utils/setAuthToken';
 import { logoutUser } from '../redux/actions/authentication';
 import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
-import Login from '../pages/Login/Login';
 import Fixture from '../components/Fixture';
 
 const screenWidth = window.innerWidth;
@@ -56,7 +55,6 @@ class Root extends Component {
         <Router history={history}>
           <MuiThemeProvider theme={theme}>
             <Switch>
-              <Route exact path="/login" component={Login} />
               <Route path="/" component={App} />
             </Switch>
           </MuiThemeProvider>

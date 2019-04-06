@@ -4,10 +4,10 @@ import Immutable from 'seamless-immutable'
 import Types from '../../actions/actionTypes';
 
 /* -------------------- INITIAL_STATE ------------------  */
-const INITIAL_STATE = Immutable.from({});
+const INITIAL_STATE = Immutable.from([]);
 
 /* -------------------- Handlers ------------------  */
-export const getUsers = (state = INITIAL_STATE, action) => state.merge(action.payload);
+export const getUsers = (_, action) => ([ ...action.payload ]);
 
 export const HANDLERS = {
   [Types.GET_USERS]: getUsers,

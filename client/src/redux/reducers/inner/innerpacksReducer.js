@@ -37,7 +37,7 @@ const INITIAL_STATE = Immutable.from({
 
 /* -------------------- Handlers ------------------  */
 export const getInnerpackDataSuccess = (state = INITIAL_STATE, action) => {
-  const innerpack = changeData(action.payload, INITIAL_STATE, 'innerpack');
+  const innerpack = changeData(action.payload, INITIAL_STATE, 'innerpacks');
   return state.merge(innerpack);
 }
 
@@ -45,25 +45,25 @@ export const addInnerpackDataSuccess = (state = INITIAL_STATE, action) => reduce
 
 export const sortInnerpackDataByDay = (state = INITIAL_STATE, action) => {
   let innerpack = filterDataByDay(action.payload);
-  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpack');
+  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpacks');
   return state.merge(innerpack);
 }
 
 export const sortInnerpackDataByMonth = (state = INITIAL_STATE, action) => {
   let innerpack = filterDataByMonth(action.payload);
-  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpack');
+  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpacks');
   return state.merge(innerpack);
 }
 
 export const sortInnerpackDataByQuarter = (state = INITIAL_STATE, action) => {
   let innerpack = filterDataByQuarter(action.payload);
-  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpack');
+  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpacks');
   return state.merge(innerpack);
 }
 
 export const sortInnerpackDataByYear = (state = INITIAL_STATE, action) => {
   let innerpack = filterDataByYear(action.payload);
-  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpack');
+  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpacks');
   return state.merge(innerpack);
 }
 

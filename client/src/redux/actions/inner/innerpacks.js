@@ -4,7 +4,7 @@ import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
 import { Creators as AdditionalActions } from '../additional/additional'
 
 const { Creators } = createActions({
-  changeDataInnerpacks: ['payload'],
+  changeDataInnerpack: ['payload'],
   setLoader: ['payload'],
   addInnerpack: ['payload'],
   sortInnerpackDataByDay: ['payload'],
@@ -19,7 +19,7 @@ export const changeDataInnerpackAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.changeDataInnerpacks(data.data));
+      dispatch(Creators.changeDataInnerpack(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -28,12 +28,13 @@ export const changeDataInnerpackAction = () => dispatch => {
 export const addInnerpackAction = innerpack => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
   addInnerpack(
-    dcRequest.addInnerpack(innerpack, dateTransaction),
+    // eslint-disable-next-line
+    dcRequest.addInnerpack(innerpack, dateTransaction._d),
     (data, error) => {
       if (error !== undefined) {
         dispatch(console.log(error));
       } else if (data !== undefined) {
-        dispatch(Creators.addInnerpack(data.data.innerpack));
+        dispatch(Creators.addInnerpack(data.data.innerpacks));
       }
     },
   );

@@ -6,8 +6,7 @@ import Types from '../../actions/actionTypes';
 const INITIAL_STATE = Immutable.from({});
 
 /* -------------------- Handlers ------------------  */
-export const setErrors = (state = INITIAL_STATE, action) =>
-  state.merge({ setErrors: action.payload });
+export const setErrors = (_, action) => ({ ...action.payload });
 
 export const HANDLERS = {
   [Types.GET_ERRORS]: setErrors,

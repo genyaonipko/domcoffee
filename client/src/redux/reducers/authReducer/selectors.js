@@ -11,3 +11,8 @@ export const selectRole = createSelector(
   selectUser,
   user => user.role
 );
+
+export const selectIsAuthenticated = createSelector(
+  selectAuth,
+  user => user.isAuthenticated
+);

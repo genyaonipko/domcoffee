@@ -24,9 +24,10 @@ export const changeDataPacksAction = () => dispatch => {
   });
 };
 
-export const addPackAction = packs => (dispatch, getState) => {
+export const addPackAction = pack => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
-  addPack(dcRequest.addPack(packs, dateTransaction), (data, error) => {
+  // eslint-disable-next-line
+  addPack(dcRequest.addPack(pack, dateTransaction._d), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {

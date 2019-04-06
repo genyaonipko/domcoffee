@@ -37,7 +37,7 @@ const INITIAL_STATE = Immutable.from({
 
 /* -------------------- Handlers ------------------  */
 export const getInnercupDataSuccess = (state = INITIAL_STATE, action) => {
-  const innercup = changeData(action.payload, INITIAL_STATE, 'innercup');
+  const innercup = changeData(action.payload, INITIAL_STATE, 'innercups');
   return state.merge(innercup);
 }
 
@@ -45,25 +45,25 @@ export const addInnercupDataSuccess = (state = INITIAL_STATE, action) => reduceA
 
 export const sortInnercupDataByDay = (state = INITIAL_STATE, action) => {
   let innercup = filterDataByDay(action.payload);
-  innercup = changeData(innercup, INITIAL_STATE, 'innercup');
+  innercup = changeData(innercup, INITIAL_STATE, 'innercups');
   return state.merge(innercup);
 }
 
 export const sortInnercupDataByMonth = (state = INITIAL_STATE, action) => {
   let innercup = filterDataByMonth(action.payload);
-  innercup = changeData(innercup, INITIAL_STATE, 'innercup');
+  innercup = changeData(innercup, INITIAL_STATE, 'innercups');
   return state.merge(innercup);
 }
 
 export const sortInnercupDataByQuarter = (state = INITIAL_STATE, action) => {
   let innercup = filterDataByQuarter(action.payload);
-  innercup = changeData(innercup, INITIAL_STATE, 'innercup');
+  innercup = changeData(innercup, INITIAL_STATE, 'innercups');
   return state.merge(innercup);
 }
 
 export const sortInnercupDataByYear = (state = INITIAL_STATE, action) => {
   let innercup = filterDataByYear(action.payload);
-  innercup = changeData(innercup, INITIAL_STATE, 'innercup');
+  innercup = changeData(innercup, INITIAL_STATE, 'innercups');
   return state.merge(innercup);
 }
 

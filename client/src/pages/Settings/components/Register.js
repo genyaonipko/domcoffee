@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl/FormControl';
+import { createStructuredSelector } from 'reselect';
 
 import { registerUser } from '../../../redux/actions/authentication';
+import { additionalSelectors } from '../../../redux/reducers/additionalReducer';
 
 const styles = () => ({
   mainArea: {
@@ -150,13 +152,13 @@ class Register extends React.Component {
   }
 }
 
-const mSTP = state => ({
-  errors: state.error,
+const mSTP = createStructuredSelector({
+  errors: additionalSelectors.selectErrors,
 });
 
-const mDTP = dispatch => ({
-  onSubmit: obj => dispatch(registerUser(obj)),
-});
+const mDTP = dispatch => bindActionCreators({
+  onSubmit: registerUser,
+}, dispatch);
 
 export default compose(
   withStyles(styles),

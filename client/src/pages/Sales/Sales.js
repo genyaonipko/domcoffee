@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
@@ -50,7 +50,7 @@ const styles = () => ({
   },
 });
 
-class Sales extends Component {
+class Sales extends PureComponent {
   state = {
     open: false,
   };
@@ -115,7 +115,7 @@ class Sales extends Component {
           tableTitle="Помол"
           tableHeaders={tableHeaders}
           isLoading={isLoading}
-          chartColor="#AB47BC"
+          chartColor="#aa2c11"
           concatData={this.props.concatDataCoffee}
         />
         <ChartPage
@@ -125,7 +125,7 @@ class Sales extends Component {
           data={portions}
           tableHeaders={tableHeaders}
           isLoading={isLoading}
-          chartColor="#AB47BC"
+          chartColor="#aa2c11"
           concatData={this.props.concatDataPortions}
         />
       </TabPages>
@@ -138,7 +138,7 @@ class Sales extends Component {
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Пачки" barColor="#AB47BC" />
+          <AppBarComponent title="Продажи" barColor="#aa2c11" />
           <main className={classes.content}>{this.renderContent()}</main>
           {this.renderFabButton()}
           {this.renderFormDialog()}
@@ -181,7 +181,7 @@ const mDTP = dispatch =>
     {
       getAllCoffee: SalesActions.changeDataCoffeeAction,
       getAllPortions: SalesActions.changeDataPortionAction,
-      onSubmitCoffee: SalesActions.addPackAction,
+      onSubmitCoffee: SalesActions.addCoffeeAction,
       onSubmitPortions: SalesActions.addPortionAction,
     },
     dispatch,
