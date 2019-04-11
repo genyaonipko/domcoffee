@@ -91,9 +91,7 @@ export const selectDashboardTab1 = createSelector(
   ],
 );
 
-export const selectReducedDataTab1 = createSelector(selectDashboardTab1, reducedData => {
-  return reducedData;
-})
+export const selectReducedDataTab1 = createSelector(selectDashboardTab1, reducedData => reducedData)
 
 export const selectDashboardTab2 = createSelector(
   selectCoffeeForChart,
