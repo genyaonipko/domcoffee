@@ -34,8 +34,9 @@ function SimpleLineChart(props) {
   ];
   const dataMain = initialData.map(item => {
     let dataObj = {};
-    props.data.forEach((obj, i) => {
-      dataObj = { ...dataObj, ...item, [props.tabTitles[i]]: obj[item.name] };
+    props.data.forEach(arr => {
+      const currentArr = arr.find(x => x.name === item.name);
+      dataObj = { ...dataObj, ...item, ...currentArr };
     });
     return dataObj;
   });

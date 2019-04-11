@@ -2,7 +2,11 @@ import { createSelector } from 'reselect';
 import { merge } from 'ramda';
 import { selectInnercups, selectInnerpacks } from '../inner/selectors';
 import { selectOwncups, selectOwnpacks } from '../own/selectors';
-import { selectCoffee, selectPortions } from '../sales/selectors';
+import {
+  selectCoffee,
+  selectCoffeeForChart,
+  selectPortions,
+} from '../sales/selectors';
 import { selectPacks, selectDegustation } from '../packs/selectors';
 
 export const selectPacksByMoney = createSelector(
@@ -57,6 +61,23 @@ export const selectCupsFree = createSelector(
   },
 );
 
+export const selectAllCups = createSelector(
+  selectDegustation,
+  selectPortions,
+  selectInnercups,
+  selectOwncups,
+  (degustation, portions, innercups, owncups) => {
+    const concatData = merge(degustation, portions, innercups, owncups);
+    return (
+      concatData &&
+      Object.keys(concatData).map(item => ({
+        name: item,
+        'Чашки': +concatData[item],
+      }))
+    );
+  },
+);
+
 export const selectDashboardTab1 = createSelector(
   selectPacksByMoney,
   selectCupsByMoney,
@@ -67,5 +88,18 @@ export const selectDashboardTab1 = createSelector(
     cupsByMoney,
     packsFree,
     cupsFree,
+  ],
+);
+
+export const selectReducedDataTab1 = createSelector(selectDashboardTab1, reducedData => {
+  return reducedData;
+})
+
+export const selectDashboardTab2 = createSelector(
+  selectCoffeeForChart,
+  selectAllCups,
+  (coffee, allcups) => [
+    coffee,
+    allcups,
   ],
 );

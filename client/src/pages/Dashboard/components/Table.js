@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+// import { reduce } from 'ramda';
 
 const styles = {
   root: {
@@ -22,7 +23,7 @@ const styles = {
   },
 };
 
-function SimpleTable(props) {
+const SimpleTable = (props) => {
   const { classes, tableHeaders, data } = props;
 
   const initialData = [
@@ -49,15 +50,25 @@ function SimpleTable(props) {
   ];
   const dataMain = initialData.map(item => {
     let dataObj = {};
-    props.data.forEach((obj, i) => {
-      dataObj = {
-        ...dataObj,
-        ...item,
-        [props.tableHeaders[i]]: obj[item.name],
-      };
+    data.forEach(arr => {
+      const currentArr = arr.find(x => x.name === item.name);
+      dataObj = { ...dataObj, ...item, ...currentArr };
     });
     return dataObj;
   });
+
+  const add = (accumulator, currentValue) => {
+    const keys = Object.keys(currentValue).filter(x => x !== 'name')
+    const arr = [];
+    keys.forEach(item => console.log(accumulator[item])
+      // arr.push(accumulator[item] + currentValue[item])
+    )
+    return arr;
+  };
+
+  const reducedData = dataMain.reduce(add, []);
+
+  console.log(reducedData)
 
   return (
     <Paper className={classes.root}>
@@ -92,19 +103,6 @@ function SimpleTable(props) {
               scope="row">
               Итого
             </TableCell>
-            {Object.keys(data).map(item => {
-              const summ = Object.values(data[item]).reduce(
-                (previousValue, currentItem) => previousValue + currentItem,
-                0,
-              );
-              return (
-                <TableCell
-                  key={`table_summ_${item}`}
-                  style={{ fontWeight: 900, fontSize: 18 }}>
-                  {summ}
-                </TableCell>
-              );
-            })}
           </TableRow>
         </TableBody>
       </Table>

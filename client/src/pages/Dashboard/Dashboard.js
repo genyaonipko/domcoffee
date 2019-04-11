@@ -18,7 +18,7 @@ import PacksActions from '../../redux/actions/packs';
 import InnerActions from '../../redux/actions/inner';
 import OwnActions from '../../redux/actions/own';
 
-import { selectDashboardTab1 } from '../../redux/reducers/dashboardReducer/selectors';
+import { selectDashboardTab1, selectDashboardTab2 } from '../../redux/reducers/dashboardReducer/selectors';
 import {
   additionalSelectors
 } from '../../redux/reducers/additionalReducer';
@@ -92,6 +92,7 @@ class Dashboard extends React.PureComponent {
     const {
       classes,
       dashboardTab1,
+      dashboardTab2,
       isLoading,
       ...restProps
     } = this.props;
@@ -101,11 +102,12 @@ class Dashboard extends React.PureComponent {
       'Пачки бесплатно',
       'Чашки бесплатно',
     ];
-    // const tab2Titles = ['Помол', 'Чашки'];
+    const tab2Titles = ['Помол', 'Чашки'];
 
     return (
       <TabPages tabTitles={['Tab1', 'Tab2']} classes={classes} {...restProps}>
         {this.renderChartAndTable(dashboardTab1, tab1Titles, classes)}
+        {this.renderChartAndTable(dashboardTab2, tab2Titles, classes)}
       </TabPages>
     );
   };
@@ -138,6 +140,7 @@ Dashboard.propTypes = {
 
   // data
   dashboardTab1: PropTypes.arrayOf(PropTypes.arrayOf({})).isRequired,
+  dashboardTab2: PropTypes.arrayOf(PropTypes.arrayOf({})).isRequired,
 
   // functions
   changeData: PropTypes.func.isRequired,
@@ -153,6 +156,7 @@ Dashboard.propTypes = {
 const mSTP = createStructuredSelector({
   isLoading: additionalSelectors.selectLoader,
   dashboardTab1: selectDashboardTab1,
+  dashboardTab2: selectDashboardTab2,
 });
 
 const mDTP = dispatch =>
