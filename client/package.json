@@ -80,7 +80,7 @@
     "test": "node scripts/test.js --env=jsdom",
     "lint:js": "eslint src/**/*.{js,jsx}",
     "lint:css": "stylelint src/**/*.css",
-    "lint": "npm run lint:js && npm run lint:css",
+    "lint": "npm run lint:js",
     "lint:fix-js": "eslint --fix src/**/*.{js,jsx}",
     "lint:fix-css": "stylelint --fix src/**/*.css",
     "lint:fix": "npm run lint:fix-js && npm run lint:fix-css",
