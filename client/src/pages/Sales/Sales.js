@@ -37,12 +37,6 @@ const styles = () => ({
     overflow: 'auto',
     paddingTop: 64,
   },
-  chartContainer: {
-    marginLeft: -22,
-  },
-  tableContainer: {
-    height: 320,
-  },
   button: {
     position: 'fixed',
     right: 16,

@@ -20,12 +20,6 @@ const styles = theme => ({
     overflow: 'auto',
     paddingTop: 88,
   },
-  chartContainer: {
-    marginLeft: -22,
-  },
-  tableContainer: {
-    height: 320,
-  },
 });
 
 class Settings extends React.Component {

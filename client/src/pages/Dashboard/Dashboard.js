@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 
-import _ from 'lodash';
+// import _ from 'lodash';
 import { equals } from 'ramda';
 
 
@@ -41,12 +41,6 @@ const styles = () => ({
     overflow: 'auto',
     paddingTop: 64,
   },
-  chartContainer: {
-    marginLeft: -22,
-  },
-  tableContainer: {
-    height: 320,
-  },
 });
 
 class Dashboard extends React.Component {
@@ -65,28 +59,30 @@ class Dashboard extends React.Component {
 
   shouldComponentUpdate = nextProps => !equals(this.props, nextProps);
 
-  renderChartAndTable = (data, tabTitles, classes) =>
-    data.map(item => _.findKey(item, o => o !== 0)) ? (
-      <div style={{ margin: 24 }}>
-        <div className={classes.appBarSpacer} />
-        <Typography variant="h4" gutterBottom>
-          График по всем данным
-        </Typography>
-        <Typography component="div" className={classes.chartContainer}>
-          <SimpleLineChart tabTitles={tabTitles} data={data} />
-        </Typography>
-        <Typography variant="h4" gutterBottom>
-          Вся информация
-        </Typography>
-        <div className={classes.tableContainer}>
-          <SimpleTable data={data} tableHeaders={tabTitles} />
-        </div>
-      </div>
-    ) : (
+  renderChartAndTable = (data, tabTitles, classes) =>{
+    const isEmpty = !data.some((item, i) => !item.every(x => x[tabTitles[i]] === 0))
+    if(isEmpty) return (
       <Typography variant="h2" gutterBottom>
         Нет данных
       </Typography>
-    );
+    )
+    return (
+      <div style={{ margin: 24 }}>
+          <div className={classes.appBarSpacer} />
+          <Typography variant="h4" gutterBottom>
+            График по всем данным
+          </Typography>
+          <Typography component="div">
+            <SimpleLineChart tabTitles={tabTitles} data={data} />
+          </Typography>
+          <Typography variant="h4" gutterBottom>
+            Вся информация
+          </Typography>
+          <SimpleTable data={data} tableHeaders={tabTitles} />
+        </div>
+        )
+    }
+      
 
   renderContent = () => {
     const {

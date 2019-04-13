@@ -31,7 +31,7 @@ export default class ChartPage extends PureComponent {
     } = this.props;
 
     if (isLoading) return <Loader />;
-    if (!_.findKey(data, o => o !== 0)) {
+    if (!_.findKey(data, o => o[tableTitle] !== 0)) {
       return (
         <div style={{ margin: 24 }}>
           <Typography variant="h2" gutterBottom>
@@ -46,20 +46,18 @@ export default class ChartPage extends PureComponent {
         <Typography variant="h4" gutterBottom>
           {chartTitle}
         </Typography>
-        <Typography component="div" className={classes.chartContainer}>
+        <Typography component="div">
           <SimpleLineChart color={chartColor} data={data} legend={tableTitle} />
         </Typography>
         <Typography variant="h4" gutterBottom>
           {tableTitle}
         </Typography>
-        <div className={classes.tableContainer}>
-          <SimpleTable
-            concatData={concatData}
-            data={data}
-            tableHeaders={tableHeaders}
-            legend={tableTitle}
-          />
-        </div>
+        <SimpleTable
+          concatData={concatData}
+          data={data}
+          tableHeaders={tableHeaders}
+          legend={tableTitle}
+        />
       </div>
     );
   }
