@@ -49,7 +49,7 @@ const styles = () => ({
   },
 });
 
-class Dashboard extends React.PureComponent {
+class Dashboard extends React.Component {
   componentDidMount = () => {
     Promise.all([
       this.props.changeData(),
@@ -139,8 +139,8 @@ Dashboard.propTypes = {
   isLoading: PropTypes.bool.isRequired,
 
   // data
-  dashboardTab1: PropTypes.arrayOf(PropTypes.arrayOf({})).isRequired,
-  dashboardTab2: PropTypes.arrayOf(PropTypes.arrayOf({})).isRequired,
+  dashboardTab1: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))).isRequired,
+  dashboardTab2: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))).isRequired,
 
   // functions
   changeData: PropTypes.func.isRequired,

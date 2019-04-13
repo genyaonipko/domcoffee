@@ -7,10 +7,10 @@ const { Creators } = createActions({
   changeDataPortion: ['payload'],
   setLoader: ['payload'],
   addPortion: ['payload'],
-  sortPortionDataByDay: ['payload'],
-  sortPortionDataByMonth: ['payload'],
-  sortPortionDataByQuarter: ['payload'],
-  sortPortionDataByYear: ['payload'],
+  sortPortionByDay: ['payload'],
+  sortPortionByMonth: ['payload'],
+  sortPortionByQuarter: ['payload'],
+  sortPortionByYear: ['payload'],
 }, {})
 
 export const changeDataPortionAction = () => dispatch => {
@@ -46,7 +46,7 @@ export const portionByMonthAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortPortionDataByMonth(data.data));
+      dispatch(Creators.sortPortionByMonth(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -58,7 +58,7 @@ export const portionByDayAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortPortionDataByDay(data.data));
+      dispatch(Creators.sortPortionByDay(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -70,7 +70,7 @@ export const portionByQuarterAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortPortionDataByQuarter(data.data));
+      dispatch(Creators.sortPortionByQuarter(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -82,7 +82,7 @@ export const portionByYearAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortPortionDataByYear(data.data));
+      dispatch(Creators.sortPortionByYear(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });

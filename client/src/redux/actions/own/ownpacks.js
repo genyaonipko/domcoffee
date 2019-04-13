@@ -7,10 +7,10 @@ const { Creators } = createActions({
   changeDataOwnpack: ['payload'],
   setLoader: ['payload'],
   addOwnpack: ['payload'],
-  sortOwnpackDataByDay: ['payload'],
-  sortOwnpackDataByMonth: ['payload'],
-  sortOwnpackDataByQuarter: ['payload'],
-  sortOwnpackDataByYear: ['payload'],
+  sortOwnpackByDay: ['payload'],
+  sortOwnpackByMonth: ['payload'],
+  sortOwnpackByQuarter: ['payload'],
+  sortOwnpackByYear: ['payload'],
 }, {})
 
 export const changeDataOwnpackAction = () => dispatch => {
@@ -46,7 +46,7 @@ export const ownpacksByMonthAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortOwnpackDataByMonth(data.data));
+      dispatch(Creators.sortOwnpackByMonth(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -58,7 +58,7 @@ export const ownpacksByDayAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortOwnpackDataByDay(data.data));
+      dispatch(Creators.sortOwnpackByDay(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -70,7 +70,7 @@ export const ownpacksByQuarterAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortOwnpackDataByQuarter(data.data));
+      dispatch(Creators.sortOwnpackByQuarter(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -82,7 +82,7 @@ export const ownpacksByYearAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortOwnpackDataByYear(data.data));
+      dispatch(Creators.sortOwnpackByYear(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });

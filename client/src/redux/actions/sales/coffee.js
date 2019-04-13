@@ -7,10 +7,10 @@ const { Creators } = createActions({
   changeDataCoffee: ['payload'],
   setLoader: ['payload'],
   addCoffee: ['payload'],
-  sortCoffeeDataByDay: ['payload'],
-  sortCoffeeDataByMonth: ['payload'],
-  sortCoffeeDataByQuarter: ['payload'],
-  sortCoffeeDataByYear: ['payload'],
+  sortCoffeeByDay: ['payload'],
+  sortCoffeeByMonth: ['payload'],
+  sortCoffeeByQuarter: ['payload'],
+  sortCoffeeByYear: ['payload'],
 }, {})
 
 export const changeDataCoffeeAction = () => dispatch => {
@@ -46,7 +46,7 @@ export const coffeeByMonthAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortCoffeeDataByMonth(data.data));
+      dispatch(Creators.sortCoffeeByMonth(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -58,7 +58,7 @@ export const coffeeByDayAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortCoffeeDataByDay(data.data));
+      dispatch(Creators.sortCoffeeByDay(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -70,7 +70,7 @@ export const coffeeByQuarterAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortCoffeeDataByQuarter(data.data));
+      dispatch(Creators.sortCoffeeByQuarter(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -82,7 +82,7 @@ export const coffeeByYearAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortCoffeeDataByYear(data.data));
+      dispatch(Creators.sortCoffeeByYear(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });

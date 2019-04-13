@@ -7,10 +7,10 @@ const { Creators } = createActions({
   changeDataDegustations: ['payload'],
   setLoader: ['payload'],
   addDegustation: ['payload'],
-  sortDegustationDataByDay: ['payload'],
-  sortDegustationDataByMonth: ['payload'],
-  sortDegustationDataByQuarter: ['payload'],
-  sortDegustationDataByYear: ['payload'],
+  sortDegustationByDay: ['payload'],
+  sortDegustationByMonth: ['payload'],
+  sortDegustationByQuarter: ['payload'],
+  sortDegustationByYear: ['payload'],
 }, {})
 
 export const changeDataDegustationAction = () => dispatch => {
@@ -46,7 +46,7 @@ export const degustationByMonthAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortDegustationDataByMonth(data.data));
+      dispatch(Creators.sortDegustationByMonth(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -58,7 +58,7 @@ export const degustationByDayAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortDegustationDataByDay(data.data));
+      dispatch(Creators.sortDegustationByDay(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -70,7 +70,7 @@ export const degustationByQuarterAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortDegustationDataByQuarter(data.data));
+      dispatch(Creators.sortDegustationByQuarter(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -82,7 +82,7 @@ export const degustationByYearAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortDegustationDataByYear(data.data));
+      dispatch(Creators.sortDegustationByYear(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });

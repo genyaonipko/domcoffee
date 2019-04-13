@@ -386,10 +386,10 @@ const mDTP = dispatch =>
 
       // portions
       changeDataPortionAction: SalesActions.changeDataPortionAction,
-      portionByDayAction: SalesActions.portionsByDayAction,
-      portionByMonthAction: SalesActions.portionsByMonthAction,
-      portionByQuarterAction: SalesActions.portionsByQuarterAction,
-      portionByYearAction: SalesActions.portionsByYearAction,
+      portionByDayAction: SalesActions.portionByDayAction,
+      portionByMonthAction: SalesActions.portionByMonthAction,
+      portionByQuarterAction: SalesActions.portionByQuarterAction,
+      portionByYearAction: SalesActions.portionByYearAction,
 
       // packs
       changeDataPacksAction: PacksActions.changeDataPacksAction,
@@ -399,7 +399,7 @@ const mDTP = dispatch =>
       packsByYearAction: PacksActions.packsByYearAction,
 
       // degustation
-      changeDataDegustationsAction: PacksActions.changeDataDegustationsAction,
+      changeDataDegustationsAction: PacksActions.changeDataDegustationAction,
       degustationByDayAction: PacksActions.degustationByDayAction,
       degustationByMonthAction: PacksActions.degustationByMonthAction,
       degustationByQuarterAction: PacksActions.degustationByQuarterAction,
@@ -413,7 +413,7 @@ const mDTP = dispatch =>
       owncupByYearAction: OwnActions.owncupByYearAction,
 
       // ownpacks
-      changeDataOwnpacksAction: OwnActions.changeDataOwnpacksAction,
+      changeDataOwnpacksAction: OwnActions.changeDataOwnpackAction,
       ownpacksByDayAction: OwnActions.ownpacksByDayAction,
       ownpacksByMonthAction: OwnActions.ownpacksByMonthAction,
       ownpacksByQuarterAction: OwnActions.ownpacksByQuarterAction,

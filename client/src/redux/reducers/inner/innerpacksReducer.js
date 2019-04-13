@@ -41,7 +41,8 @@ export const getInnerpackDataSuccess = (state = INITIAL_STATE, action) => {
   return state.merge(innerpack);
 }
 
-export const addInnerpackDataSuccess = (state = INITIAL_STATE, action) => reduceAdded(state, INITIAL_STATE, action);
+export const addInnerpackDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
 
 export const sortInnerpackDataByDay = (state = INITIAL_STATE, action) => {
   let innerpack = filterDataByDay(action.payload);

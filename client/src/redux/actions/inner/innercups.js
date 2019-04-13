@@ -7,10 +7,10 @@ const { Creators } = createActions({
   changeDataInnercup: ['payload'],
   setLoader: ['payload'],
   addInnercup: ['payload'],
-  sortInnercupDataByDay: ['payload'],
-  sortInnercupDataByMonth: ['payload'],
-  sortInnercupDataByQuarter: ['payload'],
-  sortInnercupDataByYear: ['payload'],
+  sortInnercupByDay: ['payload'],
+  sortInnercupByMonth: ['payload'],
+  sortInnercupByQuarter: ['payload'],
+  sortInnercupByYear: ['payload'],
 }, {})
 
 export const changeDataInnercupAction = () => dispatch => {
@@ -46,7 +46,7 @@ export const innercupByMonthAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortInnercupDataByMonth(data.data));
+      dispatch(Creators.sortInnercupByMonth(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -58,7 +58,7 @@ export const innercupByDayAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortInnercupDataByDay(data.data));
+      dispatch(Creators.sortInnercupByDay(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -70,7 +70,7 @@ export const innercupByQuarterAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortInnercupDataByQuarter(data.data));
+      dispatch(Creators.sortInnercupByQuarter(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });
@@ -82,7 +82,7 @@ export const innercupByYearAction = () => dispatch => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch(Creators.sortInnercupDataByYear(data.data));
+      dispatch(Creators.sortInnercupByYear(data.data));
       dispatch(AdditionalActions.setLoader(false));
     }
   });

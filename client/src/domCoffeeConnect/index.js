@@ -14,7 +14,7 @@ const domCoffeeConnection = (endpoint, request, responseProcessor) => {
         responseProcessor(response.data, undefined);
       })
       .catch(error => {
-        responseProcessor(undefined, error.response.data);
+        responseProcessor(undefined, error.response);
       });
   } catch (error) {
     console.log('Error data: ', error);

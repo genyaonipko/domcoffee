@@ -41,7 +41,8 @@ export const getOwnpackDataSuccess = (state = INITIAL_STATE, action) => {
   return state.merge(ownpack);
 }
 
-export const addOwnpackDataSuccess = (state = INITIAL_STATE, action) => reduceAdded(state, INITIAL_STATE, action);
+export const addOwnpackDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
 
 export const sortOwnpackDataByDay = (state = INITIAL_STATE, action) => {
   let ownpack = filterDataByDay(action.payload);

@@ -41,7 +41,8 @@ export const getPacksDataSuccess = (state = INITIAL_STATE, action) => {
   return state.merge(packs);
 }
 
-export const addPacksDataSuccess = (state = INITIAL_STATE, action) => reduceAdded(state, INITIAL_STATE, action);
+export const addPacksDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
 
 export const sortPacksDataByDay = (state = INITIAL_STATE, action) => {
   let packs = filterDataByDay(action.payload);

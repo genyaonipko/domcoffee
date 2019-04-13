@@ -41,7 +41,8 @@ export const getInnercupDataSuccess = (state = INITIAL_STATE, action) => {
   return state.merge(innercup);
 }
 
-export const addInnercupDataSuccess = (state = INITIAL_STATE, action) => reduceAdded(state, INITIAL_STATE, action);
+export const addInnercupDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
 
 export const sortInnercupDataByDay = (state = INITIAL_STATE, action) => {
   let innercup = filterDataByDay(action.payload);

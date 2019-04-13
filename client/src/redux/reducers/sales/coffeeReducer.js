@@ -41,7 +41,8 @@ export const getCoffeeDataSuccess = (state = INITIAL_STATE, action) => {
   return state.merge(coffee);
 }
 
-export const addCoffeeDataSuccess = (state = INITIAL_STATE, action) => reduceAdded(state, INITIAL_STATE, action);
+export const addCoffeeDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
 
 export const sortCoffeeDataByDay = (state = INITIAL_STATE, action) => {
   let coffee = filterDataByDay(action.payload);

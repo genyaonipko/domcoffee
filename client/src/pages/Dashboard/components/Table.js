@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-// import { reduce } from 'ramda';
+import { add, mergeWith } from 'ramda';
 
 const styles = {
   root: {
@@ -23,9 +23,7 @@ const styles = {
   },
 };
 
-const SimpleTable = (props) => {
-  const { classes, tableHeaders, data } = props;
-
+const SimpleTable = ({ classes, tableHeaders, data }) => {
   const initialData = [
     { name: 'balerina' },
     { name: 'gourme' },
@@ -57,18 +55,9 @@ const SimpleTable = (props) => {
     return dataObj;
   });
 
-  const add = (accumulator, currentValue) => {
-    const keys = Object.keys(currentValue).filter(x => x !== 'name')
-    const arr = [];
-    keys.forEach(item => console.log(accumulator[item])
-      // arr.push(accumulator[item] + currentValue[item])
-    )
-    return arr;
-  };
-
-  const reducedData = dataMain.reduce(add, []);
-
-  console.log(reducedData)
+  const reducedData = data.map(item => item.reduce((accumulator, currentValue) => 
+    mergeWith(add, accumulator, currentValue)
+  ));
 
   return (
     <Paper className={classes.root}>
@@ -103,6 +92,14 @@ const SimpleTable = (props) => {
               scope="row">
               Итого
             </TableCell>
+            {reducedData.map((item, i) => 
+              <TableCell
+                key={`reduced_item_${i + 1}`}
+                style={{ fontWeight: 900, fontSize: 18 }}
+              >
+                {item[tableHeaders[i]]}
+              </TableCell>
+            )}
           </TableRow>
         </TableBody>
       </Table>
@@ -113,7 +110,7 @@ const SimpleTable = (props) => {
 SimpleTable.propTypes = {
   classes: PropTypes.shape().isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  data: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+  data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({})).isRequired).isRequired,
 };
 
 export default withStyles(styles)(SimpleTable);

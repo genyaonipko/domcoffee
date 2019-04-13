@@ -41,7 +41,8 @@ export const getOwncupsDataSuccess = (state = INITIAL_STATE, action) => {
   return state.merge(owncups);
 }
 
-export const addOwncupsDataSuccess = (state = INITIAL_STATE, action) => reduceAdded(state, INITIAL_STATE, action);
+export const addOwncupsDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
 
 export const sortOwncupsDataByDay = (state = INITIAL_STATE, action) => {
   let owncups = filterDataByDay(action.payload);

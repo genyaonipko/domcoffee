@@ -1,8 +1,9 @@
 import moment from 'moment';
 
 export const filterDataByDay = payload => payload.filter(
-  item => moment(item.createdDate).format('DD/MM/YYYY') === moment().format('DD/MM/YYYY')
-);
+  item => 
+    console.log(moment(item.createdDate).format('DD/MM/YYYY') === moment().format('DD/MM/YYYY')) || moment(item.createdDate).format('DD/MM/YYYY') === moment().format('DD/MM/YYYY')
+)
 
 export const filterDataByMonth = payload => payload.filter(
   item => moment(item.createdDate).format('MM/YYYY') === moment().format('MM/YYYY')

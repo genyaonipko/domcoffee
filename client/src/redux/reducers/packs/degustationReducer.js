@@ -41,7 +41,8 @@ export const getDegustationDataSuccess = (state = INITIAL_STATE, action) => {
   return state.merge(degustation);
 }
 
-export const addDegustationDataSuccess = (state = INITIAL_STATE, action) => reduceAdded(state, INITIAL_STATE, action);
+export const addDegustationDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
 
 export const sortDegustationDataByDay = (state = INITIAL_STATE, action) => {
   let degustation = filterDataByDay(action.payload);
