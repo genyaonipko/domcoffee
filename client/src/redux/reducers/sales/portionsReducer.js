@@ -1,14 +1,18 @@
-import moment from 'moment';
-import {
-  CHANGE_DATA_PORTIONS,
-  ADD_PORTION,
-  SORT_PORTION_BY_MONTH,
-  SORT_PORTION_BY_DAY,
-  SORT_PORTION_BY_QUARTER,
-  SORT_PORTION_BY_YEAR,
-} from '../../actions/actionTypes';
+import Immutable from 'seamless-immutable'
+import { createReducer } from 'reduxsauce'
+import Types from '../../actions/actionTypes';
 
-const initialState = {
+import {
+  filterDataByDay,
+  filterDataByMonth,
+  filterDataByQuarter,
+  filterDataByYear,
+  changeData,
+  reduceAdded,
+} from '../../../utils/helpers';
+
+/* -------------------- INITIAL_STATE ------------------  */
+const INITIAL_STATE = Immutable.from({
   balerina: 0,
   gourme: 0,
   orient: 0,
@@ -29,85 +33,49 @@ const initialState = {
   efiopia: 0,
   columbia: 0,
   crema: 0,
-};
+});
 
-const changeData = payload => {
-  const keys = Object.keys(initialState);
-  const concatObj = Object.assign({}, initialState);
-  const portions = payload.reduce((previousValue, currentItem) => {
-    for (let i = 0; i < keys.length; i += 1) {
-      const current = !Number.isNaN(+currentItem.portions[keys[i]])
-        ? +currentItem.portions[keys[i]]
-        : 0;
-      concatObj[keys[i]] = +previousValue[keys[i]] + current;
-    }
-    return { ...concatObj };
-  }, initialState);
-  return portions;
-};
-
-function dataReducer(state = initialState, action) {
-  const keys = Object.keys(initialState);
-  switch (action.type) {
-    case CHANGE_DATA_PORTIONS: {
-      const portion = changeData(action.payload);
-      return { ...state, ...portion };
-    }
-    case ADD_PORTION: {
-      const obj = { ...state };
-      console.log(action.payload);
-      keys.forEach(item => {
-        const objItem = !Number.isNaN(+action.payload[item])
-          ? +action.payload[item]
-          : 0;
-        obj[item] = +state[item] + objItem;
-      });
-      return obj;
-    }
-    case SORT_PORTION_BY_DAY: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).date() === moment(Date.now()).date(),
-      );
-      const portions = changeData(filteredSales);
-      return {
-        ...state,
-        ...portions,
-      };
-    }
-    case SORT_PORTION_BY_MONTH: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).month() === moment(Date.now()).month(),
-      );
-      const portions = changeData(filteredSales);
-      return {
-        ...state,
-        ...portions,
-      };
-    }
-    case SORT_PORTION_BY_QUARTER: {
-      const filteredSales = action.payload.filter(
-        item =>
-          moment(item.createdDate).quarter() === moment(Date.now()).quarter(),
-      );
-      const portions = changeData(filteredSales);
-      return {
-        ...state,
-        ...portions,
-      };
-    }
-    case SORT_PORTION_BY_YEAR: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).year() === moment(Date.now()).year(),
-      );
-      const portions = changeData(filteredSales);
-      return {
-        ...state,
-        ...portions,
-      };
-    }
-    default:
-      return state;
-  }
+/* -------------------- Handlers ------------------  */
+export const getPortionDataSuccess = (state = INITIAL_STATE, action) => {
+  const portion = changeData(action.payload, INITIAL_STATE, 'portions');
+  return state.merge(portion);
 }
 
-export default dataReducer;
+export const addPortionDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
+
+export const sortPortionDataByDay = (state = INITIAL_STATE, action) => {
+  let portion = filterDataByDay(action.payload);
+  portion = changeData(portion, INITIAL_STATE, 'portions');
+  return state.merge(portion);
+}
+
+export const sortPortionDataByMonth = (state = INITIAL_STATE, action) => {
+  let portion = filterDataByMonth(action.payload);
+  portion = changeData(portion, INITIAL_STATE, 'portions');
+  return state.merge(portion);
+}
+
+export const sortPortionDataByQuarter = (state = INITIAL_STATE, action) => {
+  let portion = filterDataByQuarter(action.payload);
+  portion = changeData(portion, INITIAL_STATE, 'portions');
+  return state.merge(portion);
+}
+
+export const sortPortionDataByYear = (state = INITIAL_STATE, action) => {
+  let portion = filterDataByYear(action.payload);
+  portion = changeData(portion, INITIAL_STATE, 'portions');
+  return state.merge(portion);
+}
+
+export const HANDLERS = {
+  [Types.CHANGE_DATA_PORTION]: getPortionDataSuccess,
+  [Types.ADD_PORTION]: addPortionDataSuccess,
+  [Types.SORT_PORTION_BY_DAY]: sortPortionDataByDay,
+  [Types.SORT_PORTION_BY_MONTH]: sortPortionDataByMonth,
+  [Types.SORT_PORTION_BY_QUARTER]: sortPortionDataByQuarter,
+  [Types.SORT_PORTION_BY_YEAR]: sortPortionDataByYear,
+}
+
+/* -------------------- Create Reducer ------------------  */
+export default createReducer(INITIAL_STATE, HANDLERS);

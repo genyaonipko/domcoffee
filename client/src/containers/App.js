@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Sales from '../pages/Sales/Sales';
 import Packs from '../pages/Packs/Packs';
@@ -10,6 +11,8 @@ import Inner from '../pages/Inner/Inner';
 import Settings from '../pages/Settings/Settings';
 import ProtectedRoute from '../components/ProtectedRoute';
 import DrawerBar from '../components/Drawer';
+import Login from '../pages/Login/Login';
+import * as authSelectors from '../redux/reducers/authReducer/selectors';
 
 class App extends Component {
   static propTypes = {
@@ -26,8 +29,15 @@ class App extends Component {
 
     return (
       <div style={{ display: 'flex' }}>
-        <DrawerBar {...this.props} />
+        {authenticated ? <DrawerBar {...this.props} /> : null}
         <Switch>
+          <ProtectedRoute
+            exact
+            path="/login"
+            component={Login}
+            redirectTo="/dashboard"
+            authenticated={!authenticated}
+          />
           <ProtectedRoute
             exact
             path="/dashboard"
@@ -76,9 +86,9 @@ class App extends Component {
   }
 }
 
-const mSTP = state => ({
-  authenticated: state.auth.isAuthenticated,
-  role: state.auth.user.role,
+const mSTP = createStructuredSelector({
+  authenticated: authSelectors.selectIsAuthenticated,
+  role: authSelectors.selectRole,
 });
 
 export default connect(

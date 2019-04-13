@@ -1,30 +1,21 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import Divider from '@material-ui/core/Divider';
-import Tooltip from '@material-ui/core/Tooltip';
-import Zoom from '@material-ui/core/Zoom';
 import Fab from '@material-ui/core/Fab';
 
-import { getAllUser, deleteUserAction } from '../../../redux/actions/user';
+import UsersActions from '../../../redux/actions/users/user';
+import { additionalSelectors } from '../../../redux/reducers/additionalReducer';
 
 import Alert from '../../../components/Alert';
-import Loader from '../../../components/Loader';
 import SnackBar from '../../../components/SnackBar';
 import UpdateUserForm from '../components/UpdateUserForm';
+import ListUsers from './ListUsers';
 
 const styles = () => ({
   user: {
@@ -120,76 +111,12 @@ class User extends Component {
             Пользователи
           </Typography>
         </div>
-        <div className={classes.listWrapper}>
-          {users.length ? (
-            <List className={classes.list}>
-              {users.map(item => (
-                <Fragment key={item.email}>
-                  <ListItem className={classes.listItem}>
-                    <Avatar alt="Remy Sharp" src={item.avatar} />
-                    <ListItemText
-                      style={{ width: '15%' }}
-                      className={classes.listText}
-                      primary={item.name}
-                    />
-                    <ListItemText
-                      style={{ width: '35%' }}
-                      className={classes.listText}
-                      primary={item.email}
-                    />
-                    <ListItemText
-                      style={{ width: '10%' }}
-                      className={classes.listText}
-                      primary={item.role}
-                    />
-                    <ListItemText
-                      style={{ width: '15%' }}
-                      className={classes.listText}
-                      primary={item.date.slice(0, 10)}
-                    />
-                    {item.role !== 'admin' ? (
-                      <ListItemSecondaryAction
-                        style={{
-                          width: 200,
-                          height: '100%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
-                        <Tooltip TransitionComponent={Zoom} title="Удалить">
-                          <IconButton
-                            className={classes.buttonList}
-                            aria-label="Delete"
-                            onClick={() => this.handleOpen(item.key)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip
-                          TransitionComponent={Zoom}
-                          title="Редактировать">
-                          <IconButton
-                            className={classes.buttonList}
-                            aria-label="Edit"
-                            onClick={() => this.handleOpenUpdate(item.key)}>
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </ListItemSecondaryAction>
-                    ) : (
-                      <ListItemText
-                        style={{ width: '15%' }}
-                        className={classes.listNoneAction}
-                      />
-                    )}
-                  </ListItem>
-                  <Divider light />
-                </Fragment>
-              ))}
-            </List>
-          ) : (
-            <Loader />
-          )}
-        </div>
+        <ListUsers
+          users={users}
+          classes={classes}
+          handleOpenUpdate={this.handleOpenUpdate}
+          handleOpen={this.handleOpen}
+        />
         <Alert
           open={open}
           handleDelete={() => this.handleDelete(key)}
@@ -221,13 +148,21 @@ User.propTypes = {
   deleteUser: PropTypes.func.isRequired,
 };
 
-const mSTP = state => ({
-  users: state.users,
-});
+// const mSTP = createStructuredSelector({
+//   users: selectDegustationForChart,
+// });
 
-const mDTP = dispatch => ({
-  getAllUser: () => dispatch(getAllUser()),
-  deleteUser: key => dispatch(deleteUserAction(key)),
+const mDTP = dispatch =>
+  bindActionCreators(
+    {
+      getAllUser: UsersActions.getAllUser,
+      deleteUser: UsersActions.deleteUserAction,
+    },
+    dispatch,
+  );
+
+const mSTP = createStructuredSelector({
+  users: additionalSelectors.selectUsers,
 });
 
 export default compose(

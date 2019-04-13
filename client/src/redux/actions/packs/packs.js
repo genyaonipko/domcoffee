@@ -1,98 +1,85 @@
-import {
-  CHANGE_DATA_PACKS,
-  ADD_PACKS,
-  SET_LOADER,
-  SORT_PACKS_BY_MONTH,
-  SORT_PACKS_BY_DAY,
-  SORT_PACKS_BY_QUARTER,
-  SORT_PACKS_BY_YEAR,
-} from '../actionTypes';
-
+import { createActions } from 'reduxsauce';
 import { getPacks, addPack } from '../../../domCoffeeConnect';
 import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
+import { Creators as AdditionalActions } from '../additional/additional'
+
+const { Creators } = createActions({
+  changeDataPacks: ['payload'],
+  addPacks: ['payload'],
+  sortPacksByDay: ['payload'],
+  sortPacksByMonth: ['payload'],
+  sortPacksByQuarter: ['payload'],
+  sortPacksByYear: ['payload'],
+}, {})
 
 export const changeDataPacksAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+  dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: CHANGE_DATA_PACKS,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.changeDataPacks(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const addPackAction = packs => (dispatch, getState) => {
+export const addPackAction = pack => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
-  addPack(dcRequest.addPack(packs, dateTransaction), (data, error) => {
+  // eslint-disable-next-line
+  addPack(dcRequest.addPack(pack, dateTransaction._d), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({ type: ADD_PACKS, payload: data.data.packs });
+      dispatch(Creators.addPacks(data.data.packs));
     }
   });
 };
 
-export const changeDataByMonthAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const packsByMonthAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_PACKS_BY_MONTH,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortPacksByMonth(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByDayAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const packsByDayAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_PACKS_BY_DAY,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortPacksByDay(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByQuarterAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const packsByQuarterAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_PACKS_BY_QUARTER,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortPacksByQuarter(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByYearAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const packsByYearAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getPacks(dcRequest.getPacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_PACKS_BY_YEAR,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortPacksByYear(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };

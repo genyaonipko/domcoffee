@@ -1,14 +1,18 @@
-import moment from 'moment';
-import {
-  CHANGE_DATA_INNERPACKS,
-  ADD_INNERPACK,
-  SORT_INNERPACK_BY_MONTH,
-  SORT_INNERPACK_BY_DAY,
-  SORT_INNERPACK_BY_QUARTER,
-  SORT_INNERPACK_BY_YEAR,
-} from '../../actions/actionTypes';
+import Immutable from 'seamless-immutable'
+import { createReducer } from 'reduxsauce'
+import Types from '../../actions/actionTypes';
 
-const initialState = {
+import {
+  filterDataByDay,
+  filterDataByMonth,
+  filterDataByQuarter,
+  filterDataByYear,
+  changeData,
+  reduceAdded,
+} from '../../../utils/helpers';
+
+/* -------------------- INITIAL_STATE ------------------  */
+const INITIAL_STATE = Immutable.from({
   balerina: 0,
   gourme: 0,
   orient: 0,
@@ -29,83 +33,49 @@ const initialState = {
   efiopia: 0,
   columbia: 0,
   crema: 0,
-};
+});
 
-const changeData = payload => {
-  const keys = Object.keys(initialState);
-  const concatObj = Object.assign({}, initialState);
-  const innerpacks = payload.reduce((previousValue, currentItem) => {
-    for (let i = 0; i < keys.length; i += 1) {
-      const current = !Number.isNaN(+currentItem.innerpacks[keys[i]])
-        ? +currentItem.innerpacks[keys[i]]
-        : 0;
-      concatObj[keys[i]] = +previousValue[keys[i]] + current;
-    }
-    return { ...concatObj };
-  }, initialState);
-  return innerpacks;
-};
-
-function innerpackssReducer(state = initialState, action) {
-  switch (action.type) {
-    case CHANGE_DATA_INNERPACKS: {
-      const innerpacks = changeData(action.payload);
-      return { ...state, ...innerpacks };
-    }
-    case ADD_INNERPACK: {
-      const obj = { ...state };
-      Object.keys(initialState).forEach(item => {
-        const objItem = !Number.isNaN(+action.payload[item])
-          ? +action.payload[item]
-          : 0;
-        obj[item] = +state[item] + objItem;
-      });
-      return obj;
-    }
-    case SORT_INNERPACK_BY_DAY: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).date() === moment(Date.now()).date(),
-      );
-      const innerpacks = changeData(filteredSales);
-      return {
-        ...state,
-        ...innerpacks,
-      };
-    }
-    case SORT_INNERPACK_BY_MONTH: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).month() === moment(Date.now()).month(),
-      );
-      const innerpacks = changeData(filteredSales);
-      return {
-        ...state,
-        ...innerpacks,
-      };
-    }
-    case SORT_INNERPACK_BY_QUARTER: {
-      const filteredSales = action.payload.filter(
-        item =>
-          moment(item.createdDate).quarter() === moment(Date.now()).quarter(),
-      );
-      const innerpacks = changeData(filteredSales);
-      return {
-        ...state,
-        ...innerpacks,
-      };
-    }
-    case SORT_INNERPACK_BY_YEAR: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).year() === moment(Date.now()).year(),
-      );
-      const innerpacks = changeData(filteredSales);
-      return {
-        ...state,
-        ...innerpacks,
-      };
-    }
-    default:
-      return state;
-  }
+/* -------------------- Handlers ------------------  */
+export const getInnerpackDataSuccess = (state = INITIAL_STATE, action) => {
+  const innerpack = changeData(action.payload, INITIAL_STATE, 'innerpacks');
+  return state.merge(innerpack);
 }
 
-export default innerpackssReducer;
+export const addInnerpackDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
+
+export const sortInnerpackDataByDay = (state = INITIAL_STATE, action) => {
+  let innerpack = filterDataByDay(action.payload);
+  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpacks');
+  return state.merge(innerpack);
+}
+
+export const sortInnerpackDataByMonth = (state = INITIAL_STATE, action) => {
+  let innerpack = filterDataByMonth(action.payload);
+  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpacks');
+  return state.merge(innerpack);
+}
+
+export const sortInnerpackDataByQuarter = (state = INITIAL_STATE, action) => {
+  let innerpack = filterDataByQuarter(action.payload);
+  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpacks');
+  return state.merge(innerpack);
+}
+
+export const sortInnerpackDataByYear = (state = INITIAL_STATE, action) => {
+  let innerpack = filterDataByYear(action.payload);
+  innerpack = changeData(innerpack, INITIAL_STATE, 'innerpacks');
+  return state.merge(innerpack);
+}
+
+export const HANDLERS = {
+  [Types.CHANGE_DATA_INNERPACK]: getInnerpackDataSuccess,
+  [Types.ADD_INNERPACK]: addInnerpackDataSuccess,
+  [Types.SORT_INNERPACK_BY_DAY]: sortInnerpackDataByDay,
+  [Types.SORT_INNERPACK_BY_MONTH]: sortInnerpackDataByMonth,
+  [Types.SORT_INNERPACK_BY_QUARTER]: sortInnerpackDataByQuarter,
+  [Types.SORT_INNERPACK_BY_YEAR]: sortInnerpackDataByYear,
+}
+
+/* -------------------- Create Reducer ------------------  */
+export default createReducer(INITIAL_STATE, HANDLERS);

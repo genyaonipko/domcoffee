@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { add, mergeWith } from 'ramda';
 
 const styles = {
   root: {
@@ -22,9 +23,7 @@ const styles = {
   },
 };
 
-function SimpleTable(props) {
-  const { classes, tableHeaders, data } = props;
-
+const SimpleTable = ({ classes, tableHeaders, data }) => {
   const initialData = [
     { name: 'balerina' },
     { name: 'gourme' },
@@ -49,15 +48,16 @@ function SimpleTable(props) {
   ];
   const dataMain = initialData.map(item => {
     let dataObj = {};
-    props.data.forEach((obj, i) => {
-      dataObj = {
-        ...dataObj,
-        ...item,
-        [props.tableHeaders[i]]: obj[item.name],
-      };
+    data.forEach(arr => {
+      const currentArr = arr.find(x => x.name === item.name);
+      dataObj = { ...dataObj, ...item, ...currentArr };
     });
     return dataObj;
   });
+
+  const reducedData = data.map(item => item.reduce((accumulator, currentValue) => 
+    mergeWith(add, accumulator, currentValue)
+  ));
 
   return (
     <Paper className={classes.root}>
@@ -92,19 +92,14 @@ function SimpleTable(props) {
               scope="row">
               Итого
             </TableCell>
-            {Object.keys(data).map(item => {
-              const summ = Object.values(data[item]).reduce(
-                (previousValue, currentItem) => previousValue + currentItem,
-                0,
-              );
-              return (
-                <TableCell
-                  key={`table_summ_${item}`}
-                  style={{ fontWeight: 900, fontSize: 18 }}>
-                  {summ}
-                </TableCell>
-              );
-            })}
+            {reducedData.map((item, i) => 
+              <TableCell
+                key={`reduced_item_${i + 1}`}
+                style={{ fontWeight: 900, fontSize: 18 }}
+              >
+                {item[tableHeaders[i]]}
+              </TableCell>
+            )}
           </TableRow>
         </TableBody>
       </Table>
@@ -115,7 +110,7 @@ function SimpleTable(props) {
 SimpleTable.propTypes = {
   classes: PropTypes.shape().isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  data: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+  data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({})).isRequired).isRequired,
 };
 
 export default withStyles(styles)(SimpleTable);

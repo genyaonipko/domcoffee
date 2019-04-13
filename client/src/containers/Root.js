@@ -9,8 +9,8 @@ import App from './App';
 import store from '../redux/store';
 import history from '../utils/history';
 import setAuthToken from '../utils/setAuthToken';
-import { setCurrentUser, logoutUser } from '../redux/actions/authentication';
-import Login from '../pages/Login/Login';
+import { logoutUser } from '../redux/actions/authentication';
+import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
 import Fixture from '../components/Fixture';
 
 const screenWidth = window.innerWidth;
@@ -38,7 +38,7 @@ const theme = createMuiTheme({
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
   const decoded = jwtDecode(localStorage.jwtToken);
-  store.dispatch(setCurrentUser(decoded));
+  store.dispatch(AdditionalActions.setCurrentUser(decoded));
 
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
@@ -55,7 +55,6 @@ class Root extends Component {
         <Router history={history}>
           <MuiThemeProvider theme={theme}>
             <Switch>
-              <Route exact path="/login" component={Login} />
               <Route path="/" component={App} />
             </Switch>
           </MuiThemeProvider>

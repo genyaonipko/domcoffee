@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Typography from '@material-ui/core/Typography';
@@ -6,15 +6,16 @@ import SimpleLineChart from '../components/Charts/LineChart';
 import SimpleTable from '../components/Table';
 import Loader from '../components/Loader';
 
-export default class ChartPage extends Component {
+export default class ChartPage extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({}).isRequired,
-    data: PropTypes.shape({}).isRequired,
+    data: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
     tableHeaders: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     chartTitle: PropTypes.string.isRequired,
     tableTitle: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     chartColor: PropTypes.string.isRequired,
+    concatData: PropTypes.number.isRequired,
   };
 
   render() {
@@ -26,7 +27,9 @@ export default class ChartPage extends Component {
       tableTitle,
       isLoading,
       chartColor,
+      concatData,
     } = this.props;
+
     if (isLoading) return <Loader />;
     if (!_.findKey(data, o => o !== 0)) {
       return (
@@ -50,7 +53,12 @@ export default class ChartPage extends Component {
           {tableTitle}
         </Typography>
         <div className={classes.tableContainer}>
-          <SimpleTable data={data} tableHeaders={tableHeaders} />
+          <SimpleTable
+            concatData={concatData}
+            data={data}
+            tableHeaders={tableHeaders}
+            legend={tableTitle}
+          />
         </div>
       </div>
     );

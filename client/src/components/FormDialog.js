@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import 'moment/locale/ru';
 import MomentUtils from '@date-io/moment';
 
-import { dateAction } from '../redux/actions/helpers';
+import { Creators } from '../redux/actions/additional/additional';
 
 const styles = () => ({
   mainArea: {
@@ -45,8 +45,12 @@ const InputTextField = ({ input, label, autoFocus, ...rest }) => (
 InputTextField.propTypes = {
   input: PropTypes.shape({}).isRequired,
   label: PropTypes.string.isRequired,
-  autoFocus: PropTypes.bool.isRequired,
+  autoFocus: PropTypes.bool,
 };
+
+InputTextField.defaultProps = {
+  autoFocus: false,
+}
 
 class FormDialog extends React.Component {
   static propTypes = {
@@ -205,7 +209,7 @@ class FormDialog extends React.Component {
 }
 
 const mDTP = dispatch => ({
-  changeDate: value => dispatch(dateAction(value)),
+  changeDate: value => dispatch(Creators.setDateTransaction(value)),
 });
 
 export default compose(

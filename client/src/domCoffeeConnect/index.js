@@ -14,7 +14,7 @@ const domCoffeeConnection = (endpoint, request, responseProcessor) => {
         responseProcessor(response.data, undefined);
       })
       .catch(error => {
-        console.log('Error data: ', error);
+        responseProcessor(undefined, error.response);
       });
   } catch (error) {
     console.log('Error data: ', error);
@@ -71,7 +71,7 @@ export const getOwnpacks = (requestData, responseProcessor) => {
   domCoffeeConnection('/api/ownpacks', requestData, responseProcessor);
 };
 
-export const getCoffee = (requestData, responseProcessor) => {
+export const getCoffees = (requestData, responseProcessor) => {
   domCoffeeConnection('/api/coffee', requestData, responseProcessor);
 };
 
@@ -85,4 +85,20 @@ export const getPortions = (requestData, responseProcessor) => {
 
 export const addPortion = (requestData, responseProcessor) => {
   domCoffeeConnection('/api/portions', requestData, responseProcessor);
+};
+
+export const loginUserRequest = (requestData, responseProcessor) => {
+  domCoffeeConnection('/api/users/login', requestData, responseProcessor);
+};
+
+export const getUsersRequest = (requestData, responseProcessor) => {
+  domCoffeeConnection('/api/users/all', requestData, responseProcessor);
+};
+
+export const deleteUserRequest = (requestData, responseProcessor) => {
+  domCoffeeConnection(`/api/users/${requestData.keys.key}`, requestData, responseProcessor);
+};
+
+export const updateUserRequest = (requestData, responseProcessor) => {
+  domCoffeeConnection(`/api/users/${requestData.keys.key}`, requestData, responseProcessor);
 };

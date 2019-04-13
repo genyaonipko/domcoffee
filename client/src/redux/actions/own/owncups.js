@@ -1,98 +1,89 @@
-import {
-  CHANGE_DATA_OWNCUPS,
-  ADD_OWNCUP,
-  SET_LOADER,
-  SORT_OWNCUP_BY_MONTH,
-  SORT_OWNCUP_BY_DAY,
-  SORT_OWNCUP_BY_QUARTER,
-  SORT_OWNCUP_BY_YEAR,
-} from '../actionTypes';
-
+import { createActions } from 'reduxsauce'
 import { getOwncups, addOwncup } from '../../../domCoffeeConnect';
 import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
+import { Creators as AdditionalActions } from '../additional/additional'
+
+const { Creators } = createActions({
+  changeDataOwncup: ['payload'],
+  setLoader: ['payload'],
+  addOwncup: ['payload'],
+  sortOwncupByDay: ['payload'],
+  sortOwncupByMonth: ['payload'],
+  sortOwncupByQuarter: ['payload'],
+  sortOwncupByYear: ['payload'],
+}, {})
 
 export const changeDataOwncupAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+  dispatch(AdditionalActions.setLoader(true));
   getOwncups(dcRequest.getOwncups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: CHANGE_DATA_OWNCUPS,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.changeDataOwncup(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
 export const addOwncupAction = owncup => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
-  addOwncup(dcRequest.addOwncup(owncup, dateTransaction), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch({ type: ADD_OWNCUP, payload: data.data.owncups });
-    }
-  });
+  addOwncup(
+    // eslint-disable-next-line
+    dcRequest.addOwncup(owncup, dateTransaction._d),
+    (data, error) => {
+      if (error !== undefined) {
+        dispatch(console.log(error));
+      } else if (data !== undefined) {
+        dispatch(Creators.addOwncup(data.data.owncups));
+      }
+    },
+  );
 };
 
-export const changeDataByMonthAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const owncupByMonthAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getOwncups(dcRequest.getOwncups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_OWNCUP_BY_MONTH,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortOwncupByMonth(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByDayAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const owncupByDayAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getOwncups(dcRequest.getOwncups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_OWNCUP_BY_DAY,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortOwncupByDay(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByQuarterAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const owncupByQuarterAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getOwncups(dcRequest.getOwncups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_OWNCUP_BY_QUARTER,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortOwncupByQuarter(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByYearAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const owncupByYearAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getOwncups(dcRequest.getOwncups(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_OWNCUP_BY_YEAR,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortOwncupByYear(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };

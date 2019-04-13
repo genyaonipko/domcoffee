@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-
+import { bindActionCreators, compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -15,9 +15,11 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import { logoutUser } from '../redux/actions/authentication';
 
-import { setSidebarState } from '../redux/actions/sidebar';
+import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
 
-import { getSidebarState, getUserRole } from '../redux/selectors';
+import { selectRole, selectUser } from '../redux/reducers/authReducer/selectors'
+import { additionalSelectors } from '../redux/reducers/additionalReducer'
+
 
 const drawerWidth = 240;
 
@@ -150,16 +152,20 @@ class AppBarComponent extends Component {
   }
 }
 
-const mSTP = state => ({
-  role: getUserRole(state),
-  sidebar: getSidebarState(state),
-  user: state.auth.user,
+const mSTP = createStructuredSelector({
+  role: selectRole,
+  sidebar: additionalSelectors.selectSidebar,
+  user: selectUser,
 });
 
-const mDTP = dispatch => ({
-  logout: () => dispatch(logoutUser()),
-  changeSidebar: bool => dispatch(setSidebarState(bool)),
-});
+const mDTP = dispatch =>
+  bindActionCreators(
+    {
+      logout: logoutUser,
+      changeSidebar: AdditionalActions.setSidebarState,
+    },
+    dispatch,
+  );
 
 export default compose(
   connect(

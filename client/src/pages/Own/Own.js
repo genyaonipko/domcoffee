@@ -1,22 +1,25 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
+import { bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AddIcon from '@material-ui/icons/Add';
 
 import AppBarComponent from '../../components/AppBarComponent';
 import FormDialog from '../../components/FormDialog';
+import OwnActions from '../../redux/actions/own';
 import {
-  changeDataOwnpackAction,
-  addOwnpackAction,
-} from '../../redux/actions/own/ownpacks';
+  selectOwnpacksForChart,
+  selectOwncupsForChart,
+  concatDataOwnpacks,
+  concatDataOwncups,
+} from '../../redux/reducers/own/selectors';
 import {
-  changeDataOwncupAction,
-  addOwncupAction,
-} from '../../redux/actions/own/owncups';
-// import * as api from '../../utils/api';
+  additionalSelectors
+} from '../../redux/reducers/additionalReducer';
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
 
@@ -45,14 +48,14 @@ const styles = () => ({
   },
 });
 
-class Sales extends Component {
+class Own extends Component {
   state = {
     open: false,
   };
 
   componentDidMount = () => {
-    this.props.changeData();
-    this.props.getAllPacks();
+    this.props.getAllOwnpacks();
+    this.props.getAllOwncups();
   };
 
   handleClickOpen = () => {
@@ -65,78 +68,85 @@ class Sales extends Component {
 
   handleSubmit = values => {
     if (!this.props.tabIndex) {
-      this.props.onSubmit(values);
+      this.props.onSubmitOwnpacks(values);
     } else {
-      this.props.onSubmitPacks(values);
+      this.props.onSubmitOwncups(values);
     }
   };
 
-  renderContent = (owncups, ownpacks, classes, isLoading, restProps) => {
-    const tableHeaders = ['Марка кофе', 'Кол-во внутреннего'];
-    const tabTitles = ['Чашки', 'Пачки'];
+  renderFormDialog = () => {
+    const { open } = this.state;
+    return (
+      <FormDialog
+        onSubmit={values => this.handleSubmit(values)}
+        open={open}
+        handleClose={this.handleClose}
+        title="личного"
+      />
+    );
+  };
+
+  renderFabButton = () => {
+    const { classes } = this.props;
+    return (
+      <Fab
+        color="primary"
+        aria-label="Add"
+        className={classes.button}
+        onClick={this.handleClickOpen}>
+        <AddIcon />
+      </Fab>
+    );
+  };
+
+  renderContent = () => {
+    const { owncups, ownpacks, classes, isLoading, ...restProps } = this.props;
+    const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
+    const tabTitles = ['Пачки', 'Чашки'];
 
     return (
       <TabPages tabTitles={tabTitles} classes={classes} {...restProps}>
         <ChartPage
           classes={classes}
-          data={owncups}
-          chartTitle="График по чашкам"
-          tableTitle="Чашки"
+          data={ownpacks}
+          chartTitle="График по пачкам"
+          tableTitle="Пачки"
           tableHeaders={tableHeaders}
           isLoading={isLoading}
           chartColor="#4caf50"
+          concatData={this.props.concatDataOwnpacks}
         />
         <ChartPage
           classes={classes}
-          chartTitle="График по пачкам"
-          tableTitle="Пачки"
-          data={ownpacks}
+          chartTitle="График по чашкам"
+          tableTitle="Чашки"
+          data={owncups}
           tableHeaders={tableHeaders}
           isLoading={isLoading}
           chartColor="#4caf50"
+          concatData={this.props.concatDataOwncups}
         />
       </TabPages>
     );
   };
 
   render() {
-    const { open } = this.state;
-    const { classes, isLoading, owncups, ownpacks, ...restProps } = this.props;
+    const { classes } = this.props;
     return (
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
           <AppBarComponent title="Личное" barColor="#4caf50" />
-          <main className={classes.content}>
-            {this.renderContent(
-              owncups,
-              ownpacks,
-              classes,
-              isLoading,
-              restProps,
-            )}
-          </main>
-          <Button
-            variant="fab"
-            color="primary"
-            aria-label="Add"
-            className={classes.button}
-            onClick={this.handleClickOpen}>
-            <AddIcon />
-          </Button>
-          <FormDialog
-            onSubmit={values => this.handleSubmit(values)}
-            open={open}
-            handleClose={this.handleClose}
-            title="продаж"
-          />
+          <main className={classes.content}>{this.renderContent()}</main>
+          {this.renderFabButton()}
+          {this.renderFormDialog()}
         </div>
       </Fragment>
     );
   }
 }
 
-Sales.propTypes = {
+Own.propTypes = {
   // settings
   classes: PropTypes.shape().isRequired,
   isLoading: PropTypes.bool.isRequired,
@@ -145,30 +155,37 @@ Sales.propTypes = {
   // data
   owncups: PropTypes.shape({}).isRequired,
   ownpacks: PropTypes.shape({}).isRequired,
+  concatDataOwnpacks: PropTypes.number.isRequired,
+  concatDataOwncups: PropTypes.number.isRequired,
 
   // function
-  changeData: PropTypes.func.isRequired,
-  getAllPacks: PropTypes.func.isRequired,
-  getAllPortions: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  onSubmitPacks: PropTypes.func.isRequired,
+  getAllOwncups: PropTypes.func.isRequired,
+  getAllOwnpacks: PropTypes.func.isRequired,
+  onSubmitOwnpacks: PropTypes.func.isRequired,
+  onSubmitOwncups: PropTypes.func.isRequired,
 };
 
-const mSTP = state => ({
-  owncups: state.owncups,
-  ownpacks: state.ownpacks,
-  isLoading: state.settings.isLoading,
-  tabIndex: state.settings.tabIndex,
+const mSTP = createStructuredSelector({
+  owncups: selectOwncupsForChart,
+  ownpacks: selectOwnpacksForChart,
+  isLoading: additionalSelectors.selectLoader,
+  tabIndex: additionalSelectors.selectTabIndex,
+  concatDataOwnpacks,
+  concatDataOwncups,
 });
 
-const mDTP = dispatch => ({
-  changeData: () => dispatch(changeDataOwncupAction()),
-  getAllPacks: () => dispatch(changeDataOwnpackAction()),
-  onSubmit: obj => dispatch(addOwncupAction(obj)),
-  onSubmitPacks: obj => dispatch(addOwnpackAction(obj)),
-});
+const mDTP = dispatch =>
+  bindActionCreators(
+    {
+      getAllOwnpacks: OwnActions.changeDataOwnpackAction,
+      getAllOwncups: OwnActions.changeDataOwncupAction,
+      onSubmitOwnpacks: OwnActions.addOwnpackAction,
+      onSubmitOwncups: OwnActions.addOwncupAction,
+    },
+    dispatch,
+  );
 
 export default connect(
   mSTP,
   mDTP,
-)(withStyles(styles, { withTheme: true })(Sales));
+)(withStyles(styles, { withTheme: true })(Own));

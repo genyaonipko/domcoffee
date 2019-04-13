@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -9,22 +10,22 @@ import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import { equals } from 'ramda';
 
+
 import Loader from '../../components/Loader';
 
-import { getAllCoffeeAction } from '../../redux/actions/sales/coffee';
-import { changeDataPacksAction } from '../../redux/actions/packs/packs';
-import { changeDataInnerpackAction } from '../../redux/actions/inner/innerpacks';
-import { changeDataInnercupAction } from '../../redux/actions/inner/innercups';
-import { changeDataOwnpackAction } from '../../redux/actions/own/ownpacks';
-import { changeDataOwncupAction } from '../../redux/actions/own/owncups';
-import { changePortionsAction } from '../../redux/actions/sales/portions';
-import { changeDataDegustationAction } from '../../redux/actions/packs/degustation';
+import SalesActions from '../../redux/actions/sales';
+import PacksActions from '../../redux/actions/packs';
+import InnerActions from '../../redux/actions/inner';
+import OwnActions from '../../redux/actions/own';
+
+import { selectDashboardTab1, selectDashboardTab2 } from '../../redux/reducers/dashboardReducer/selectors';
+import {
+  additionalSelectors
+} from '../../redux/reducers/additionalReducer';
 
 import SimpleLineChart from './components/LineChart';
 import SimpleTable from './components/Table';
 import AppBarComponent from '../../components/AppBarComponent';
-
-import { reduceAllPositions } from './components/DashboardHelpers';
 
 import TabPages from '../../components/TabPage';
 
@@ -87,61 +88,32 @@ class Dashboard extends React.Component {
       </Typography>
     );
 
-  renderContent = (
-    packs,
-    portions,
-    coffee,
-    innerpacks,
-    ownpacks,
-    innercups,
-    owncups,
-    degustation,
-    classes,
-    restProps,
-  ) => {
-    const packsNoPay = reduceAllPositions([coffee, innerpacks, ownpacks]);
-    const cupsNoPay = reduceAllPositions([degustation, innercups, owncups]);
-
-    const tab1Data = [packs, portions, packsNoPay, cupsNoPay];
+  renderContent = () => {
+    const {
+      classes,
+      dashboardTab1,
+      dashboardTab2,
+      isLoading,
+      ...restProps
+    } = this.props;
     const tab1Titles = [
       'Пачки за деньги',
       'Чашки за деньги',
       'Пачки бесплатно',
       'Чашки бесплатно',
     ];
-
-    const cupsToPay = reduceAllPositions([
-      degustation,
-      innercups,
-      owncups,
-      portions,
-    ]);
-
-    const tab2Data = [coffee, cupsToPay];
     const tab2Titles = ['Помол', 'Чашки'];
 
     return (
       <TabPages tabTitles={['Tab1', 'Tab2']} classes={classes} {...restProps}>
-        {this.renderChartAndTable(tab1Data, tab1Titles, classes)}
-        {this.renderChartAndTable(tab2Data, tab2Titles, classes)}
+        {this.renderChartAndTable(dashboardTab1, tab1Titles, classes)}
+        {this.renderChartAndTable(dashboardTab2, tab2Titles, classes)}
       </TabPages>
     );
   };
 
   render() {
-    const {
-      classes,
-      packs,
-      coffee,
-      innerpacks,
-      ownpacks,
-      portions,
-      innercups,
-      owncups,
-      degustation,
-      isLoading,
-      ...restProps
-    } = this.props;
+    const { classes, isLoading } = this.props;
 
     return (
       <Fragment>
@@ -150,18 +122,7 @@ class Dashboard extends React.Component {
           <AppBarComponent title="Дашбоард" />
           <main className={classes.content}>
             {!isLoading ? (
-              this.renderContent(
-                packs,
-                portions,
-                coffee,
-                innerpacks,
-                ownpacks,
-                innercups,
-                owncups,
-                degustation,
-                classes,
-                restProps,
-              )
+              this.renderContent()
             ) : (
               <Loader />
             )}
@@ -178,14 +139,8 @@ Dashboard.propTypes = {
   isLoading: PropTypes.bool.isRequired,
 
   // data
-  packs: PropTypes.shape({}).isRequired,
-  portions: PropTypes.shape({}).isRequired,
-  degustation: PropTypes.shape({}).isRequired,
-  coffee: PropTypes.shape({}).isRequired,
-  innercups: PropTypes.shape({}).isRequired,
-  innerpacks: PropTypes.shape({}).isRequired,
-  owncups: PropTypes.shape({}).isRequired,
-  ownpacks: PropTypes.shape({}).isRequired,
+  dashboardTab1: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))).isRequired,
+  dashboardTab2: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))).isRequired,
 
   // functions
   changeData: PropTypes.func.isRequired,
@@ -198,28 +153,26 @@ Dashboard.propTypes = {
   getAllOwnCups: PropTypes.func.isRequired,
 };
 
-const mSTP = state => ({
-  packs: state.packs,
-  coffee: state.coffee,
-  innerpacks: state.innerpacks,
-  innercups: state.innercups,
-  ownpacks: state.ownpacks,
-  owncups: state.owncups,
-  degustation: state.degustation,
-  portions: state.portions,
-  isLoading: state.settings.isLoading,
+const mSTP = createStructuredSelector({
+  isLoading: additionalSelectors.selectLoader,
+  dashboardTab1: selectDashboardTab1,
+  dashboardTab2: selectDashboardTab2,
 });
 
-const mDTP = dispatch => ({
-  getAllCoffee: () => dispatch(getAllCoffeeAction()),
-  changeData: () => dispatch(changeDataPacksAction()),
-  getAllOwn: () => dispatch(changeDataOwnpackAction()),
-  getAllPortions: () => dispatch(changePortionsAction()),
-  getAllInnerPacks: () => dispatch(changeDataInnerpackAction()),
-  getAllDegustation: () => dispatch(changeDataDegustationAction()),
-  getAllInnerCups: () => dispatch(changeDataInnercupAction()),
-  getAllOwnCups: () => dispatch(changeDataOwncupAction()),
-});
+const mDTP = dispatch =>
+  bindActionCreators(
+    {
+      getAllCoffee: SalesActions.changeDataCoffeeAction,
+      getAllPortions: SalesActions.changeDataPortionAction,
+      changeData: PacksActions.changeDataPacksAction,
+      getAllOwn: OwnActions.changeDataOwnpackAction,
+      getAllInnerPacks: InnerActions.changeDataInnerpackAction,
+      getAllDegustation: PacksActions.changeDataDegustationAction,
+      getAllInnerCups: InnerActions.changeDataInnercupAction,
+      getAllOwnCups: OwnActions.changeDataOwncupAction,
+    },
+    dispatch,
+  );
 
 export default compose(
   withStyles(styles, { withTheme: true }),

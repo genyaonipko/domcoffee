@@ -32,5 +32,8 @@
 "s",
 "ms"
 ]
+},
+"stylelint": {
+"ignoreFiles": "./node_modules/**/*.css"
 }
 }

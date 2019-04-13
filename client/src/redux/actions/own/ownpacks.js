@@ -1,98 +1,89 @@
-import {
-  CHANGE_DATA_OWNPACKS,
-  ADD_OWNPACK,
-  SET_LOADER,
-  SORT_OWNPACK_BY_MONTH,
-  SORT_OWNPACK_BY_DAY,
-  SORT_OWNPACK_BY_QUARTER,
-  SORT_OWNPACK_BY_YEAR,
-} from '../actionTypes';
-
+import { createActions } from 'reduxsauce'
 import { getOwnpacks, addOwnpack } from '../../../domCoffeeConnect';
 import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
+import { Creators as AdditionalActions } from '../additional/additional'
+
+const { Creators } = createActions({
+  changeDataOwnpack: ['payload'],
+  setLoader: ['payload'],
+  addOwnpack: ['payload'],
+  sortOwnpackByDay: ['payload'],
+  sortOwnpackByMonth: ['payload'],
+  sortOwnpackByQuarter: ['payload'],
+  sortOwnpackByYear: ['payload'],
+}, {})
 
 export const changeDataOwnpackAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+  dispatch(AdditionalActions.setLoader(true));
   getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: CHANGE_DATA_OWNPACKS,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.changeDataOwnpack(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const addOwnpackAction = ownpack => (dispatch, getState) => {
+export const addOwnpackAction = ownpacks => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
-  addOwnpack(dcRequest.addOwnpack(ownpack, dateTransaction), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch({ type: ADD_OWNPACK, payload: data.data.ownpacks });
-    }
-  });
+  addOwnpack(
+    // eslint-disable-next-line
+    dcRequest.addOwnpack(ownpacks, dateTransaction._d),
+    (data, error) => {
+      if (error !== undefined) {
+        dispatch(console.log(error));
+      } else if (data !== undefined) {
+        dispatch(Creators.addOwnpack(data.data.ownpacks));
+      }
+    },
+  );
 };
 
-export const changeDataByMonthAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const ownpacksByMonthAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_OWNPACK_BY_MONTH,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortOwnpackByMonth(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByDayAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const ownpacksByDayAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_OWNPACK_BY_DAY,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortOwnpackByDay(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByQuarterAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const ownpacksByQuarterAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_OWNPACK_BY_QUARTER,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortOwnpackByQuarter(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };
 
-export const changeDataByYearAction = () => dispatch => {
-  dispatch({ type: SET_LOADER, payload: true });
+export const ownpacksByYearAction = () => dispatch => {
+  dispatch(AdditionalActions.setLoader(true));
   getOwnpacks(dcRequest.getOwnpacks(), (data, error) => {
     if (error !== undefined) {
       dispatch(console.log(error));
     } else if (data !== undefined) {
-      dispatch({
-        type: SORT_OWNPACK_BY_YEAR,
-        payload: data.data,
-      });
-      dispatch({ type: SET_LOADER, payload: false });
+      dispatch(Creators.sortOwnpackByYear(data.data));
+      dispatch(AdditionalActions.setLoader(false));
     }
   });
 };

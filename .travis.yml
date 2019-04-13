@@ -1,0 +1,6 @@
+language: javascript
+install:
+  - npm install
+  - cd client && npm install
+script:
+  - npm run lint

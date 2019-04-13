@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,6 +17,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Loader from '../../components/Loader';
 
 import { loginUser } from '../../redux/actions/authentication';
+import { additionalSelectors } from '../../redux/reducers/additionalReducer';
 
 const styles = theme => ({
   layout: {
@@ -182,13 +184,13 @@ Login.propTypes = {
   errors: PropTypes.shape().isRequired,
 };
 
-const mSTP = state => ({
-  errors: state.error,
+const mSTP = createStructuredSelector({
+  errors: additionalSelectors.selectErrors,
 });
 
-const mDTP = dispatch => ({
-  loginUser: obj => dispatch(loginUser(obj)),
-});
+const mDTP = dispatch => bindActionCreators({
+  loginUser,
+}, dispatch);
 
 export default compose(
   withStyles(styles),

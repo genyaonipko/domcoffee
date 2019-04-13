@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -11,41 +12,18 @@ import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton';
 
 import { MainListItems, SecondaryListItems } from '../components/ListItems';
-import { getSidebarState, getUserRole } from '../redux/selectors';
 
-import { setSidebarState, setTabIndex } from '../redux/actions/sidebar';
-
+import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
 import {
-  changeCoffeeByDayAction,
-  changeCoffeeByMonthAction,
-  changeCoffeeByQuarterAction,
-  changeCoffeeByYearAction,
-  getAllCoffeeAction,
-} from '../redux/actions/sales/coffee';
+  additionalSelectors
+} from '../redux/reducers/additionalReducer';
 
-import {
-  changePortionsByDayAction,
-  changePortionsByMonthAction,
-  changePortionsByQuarterAction,
-  changePortionsByYearAction,
-  changePortionsAction,
-} from '../redux/actions/sales/portions';
+import OwnActions from '../redux/actions/own';
+import SalesActions from '../redux/actions/sales';
+import PacksActions from '../redux/actions/packs';
+import InnerActions from '../redux/actions/inner';
 
-import {
-  changeDataByDayAction,
-  changeDataByMonthAction,
-  changeDataByQuarterAction,
-  changeDataByYearAction,
-  changeDataPacksAction,
-} from '../redux/actions/packs/packs';
-
-import {
-  degustationByDayAction,
-  degustationByMonthAction,
-  degustationByQuarterAction,
-  degustationByYearAction,
-  changeDataDegustationAction,
-} from '../redux/actions/packs/degustation';
+import { selectRole } from '../redux/reducers/authReducer/selectors';
 
 const drawerWidth = 240;
 
@@ -88,33 +66,62 @@ class DrawerBar extends Component {
     role: PropTypes.string.isRequired,
     changeTabBar: PropTypes.func.isRequired,
 
-    // sales
-    changeMonth: PropTypes.func.isRequired,
-    changeDay: PropTypes.func.isRequired,
-    changeQuarter: PropTypes.func.isRequired,
-    changeYear: PropTypes.func.isRequired,
-    getAll: PropTypes.func.isRequired,
-
-    // degustation
-    changeDegustationMonth: PropTypes.func.isRequired,
-    changeDegustationDay: PropTypes.func.isRequired,
-    changeDegustationQuarter: PropTypes.func.isRequired,
-    changeDegustationYear: PropTypes.func.isRequired,
-    getAllDegustation: PropTypes.func.isRequired,
-
     // coffee
-    changeCoffeeMonth: PropTypes.func.isRequired,
-    changeCoffeeDay: PropTypes.func.isRequired,
-    changeCoffeeQuarter: PropTypes.func.isRequired,
-    changeCoffeeYear: PropTypes.func.isRequired,
-    getAllCoffee: PropTypes.func.isRequired,
+    changeDataCoffeeAction: PropTypes.func.isRequired,
+    coffeeByDayAction: PropTypes.func.isRequired,
+    coffeeByMonthAction: PropTypes.func.isRequired,
+    coffeeByQuarterAction: PropTypes.func.isRequired,
+    coffeeByYearAction: PropTypes.func.isRequired,
 
     // portions
-    changePortionsMonth: PropTypes.func.isRequired,
-    changePortionsDay: PropTypes.func.isRequired,
-    changePortionsQuarter: PropTypes.func.isRequired,
-    changePortionsYear: PropTypes.func.isRequired,
-    getAllPortions: PropTypes.func.isRequired,
+    changeDataPortionAction: PropTypes.func.isRequired,
+    portionByDayAction: PropTypes.func.isRequired,
+    portionByMonthAction: PropTypes.func.isRequired,
+    portionByQuarterAction: PropTypes.func.isRequired,
+    portionByYearAction: PropTypes.func.isRequired,
+
+    // packs
+    changeDataPacksAction: PropTypes.func.isRequired,
+    packsByDayAction: PropTypes.func.isRequired,
+    packsByMonthAction: PropTypes.func.isRequired,
+    packsByQuarterAction: PropTypes.func.isRequired,
+    packsByYearAction: PropTypes.func.isRequired,
+
+    // degustation
+    changeDataDegustationsAction: PropTypes.func.isRequired,
+    degustationByDayAction: PropTypes.func.isRequired,
+    degustationByMonthAction: PropTypes.func.isRequired,
+    degustationByQuarterAction: PropTypes.func.isRequired,
+    degustationByYearAction: PropTypes.func.isRequired,
+
+    // owncups
+    changeDataOwncupAction: PropTypes.func.isRequired,
+    owncupByDayAction: PropTypes.func.isRequired,
+    owncupByMonthAction: PropTypes.func.isRequired,
+    owncupByQuarterAction: PropTypes.func.isRequired,
+    owncupByYearAction: PropTypes.func.isRequired,
+
+    // ownpacks
+    changeDataOwnpacksAction: PropTypes.func.isRequired,
+    ownpacksByDayAction: PropTypes.func.isRequired,
+    ownpacksByMonthAction: PropTypes.func.isRequired,
+    ownpacksByQuarterAction: PropTypes.func.isRequired,
+    ownpacksByYearAction: PropTypes.func.isRequired,
+
+
+    // innercups
+    changeDataInnercupAction: PropTypes.func.isRequired,
+    innercupByDayAction: PropTypes.func.isRequired,
+    innercupByMonthAction: PropTypes.func.isRequired,
+    innercupByQuarterAction: PropTypes.func.isRequired,
+    innercupByYearAction: PropTypes.func.isRequired,
+
+    // innerpacks
+    changeDataInnerpackAction: PropTypes.func.isRequired,
+    innerpackByDayAction: PropTypes.func.isRequired,
+    innerpackByMonthAction: PropTypes.func.isRequired,
+    innerpackByQuarterAction: PropTypes.func.isRequired,
+    innerpackByYearAction: PropTypes.func.isRequired,
 
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
@@ -125,51 +132,77 @@ class DrawerBar extends Component {
     switch (this.props.location.pathname) {
       case '/packs':
         return Promise.all([
-          this.props.getAll(),
-          this.props.getAllDegustation(),
+          this.props.changeDataPacksAction(),
+          this.props.changeDataDegustationsAction(),
         ]);
       case '/sales':
         return Promise.all([
-          this.props.getAllPortions(),
-          this.props.getAllCoffee(),
+          this.props.changeDataCoffeeAction(),
+          this.props.changeDataPortionAction(),
         ]);
       case '/inner':
-        return this.props.getAllDegustation();
+        return Promise.all([
+          this.props.changeDataInnercupAction(),
+          this.props.changeDataInnerpackAction(),
+        ]);
       case '/own':
-        return '';
+        return Promise.all([
+          this.props.changeDataOwncupAction(),
+          this.props.changeDataOwnpacksAction(),
+        ]);
       case '/dashboard':
-        this.props.getAllCoffee();
-        this.props.getAllDegustation();
-        this.props.getAll();
-        return this.props.getAllPortions();
+        return Promise.all([
+          this.props.changeDataPacksAction(),
+          this.props.changeDataDegustationsAction(),
+          this.props.changeDataCoffeeAction(),
+          this.props.changeDataPortionAction(),
+          this.props.changeDataInnercupAction(),
+          this.props.changeDataInnerpackAction(),
+          this.props.changeDataOwncupAction(),
+          this.props.changeDataOwnpacksAction(),
+        ])
+
       default:
-        return '';
+        return null;
     }
-  };
+  }
 
   changeDay = () => {
     switch (this.props.location.pathname) {
       case '/packs':
         return Promise.all([
-          this.props.changeDay(),
-          this.props.changeDegustationDay(),
+          this.props.degustationByDayAction(),
+          this.props.packsByDayAction(),
         ]);
       case '/sales':
         return Promise.all([
-          this.props.changeCoffeeDay(),
-          this.props.changePortionsDay(),
+          this.props.coffeeByDayAction(),
+          this.props.portionByDayAction(),
         ]);
       case '/inner':
-        return this.props.changeCoffeeDay();
+        return Promise.all([
+          this.props.innercupByDayAction(),
+          this.props.innerpackByDayAction(),
+        ]);
       case '/own':
-        return this.props.changePortionsDay();
+        return Promise.all([
+          this.props.owncupByDayAction(),
+          this.props.ownpacksByDayAction(),
+        ]);
       case '/dashboard':
-        this.props.changeCoffeeDay();
-        this.props.changeDegustationDay();
-        this.props.changeDay();
-        return this.props.changePortionsDay();
+        return Promise.all([
+          this.props.coffeeByDayAction(),
+          this.props.portionByDayAction(),
+          this.props.degustationByDayAction(),
+          this.props.packsByDayAction(),
+          this.props.ownpacksByDayAction(),
+          this.props.owncupByDayAction(),
+          this.props.innercupByDayAction(),
+          this.props.innerpackByDayAction(),
+        ])
+
       default:
-        return '';
+        return null;
     }
   };
 
@@ -177,25 +210,38 @@ class DrawerBar extends Component {
     switch (this.props.location.pathname) {
       case '/packs':
         return Promise.all([
-          this.props.changeMonth(),
-          this.props.changeDegustationMonth(),
+          this.props.degustationByMonthAction(),
+          this.props.packsByMonthAction(),
         ]);
       case '/sales':
         return Promise.all([
-          this.props.changeCoffeeMonth(),
-          this.props.changePortionsMonth(),
+          this.props.coffeeByMonthAction(),
+          this.props.portionByMonthAction(),
         ]);
       case '/inner':
-        return this.props.changeCoffeeMonth();
+        return Promise.all([
+          this.props.innercupByMonthAction(),
+          this.props.innerpackByMonthAction(),
+        ]);
       case '/own':
-        return this.props.changePortionsMonth();
+        return Promise.all([
+          this.props.owncupByMonthAction(),
+          this.props.ownpacksByMonthAction(),
+        ]);
       case '/dashboard':
-        this.props.changeCoffeeMonth();
-        this.props.changeDegustationMonth();
-        this.props.changeMonth();
-        return this.props.changePortionsMonth();
+        return Promise.all([
+          this.props.coffeeByMonthAction(),
+          this.props.portionByMonthAction(),
+          this.props.degustationByMonthAction(),
+          this.props.packsByMonthAction(),
+          this.props.ownpacksByMonthAction(),
+          this.props.owncupByMonthAction(),
+          this.props.innercupByMonthAction(),
+          this.props.innerpackByMonthAction(),
+        ])
+
       default:
-        return '';
+        return null;
     }
   };
 
@@ -203,25 +249,38 @@ class DrawerBar extends Component {
     switch (this.props.location.pathname) {
       case '/packs':
         return Promise.all([
-          this.props.changeQuarter(),
-          this.props.changeDegustationQuarter(),
+          this.props.degustationByQuarterAction(),
+          this.props.packsByQuarterAction(),
         ]);
       case '/sales':
         return Promise.all([
-          this.props.changeCoffeeQuarter(),
-          this.props.changePortionsQuarter(),
+          this.props.coffeeByQuarterAction(),
+          this.props.portionByQuarterAction(),
         ]);
       case '/inner':
-        return this.props.changeCoffeeQuarter();
+        return Promise.all([
+          this.props.innercupByQuarterAction(),
+          this.props.innerpackByQuarterAction(),
+        ]);
       case '/own':
-        return this.props.changePortionsQuarter();
+        return Promise.all([
+          this.props.owncupByQuarterAction(),
+          this.props.ownpacksByQuarterAction(),
+        ]);
       case '/dashboard':
-        this.props.changeCoffeeQuarter();
-        this.props.changeDegustationQuarter();
-        this.props.changeQuarter();
-        return this.props.changePortionsQuarter();
+        return Promise.all([
+          this.props.coffeeByQuarterAction(),
+          this.props.portionByQuarterAction(),
+          this.props.degustationByQuarterAction(),
+          this.props.packsByQuarterAction(),
+          this.props.ownpacksByQuarterAction(),
+          this.props.owncupByQuarterAction(),
+          this.props.innercupByQuarterAction(),
+          this.props.innerpackByQuarterAction(),
+        ])
+
       default:
-        return '';
+        return null;
     }
   };
 
@@ -229,25 +288,38 @@ class DrawerBar extends Component {
     switch (this.props.location.pathname) {
       case '/packs':
         return Promise.all([
-          this.props.changeYear(),
-          this.props.changeDegustationYear(),
+          this.props.degustationByYearAction(),
+          this.props.packsByYearAction(),
         ]);
       case '/sales':
         return Promise.all([
-          this.props.changeCoffeeYear(),
-          this.props.changePortionsYear(),
+          this.props.coffeeByYearAction(),
+          this.props.portionByYearAction(),
         ]);
       case '/inner':
-        return this.props.changeCoffeeYear();
+        return Promise.all([
+          this.props.innercupByYearAction(),
+          this.props.innerpackByYearAction(),
+        ]);
       case '/own':
-        return this.props.changePortionsYear();
+        return Promise.all([
+          this.props.owncupByYearAction(),
+          this.props.ownpacksByYearAction(),
+        ]);
       case '/dashboard':
-        this.props.changeCoffeeYear();
-        this.props.changeDegustationYear();
-        this.props.changeYear();
-        return this.props.changePortionsYear();
+        return Promise.all([
+          this.props.coffeeByYearAction(),
+          this.props.portionByYearAction(),
+          this.props.degustationByYearAction(),
+          this.props.packsByYearAction(),
+          this.props.ownpacksByYearAction(),
+          this.props.owncupByYearAction(),
+          this.props.innercupByYearAction(),
+          this.props.innerpackByYearAction(),
+        ])
+
       default:
-        return '';
+        return null;
     }
   };
 
@@ -294,43 +366,76 @@ class DrawerBar extends Component {
   }
 }
 
-const mSTP = state => ({
-  role: getUserRole(state),
-  sidebar: getSidebarState(state),
+const mSTP = createStructuredSelector({
+  sidebar: additionalSelectors.selectSidebar,
+  role: selectRole,
 });
 
-const mDTP = dispatch => ({
-  changeSidebar: bool => dispatch(setSidebarState(bool)),
-  changeTabBar: index => dispatch(setTabIndex(index)),
+const mDTP = dispatch =>
+  bindActionCreators(
+    {
+      changeSidebar: AdditionalActions.setSidebarState,
+      changeTabBar: AdditionalActions.setIndexTab,
 
-  // sales
-  changeMonth: () => dispatch(changeDataByMonthAction()),
-  changeDay: () => dispatch(changeDataByDayAction()),
-  changeQuarter: () => dispatch(changeDataByQuarterAction()),
-  changeYear: () => dispatch(changeDataByYearAction()),
-  getAll: () => dispatch(changeDataPacksAction()),
+      // coffee
+      changeDataCoffeeAction: SalesActions.changeDataCoffeeAction,
+      coffeeByDayAction: SalesActions.coffeeByDayAction,
+      coffeeByMonthAction: SalesActions.coffeeByMonthAction,
+      coffeeByQuarterAction: SalesActions.coffeeByQuarterAction,
+      coffeeByYearAction: SalesActions.coffeeByYearAction,
 
-  // degustation
-  changeDegustationMonth: () => dispatch(degustationByMonthAction()),
-  changeDegustationDay: () => dispatch(degustationByDayAction()),
-  changeDegustationQuarter: () => dispatch(degustationByQuarterAction()),
-  changeDegustationYear: () => dispatch(degustationByYearAction()),
-  getAllDegustation: () => dispatch(changeDataDegustationAction()),
+      // portions
+      changeDataPortionAction: SalesActions.changeDataPortionAction,
+      portionByDayAction: SalesActions.portionByDayAction,
+      portionByMonthAction: SalesActions.portionByMonthAction,
+      portionByQuarterAction: SalesActions.portionByQuarterAction,
+      portionByYearAction: SalesActions.portionByYearAction,
 
-  // coffee
-  changeCoffeeMonth: () => dispatch(changeCoffeeByMonthAction()),
-  changeCoffeeDay: () => dispatch(changeCoffeeByDayAction()),
-  changeCoffeeQuarter: () => dispatch(changeCoffeeByQuarterAction()),
-  changeCoffeeYear: () => dispatch(changeCoffeeByYearAction()),
-  getAllCoffee: () => dispatch(getAllCoffeeAction()),
+      // packs
+      changeDataPacksAction: PacksActions.changeDataPacksAction,
+      packsByDayAction: PacksActions.packsByDayAction,
+      packsByMonthAction: PacksActions.packsByMonthAction,
+      packsByQuarterAction: PacksActions.packsByQuarterAction,
+      packsByYearAction: PacksActions.packsByYearAction,
 
-  // portions
-  changePortionsMonth: () => dispatch(changePortionsByMonthAction()),
-  changePortionsDay: () => dispatch(changePortionsByDayAction()),
-  changePortionsQuarter: () => dispatch(changePortionsByQuarterAction()),
-  changePortionsYear: () => dispatch(changePortionsByYearAction()),
-  getAllPortions: () => dispatch(changePortionsAction()),
-});
+      // degustation
+      changeDataDegustationsAction: PacksActions.changeDataDegustationAction,
+      degustationByDayAction: PacksActions.degustationByDayAction,
+      degustationByMonthAction: PacksActions.degustationByMonthAction,
+      degustationByQuarterAction: PacksActions.degustationByQuarterAction,
+      degustationByYearAction: PacksActions.degustationByYearAction,
+
+      // owncups
+      changeDataOwncupAction: OwnActions.changeDataOwncupAction,
+      owncupByDayAction: OwnActions.owncupByDayAction,
+      owncupByMonthAction: OwnActions.owncupByMonthAction,
+      owncupByQuarterAction: OwnActions.owncupByQuarterAction,
+      owncupByYearAction: OwnActions.owncupByYearAction,
+
+      // ownpacks
+      changeDataOwnpacksAction: OwnActions.changeDataOwnpackAction,
+      ownpacksByDayAction: OwnActions.ownpacksByDayAction,
+      ownpacksByMonthAction: OwnActions.ownpacksByMonthAction,
+      ownpacksByQuarterAction: OwnActions.ownpacksByQuarterAction,
+      ownpacksByYearAction: OwnActions.ownpacksByYearAction,
+
+
+      // innercups
+      changeDataInnercupAction: InnerActions.changeDataInnercupAction,
+      innercupByDayAction: InnerActions.innercupByDayAction,
+      innercupByMonthAction: InnerActions.innercupByMonthAction,
+      innercupByQuarterAction: InnerActions.innercupByQuarterAction,
+      innercupByYearAction: InnerActions.innercupByYearAction,
+
+      // innerpacks
+      changeDataInnerpackAction: InnerActions.changeDataInnerpackAction,
+      innerpackByDayAction: InnerActions.innerpackByDayAction,
+      innerpackByMonthAction: InnerActions.innerpackByMonthAction,
+      innerpackByQuarterAction: InnerActions.innerpackByQuarterAction,
+      innerpackByYearAction: InnerActions.innerpackByYearAction,
+    },
+    dispatch,
+  );
 
 export default compose(
   connect(

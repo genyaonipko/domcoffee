@@ -1,21 +1,25 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
+import { bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AddIcon from '@material-ui/icons/Add';
 
 import AppBarComponent from '../../components/AppBarComponent';
 import FormDialog from '../../components/FormDialog';
+import InnerActions from '../../redux/actions/inner';
 import {
-  changeDataInnerpackAction,
-  addInnerpackAction,
-} from '../../redux/actions/inner/innerpacks';
+  selectInnerpacksForChart,
+  selectInnercupsForChart,
+  concatDataInnerpacks,
+  concatDataInnercups,
+} from '../../redux/reducers/inner/selectors';
 import {
-  changeDataInnercupAction,
-  addInnercupAction,
-} from '../../redux/actions/inner/innercups';
+  additionalSelectors
+} from '../../redux/reducers/additionalReducer';
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
 
@@ -44,14 +48,14 @@ const styles = () => ({
   },
 });
 
-class Sales extends Component {
+class Inner extends PureComponent {
   state = {
     open: false,
   };
 
   componentDidMount = () => {
-    this.props.changeData();
-    this.props.getAllPacks();
+    this.props.getAllInnerpacks();
+    this.props.getAllInnercups();
   };
 
   handleClickOpen = () => {
@@ -64,84 +68,85 @@ class Sales extends Component {
 
   handleSubmit = values => {
     if (!this.props.tabIndex) {
-      this.props.onSubmit(values);
+      this.props.onSubmitInnerpacks(values);
     } else {
-      this.props.onSubmitPacks(values);
+      this.props.onSubmitInnercups(values);
     }
   };
 
-  renderContent = (innercups, innerpacks, classes, isLoading, restProps) => {
-    const tableHeaders = ['Марка кофе', 'Кол-во внутреннего'];
-    const tabTitles = ['Чашки', 'Пачки'];
+  renderFormDialog = () => {
+    const { open } = this.state;
+    return (
+      <FormDialog
+        onSubmit={values => this.handleSubmit(values)}
+        open={open}
+        handleClose={this.handleClose}
+        title="личного"
+      />
+    );
+  };
+
+  renderFabButton = () => {
+    const { classes } = this.props;
+    return (
+      <Fab
+        color="primary"
+        aria-label="Add"
+        className={classes.button}
+        onClick={this.handleClickOpen}>
+        <AddIcon />
+      </Fab>
+    );
+  };
+
+  renderContent = () => {
+    const { innercups, innerpacks, classes, isLoading, ...restProps } = this.props;
+    const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
+    const tabTitles = ['Пачки', 'Чашки'];
 
     return (
       <TabPages tabTitles={tabTitles} classes={classes} {...restProps}>
         <ChartPage
           classes={classes}
-          data={innercups}
-          chartTitle="График по чашкам"
-          tableTitle="Чашки"
+          data={innerpacks}
+          chartTitle="График по пачкам"
+          tableTitle="Пачки"
           tableHeaders={tableHeaders}
           isLoading={isLoading}
           chartColor="#26A69A"
+          concatData={this.props.concatDataInnerpacks}
         />
         <ChartPage
           classes={classes}
-          chartTitle="График по пачкам"
-          tableTitle="Пачки"
-          data={innerpacks}
+          chartTitle="График по чашкам"
+          tableTitle="Чашки"
+          data={innercups}
           tableHeaders={tableHeaders}
           isLoading={isLoading}
           chartColor="#26A69A"
+          concatData={this.props.concatDataInnercups}
         />
       </TabPages>
     );
   };
 
   render() {
-    const { open } = this.state;
-    const {
-      classes,
-      isLoading,
-      innercups,
-      innerpacks,
-      ...restProps
-    } = this.props;
+    const { classes } = this.props;
     return (
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Внутреннее" barColor="#26A69A" />
-          <main className={classes.content}>
-            {this.renderContent(
-              innercups,
-              innerpacks,
-              classes,
-              isLoading,
-              restProps,
-            )}
-          </main>
-          <Button
-            variant="fab"
-            color="primary"
-            aria-label="Add"
-            className={classes.button}
-            onClick={this.handleClickOpen}>
-            <AddIcon />
-          </Button>
-          <FormDialog
-            onSubmit={values => this.handleSubmit(values)}
-            open={open}
-            handleClose={this.handleClose}
-            title="продаж"
-          />
+          <AppBarComponent title="Внутренее" barColor="#4caf50" />
+          <main className={classes.content}>{this.renderContent()}</main>
+          {this.renderFabButton()}
+          {this.renderFormDialog()}
         </div>
       </Fragment>
     );
   }
 }
 
-Sales.propTypes = {
+Inner.propTypes = {
   // settings
   classes: PropTypes.shape().isRequired,
   isLoading: PropTypes.bool.isRequired,
@@ -150,30 +155,37 @@ Sales.propTypes = {
   // data
   innercups: PropTypes.shape({}).isRequired,
   innerpacks: PropTypes.shape({}).isRequired,
+  concatDataInnerpacks: PropTypes.number.isRequired,
+  concatDataInnercups: PropTypes.number.isRequired,
 
   // function
-  changeData: PropTypes.func.isRequired,
-  getAllPacks: PropTypes.func.isRequired,
-  getAllPortions: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  onSubmitPacks: PropTypes.func.isRequired,
+  getAllInnercups: PropTypes.func.isRequired,
+  getAllInnerpacks: PropTypes.func.isRequired,
+  onSubmitInnerpacks: PropTypes.func.isRequired,
+  onSubmitInnercups: PropTypes.func.isRequired,
 };
 
-const mSTP = state => ({
-  innercups: state.innercups,
-  innerpacks: state.innerpacks,
-  isLoading: state.settings.isLoading,
-  tabIndex: state.settings.tabIndex,
+const mSTP = createStructuredSelector({
+  innercups: selectInnercupsForChart,
+  innerpacks: selectInnerpacksForChart,
+  isLoading: additionalSelectors.selectLoader,
+  tabIndex: additionalSelectors.selectTabIndex,
+  concatDataInnerpacks,
+  concatDataInnercups,
 });
 
-const mDTP = dispatch => ({
-  changeData: () => dispatch(changeDataInnercupAction()),
-  getAllPacks: () => dispatch(changeDataInnerpackAction()),
-  onSubmit: obj => dispatch(addInnercupAction(obj)),
-  onSubmitPacks: obj => dispatch(addInnerpackAction(obj)),
-});
+const mDTP = dispatch =>
+  bindActionCreators(
+    {
+      getAllInnerpacks: InnerActions.changeDataInnerpackAction,
+      getAllInnercups: InnerActions.changeDataInnercupAction,
+      onSubmitInnerpacks: InnerActions.addInnerpackAction,
+      onSubmitInnercups: InnerActions.addInnercupAction,
+    },
+    dispatch,
+  );
 
 export default connect(
   mSTP,
   mDTP,
-)(withStyles(styles, { withTheme: true })(Sales));
+)(withStyles(styles, { withTheme: true })(Inner));

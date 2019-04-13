@@ -1,14 +1,18 @@
-import moment from 'moment';
-import {
-  CHANGE_DATA_INNERCUPS,
-  ADD_INNERCUP,
-  SORT_INNERCUP_BY_MONTH,
-  SORT_INNERCUP_BY_DAY,
-  SORT_INNERCUP_BY_QUARTER,
-  SORT_INNERCUP_BY_YEAR,
-} from '../../actions/actionTypes';
+import Immutable from 'seamless-immutable'
+import { createReducer } from 'reduxsauce'
+import Types from '../../actions/actionTypes';
 
-const initialState = {
+import {
+  filterDataByDay,
+  filterDataByMonth,
+  filterDataByQuarter,
+  filterDataByYear,
+  changeData,
+  reduceAdded,
+} from '../../../utils/helpers';
+
+/* -------------------- INITIAL_STATE ------------------  */
+const INITIAL_STATE = Immutable.from({
   balerina: 0,
   gourme: 0,
   orient: 0,
@@ -29,83 +33,49 @@ const initialState = {
   efiopia: 0,
   columbia: 0,
   crema: 0,
-};
+});
 
-const changeData = payload => {
-  const keys = Object.keys(initialState);
-  const concatObj = Object.assign({}, initialState);
-  const innercups = payload.reduce((previousValue, currentItem) => {
-    for (let i = 0; i < keys.length; i += 1) {
-      const current = !Number.isNaN(+currentItem.innercups[keys[i]])
-        ? +currentItem.innercups[keys[i]]
-        : 0;
-      concatObj[keys[i]] = +previousValue[keys[i]] + current;
-    }
-    return { ...concatObj };
-  }, initialState);
-  return innercups;
-};
-
-function innercupssReducer(state = initialState, action) {
-  switch (action.type) {
-    case CHANGE_DATA_INNERCUPS: {
-      const innercups = changeData(action.payload);
-      return { ...state, ...innercups };
-    }
-    case ADD_INNERCUP: {
-      const obj = { ...state };
-      Object.keys(initialState).forEach(item => {
-        const objItem = !Number.isNaN(+action.payload[item])
-          ? +action.payload[item]
-          : 0;
-        obj[item] = +state[item] + objItem;
-      });
-      return obj;
-    }
-    case SORT_INNERCUP_BY_DAY: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).date() === moment(Date.now()).date(),
-      );
-      const innercups = changeData(filteredSales);
-      return {
-        ...state,
-        ...innercups,
-      };
-    }
-    case SORT_INNERCUP_BY_MONTH: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).month() === moment(Date.now()).month(),
-      );
-      const innercups = changeData(filteredSales);
-      return {
-        ...state,
-        ...innercups,
-      };
-    }
-    case SORT_INNERCUP_BY_QUARTER: {
-      const filteredSales = action.payload.filter(
-        item =>
-          moment(item.createdDate).quarter() === moment(Date.now()).quarter(),
-      );
-      const innercups = changeData(filteredSales);
-      return {
-        ...state,
-        ...innercups,
-      };
-    }
-    case SORT_INNERCUP_BY_YEAR: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).year() === moment(Date.now()).year(),
-      );
-      const innercups = changeData(filteredSales);
-      return {
-        ...state,
-        ...innercups,
-      };
-    }
-    default:
-      return state;
-  }
+/* -------------------- Handlers ------------------  */
+export const getInnercupDataSuccess = (state = INITIAL_STATE, action) => {
+  const innercup = changeData(action.payload, INITIAL_STATE, 'innercups');
+  return state.merge(innercup);
 }
 
-export default innercupssReducer;
+export const addInnercupDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
+
+export const sortInnercupDataByDay = (state = INITIAL_STATE, action) => {
+  let innercup = filterDataByDay(action.payload);
+  innercup = changeData(innercup, INITIAL_STATE, 'innercups');
+  return state.merge(innercup);
+}
+
+export const sortInnercupDataByMonth = (state = INITIAL_STATE, action) => {
+  let innercup = filterDataByMonth(action.payload);
+  innercup = changeData(innercup, INITIAL_STATE, 'innercups');
+  return state.merge(innercup);
+}
+
+export const sortInnercupDataByQuarter = (state = INITIAL_STATE, action) => {
+  let innercup = filterDataByQuarter(action.payload);
+  innercup = changeData(innercup, INITIAL_STATE, 'innercups');
+  return state.merge(innercup);
+}
+
+export const sortInnercupDataByYear = (state = INITIAL_STATE, action) => {
+  let innercup = filterDataByYear(action.payload);
+  innercup = changeData(innercup, INITIAL_STATE, 'innercups');
+  return state.merge(innercup);
+}
+
+export const HANDLERS = {
+  [Types.CHANGE_DATA_INNERCUP]: getInnercupDataSuccess,
+  [Types.ADD_INNERCUP]: addInnercupDataSuccess,
+  [Types.SORT_INNERCUP_BY_DAY]: sortInnercupDataByDay,
+  [Types.SORT_INNERCUP_BY_MONTH]: sortInnercupDataByMonth,
+  [Types.SORT_INNERCUP_BY_QUARTER]: sortInnercupDataByQuarter,
+  [Types.SORT_INNERCUP_BY_YEAR]: sortInnercupDataByYear,
+}
+
+/* -------------------- Create Reducer ------------------  */
+export default createReducer(INITIAL_STATE, HANDLERS);

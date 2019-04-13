@@ -1,14 +1,18 @@
-import moment from 'moment';
-import {
-  CHANGE_DATA_OWNPACKS,
-  ADD_OWNPACK,
-  SORT_OWNPACK_BY_MONTH,
-  SORT_OWNPACK_BY_DAY,
-  SORT_OWNPACK_BY_QUARTER,
-  SORT_OWNPACK_BY_YEAR,
-} from '../../actions/actionTypes';
+import Immutable from 'seamless-immutable'
+import { createReducer } from 'reduxsauce'
+import Types from '../../actions/actionTypes';
 
-const initialState = {
+import {
+  filterDataByDay,
+  filterDataByMonth,
+  filterDataByQuarter,
+  filterDataByYear,
+  changeData,
+  reduceAdded,
+} from '../../../utils/helpers';
+
+/* -------------------- INITIAL_STATE ------------------  */
+const INITIAL_STATE = Immutable.from({
   balerina: 0,
   gourme: 0,
   orient: 0,
@@ -29,83 +33,49 @@ const initialState = {
   efiopia: 0,
   columbia: 0,
   crema: 0,
-};
+});
 
-const changeData = payload => {
-  const keys = Object.keys(initialState);
-  const concatObj = Object.assign({}, initialState);
-  const ownpacks = payload.reduce((previousValue, currentItem) => {
-    for (let i = 0; i < keys.length; i += 1) {
-      const current = !Number.isNaN(+currentItem.ownpacks[keys[i]])
-        ? +currentItem.ownpacks[keys[i]]
-        : 0;
-      concatObj[keys[i]] = +previousValue[keys[i]] + current;
-    }
-    return { ...concatObj };
-  }, initialState);
-  return ownpacks;
-};
-
-function ownpackssReducer(state = initialState, action) {
-  switch (action.type) {
-    case CHANGE_DATA_OWNPACKS: {
-      const ownpacks = changeData(action.payload);
-      return { ...state, ...ownpacks };
-    }
-    case ADD_OWNPACK: {
-      const obj = { ...state };
-      Object.keys(initialState).forEach(item => {
-        const objItem = !Number.isNaN(+action.payload[item])
-          ? +action.payload[item]
-          : 0;
-        obj[item] = +state[item] + objItem;
-      });
-      return obj;
-    }
-    case SORT_OWNPACK_BY_DAY: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).date() === moment(Date.now()).date(),
-      );
-      const ownpacks = changeData(filteredSales);
-      return {
-        ...state,
-        ...ownpacks,
-      };
-    }
-    case SORT_OWNPACK_BY_MONTH: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).month() === moment(Date.now()).month(),
-      );
-      const ownpacks = changeData(filteredSales);
-      return {
-        ...state,
-        ...ownpacks,
-      };
-    }
-    case SORT_OWNPACK_BY_QUARTER: {
-      const filteredSales = action.payload.filter(
-        item =>
-          moment(item.createdDate).quarter() === moment(Date.now()).quarter(),
-      );
-      const ownpacks = changeData(filteredSales);
-      return {
-        ...state,
-        ...ownpacks,
-      };
-    }
-    case SORT_OWNPACK_BY_YEAR: {
-      const filteredSales = action.payload.filter(
-        item => moment(item.createdDate).year() === moment(Date.now()).year(),
-      );
-      const ownpacks = changeData(filteredSales);
-      return {
-        ...state,
-        ...ownpacks,
-      };
-    }
-    default:
-      return state;
-  }
+/* -------------------- Handlers ------------------  */
+export const getOwnpackDataSuccess = (state = INITIAL_STATE, action) => {
+  const ownpack = changeData(action.payload, INITIAL_STATE, 'ownpacks');
+  return state.merge(ownpack);
 }
 
-export default ownpackssReducer;
+export const addOwnpackDataSuccess = (state = INITIAL_STATE, action) =>
+  state.merge(reduceAdded(state, INITIAL_STATE, action));
+
+export const sortOwnpackDataByDay = (state = INITIAL_STATE, action) => {
+  let ownpack = filterDataByDay(action.payload);
+  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpacks');
+  return state.merge(ownpack);
+}
+
+export const sortOwnpackDataByMonth = (state = INITIAL_STATE, action) => {
+  let ownpack = filterDataByMonth(action.payload);
+  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpacks');
+  return state.merge(ownpack);
+}
+
+export const sortOwnpackDataByQuarter = (state = INITIAL_STATE, action) => {
+  let ownpack = filterDataByQuarter(action.payload);
+  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpacks');
+  return state.merge(ownpack);
+}
+
+export const sortOwnpackDataByYear = (state = INITIAL_STATE, action) => {
+  let ownpack = filterDataByYear(action.payload);
+  ownpack = changeData(ownpack, INITIAL_STATE, 'ownpacks');
+  return state.merge(ownpack);
+}
+
+export const HANDLERS = {
+  [Types.CHANGE_DATA_OWNPACK]: getOwnpackDataSuccess,
+  [Types.ADD_OWNPACK]: addOwnpackDataSuccess,
+  [Types.SORT_OWNPACK_BY_DAY]: sortOwnpackDataByDay,
+  [Types.SORT_OWNPACK_BY_MONTH]: sortOwnpackDataByMonth,
+  [Types.SORT_OWNPACK_BY_QUARTER]: sortOwnpackDataByQuarter,
+  [Types.SORT_OWNPACK_BY_YEAR]: sortOwnpackDataByYear,
+}
+
+/* -------------------- Create Reducer ------------------  */
+export default createReducer(INITIAL_STATE, HANDLERS);
