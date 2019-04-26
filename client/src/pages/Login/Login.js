@@ -91,8 +91,6 @@ InputTextField.defaultProps = {
 
 class Login extends Component {
   state = {
-    email: '',
-    password: '',
     errors: {},
     disabled: false,
   };

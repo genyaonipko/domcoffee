@@ -16,7 +16,7 @@ import * as authSelectors from '../redux/reducers/authReducer/selectors';
 
 class App extends Component {
   static propTypes = {
-    authenticated: PropTypes.bool.isRequired,
+    authenticated: PropTypes.bool,
     role: PropTypes.string.isRequired,
   };
 

@@ -14,7 +14,7 @@ import { additionalSelectors } from '../../../redux/reducers/additionalReducer';
 
 import Alert from '../../../components/Alert';
 import SnackBar from '../../../components/SnackBar';
-import UpdateUserForm from '../components/UpdateUserForm';
+import UpdateUserForm from './UpdateUserForm';
 import ListUsers from './ListUsers';
 
 const styles = () => ({
@@ -67,6 +67,7 @@ class User extends Component {
   componentDidMount = () => {
     this.props.getAllUser();
   };
+
   handleClick = () => {
     this.props.history.push('/settings/add-user');
   };

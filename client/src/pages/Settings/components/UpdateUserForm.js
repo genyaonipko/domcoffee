@@ -26,7 +26,6 @@ const InputTextField = ({ input, label, type, autoFocus, ...rest }) => (
   <TextField
     autoFocus={autoFocus}
     margin="dense"
-    id={name}
     label={label}
     type={type}
     {...input}

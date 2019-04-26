@@ -8,6 +8,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static addPack(data, dateTransaction) {
     return {
       method: 'POST',
@@ -20,6 +21,7 @@ export default class dcRequests {
       },
     };
   }
+
   static getDegustations() {
     return {
       method: 'GET',
@@ -29,6 +31,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static addDegustation(data, dateTransaction) {
     return {
       method: 'POST',
@@ -41,6 +44,7 @@ export default class dcRequests {
       },
     };
   }
+
   static getOwn() {
     return {
       method: 'GET',
@@ -50,6 +54,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static addOwn(data, dateTransaction) {
     return {
       method: 'POST',
@@ -62,6 +67,7 @@ export default class dcRequests {
       },
     };
   }
+
   static getCoffees() {
     return {
       method: 'GET',
@@ -71,6 +77,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static addCoffee(data, dateTransaction) {
     return {
       method: 'POST',
@@ -83,6 +90,7 @@ export default class dcRequests {
       },
     };
   }
+
   static getPortions() {
     return {
       method: 'GET',
@@ -92,6 +100,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static addPortion(data, dateTransaction) {
     return {
       method: 'POST',
@@ -104,6 +113,7 @@ export default class dcRequests {
       },
     };
   }
+
   static getInnercups() {
     return {
       method: 'GET',
@@ -113,6 +123,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static addInnercup(data, dateTransaction) {
     return {
       method: 'POST',
@@ -125,6 +136,7 @@ export default class dcRequests {
       },
     };
   }
+
   static getInnerpacks() {
     return {
       method: 'GET',
@@ -134,6 +146,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static addInnerpack(data, dateTransaction) {
     return {
       method: 'POST',
@@ -146,6 +159,7 @@ export default class dcRequests {
       },
     };
   }
+
   static getOwncups() {
     return {
       method: 'GET',
@@ -155,6 +169,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static addOwncup(data, dateTransaction) {
     return {
       method: 'POST',
@@ -167,6 +182,7 @@ export default class dcRequests {
       },
     };
   }
+
   static getOwnpacks() {
     return {
       method: 'GET',
@@ -176,6 +192,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static addOwnpack(data, dateTransaction) {
     return {
       method: 'POST',
@@ -188,6 +205,7 @@ export default class dcRequests {
       },
     };
   }
+
   static loginUserRequest(data) {
     return {
       method: 'POST',
@@ -200,6 +218,7 @@ export default class dcRequests {
       },
     };
   }
+
   static getUsersRequest() {
     return {
       method: 'GET',
@@ -209,6 +228,7 @@ export default class dcRequests {
       data: null,
     };
   }
+
   static deleteUserRequest(key) {
     return {
       method: 'DELETE',
@@ -221,6 +241,7 @@ export default class dcRequests {
       }
     };
   }
+
   static updateUserRequest(key, data) {
     return {
       method: 'PUT',

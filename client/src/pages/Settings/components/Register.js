@@ -34,7 +34,6 @@ const InputTextField = ({ input, label, autoFocus, type, ...rest }) => (
   <TextField
     autoFocus={autoFocus}
     margin="dense"
-    id={name}
     label={label}
     type={type}
     {...input}

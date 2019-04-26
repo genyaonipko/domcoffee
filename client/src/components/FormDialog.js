@@ -34,7 +34,6 @@ const InputTextField = ({ input, label, autoFocus, ...rest }) => (
   <TextField
     autoFocus={autoFocus}
     margin="dense"
-    id={name}
     label={label}
     type="number"
     {...input}
@@ -92,7 +91,7 @@ class FormDialog extends React.Component {
     return (
       <MuiPickersUtilsProvider
         utils={MomentUtils}
-        locale={'ru'}
+        locale="ru"
         moment={moment}>
         <Dialog
           open={open}

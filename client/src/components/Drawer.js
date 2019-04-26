@@ -11,7 +11,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton';
 
-import { MainListItems, SecondaryListItems } from '../components/ListItems';
+import { MainListItems, SecondaryListItems } from './ListItems';
 
 import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
 import {

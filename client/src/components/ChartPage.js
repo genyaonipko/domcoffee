@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Typography from '@material-ui/core/Typography';
-import SimpleLineChart from '../components/Charts/LineChart';
-import SimpleTable from '../components/Table';
-import Loader from '../components/Loader';
+import SimpleLineChart from './Charts/LineChart';
+import SimpleTable from './Table';
+import Loader from './Loader';
 
 export default class ChartPage extends PureComponent {
   static propTypes = {

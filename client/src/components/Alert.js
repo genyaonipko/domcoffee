@@ -15,8 +15,9 @@ class Alert extends React.Component {
   };
 
   handleAccept = () => {
-    this.props.handleDelete();
-    this.props.handleClose();
+    const { handleDelete, handleClose } = this.props;
+    handleDelete();
+    handleClose();
   };
 
   render() {
