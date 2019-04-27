@@ -18,7 +18,7 @@ export const registerUser = user => dispatch => {
 export const loginUser = user => dispatch => {
   loginUserRequest(dcRequest.loginUserRequest(user), (data, error) => {
     if (error !== undefined) {
-      dispatch(AdditionalActions.getErrors(error));
+      dispatch(AdditionalActions.getErrors(error.data));
     } else if (data !== undefined) {
       const { token } = data;
       localStorage.setItem('jwtToken', token);
