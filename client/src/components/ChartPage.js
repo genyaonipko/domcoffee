@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Typography from '@material-ui/core/Typography';
 import SimpleLineChart from './Charts/LineChart';
-// import PieChart from './Charts/PieChart';
+import PieChart from './Charts/PieChart';
 import SimpleTable from './Table';
 import Loader from './Loader';
 
@@ -51,7 +51,10 @@ export default class ChartPage extends PureComponent {
           display: 'flex',
           justifyContent: 'center',
         }} component="div">
-          <SimpleLineChart color={chartColor} data={data} legend={tableTitle} />
+          <div style={{ flexDirection: 'column', width: '99%', display: 'flex', alignItems: 'center' }}>
+            <SimpleLineChart color={chartColor} data={data} legend={tableTitle} />
+            <PieChart color={chartColor} data={data} legend={tableTitle} />
+          </div>
         </Typography>
         <Typography variant="h4" gutterBottom>
           {tableTitle}

@@ -24,6 +24,8 @@ import {
 } from '../../redux/reducers/additionalReducer';
 
 import SimpleLineChart from './components/LineChart';
+import SimpleBarChart from './components/BarChart';
+
 import SimpleTable from './components/Table';
 import AppBarComponent from '../../components/AppBarComponent';
 
@@ -74,6 +76,7 @@ class Dashboard extends React.Component {
           </Typography>
           <Typography component="div">
             <SimpleLineChart tabTitles={tabTitles} data={data} />
+            <SimpleBarChart tabTitles={tabTitles} data={data} />
           </Typography>
           <Typography variant="h4" gutterBottom>
             Вся информация

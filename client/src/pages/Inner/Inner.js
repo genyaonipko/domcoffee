@@ -130,7 +130,7 @@ class Inner extends PureComponent {
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Внутренее" barColor="#4caf50" />
+          <AppBarComponent title="Внутренее" barColor="#26A69A" />
           <main className={classes.content}>{this.renderContent()}</main>
           {this.renderFabButton()}
           {this.renderFormDialog()}

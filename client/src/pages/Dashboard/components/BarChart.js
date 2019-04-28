@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
-import LineChart from 'recharts/lib/chart/LineChart';
-import Line from 'recharts/lib/cartesian/Line';
-import XAxis from 'recharts/lib/cartesian/XAxis';
-import YAxis from 'recharts/lib/cartesian/YAxis';
-import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
-import Tooltip from 'recharts/lib/component/Tooltip';
-import Legend from 'recharts/lib/component/Legend';
+import {
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  } from 'recharts';
+  
 
 function SimpleLineChart(props) {
   const initialData = [
@@ -48,12 +45,13 @@ function SimpleLineChart(props) {
     const arrForRender = [];
     for (let i = 0; i < objLength; i += 1) {
       arrForRender.push(
-        <Line
+        <Bar
           key={`item_${i}`}
           isAnimationActive={false}
           type="monotone"
           dataKey={props.tabTitles[i]}
           stroke={arrOfColors[i]}
+          fill={arrOfColors[i]}
         />,
       );
     }
@@ -61,16 +59,17 @@ function SimpleLineChart(props) {
   };
 
   return (
-    // 99% per https://github.com/recharts/recharts/issues/172
     <ResponsiveContainer width="99%" height={420}>
-      <LineChart data={dataMain}>
-        <XAxis dataKey="name" />
-        <YAxis />
-        <CartesianGrid vertical={false} strokeDasharray="3 3" />
-        <Tooltip />
-        <Legend />
-        {renderCharts()}
-      </LineChart>
+        <BarChart
+          data={dataMain}
+        >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {renderCharts()}
+        </BarChart>
     </ResponsiveContainer>
   );
 }

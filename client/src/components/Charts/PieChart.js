@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
 
 const renderActiveShape = (props) => {
@@ -50,35 +50,29 @@ const renderActiveShape = (props) => {
 };
 
 
-export default class Example extends PureComponent {
-  static jsfiddleUrl = 'https://jsfiddle.net/alidingling/hqnrgxpj/';
+const PieChartContainer = (props) => {
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  state = {
-    activeIndex: 0,
+  const onPieEnter = (data, index) => {
+    setActiveIndex(index);
   };
 
-  onPieEnter = (data, index) => {
-    this.setState({
-      activeIndex: index,
-    });
-  };
-
-  render() {
-    return (
-      <PieChart width={900} height={600}>
-        <Pie
-          activeIndex={this.state.activeIndex}
-          activeShape={renderActiveShape}
-          data={this.props.data}
-          cx={400}
-          cy={300}
-          innerRadius={50 * 3}
-          outerRadius={80 * 3}
-          fill={this.props.color}
-          dataKey={this.props.legend}
-          onMouseEnter={this.onPieEnter}
-        />
-      </PieChart>
-    );
-  }
+  return (
+    <PieChart width={800} height={600}>
+      <Pie
+        activeIndex={activeIndex}
+        activeShape={renderActiveShape}
+        data={props.data}
+        cx={400}
+        cy={300}
+        innerRadius={50 * 3}
+        outerRadius={80 * 3}
+        fill={props.color}
+        dataKey={props.legend}
+        onMouseEnter={onPieEnter}
+      />
+    </PieChart>
+  );
 }
+
+export default PieChartContainer;
