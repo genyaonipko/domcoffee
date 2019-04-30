@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { merge } from 'ramda';
+import { mergeWith, add } from 'ramda';
 import { selectInnercups, selectInnerpacks } from '../inner/selectors';
 import { selectOwncups, selectOwnpacks } from '../own/selectors';
 import {
@@ -34,7 +34,7 @@ export const selectPacksFree = createSelector(
   selectOwnpacks,
   selectInnerpacks,
   (coffee, ownpacks, innerpacks) => {
-    const concatData = merge(coffee, ownpacks, innerpacks);
+    const concatData = mergeWith(add, coffee, ownpacks, innerpacks);
     return (
       concatData &&
       Object.keys(concatData).map(item => ({
@@ -50,7 +50,7 @@ export const selectCupsFree = createSelector(
   selectOwncups,
   selectInnercups,
   (degustation, owncups, innercups) => {
-    const concatData = merge(degustation, owncups, innercups);
+    const concatData = mergeWith(add, degustation, owncups, innercups);
     return (
       concatData &&
       Object.keys(concatData).map(item => ({
@@ -67,7 +67,7 @@ export const selectAllCups = createSelector(
   selectInnercups,
   selectOwncups,
   (degustation, portions, innercups, owncups) => {
-    const concatData = merge(degustation, portions, innercups, owncups);
+    const concatData = mergeWith(add, degustation, portions, innercups, owncups);
     return (
       concatData &&
       Object.keys(concatData).map(item => ({
@@ -94,8 +94,8 @@ export const selectDashboardTab1 = createSelector(
 export const selectDashboardTab2 = createSelector(
   selectCoffeeForChart,
   selectAllCups,
-  (coffee, allcups) => [
-    coffee,
-    allcups,
-  ],
+  (coffee, allcups) => {
+    const normalizedCoffee = coffee.map(item => ({ ...item, 'Помол': item['Помол'] * 25}));
+    return [normalizedCoffee, allcups];
+  },
 );
