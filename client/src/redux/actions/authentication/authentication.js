@@ -17,8 +17,11 @@ export const registerUser = user => dispatch => {
 
 export const loginUser = user => dispatch => {
   loginUserRequest(dcRequest.loginUserRequest(user), (data, error) => {
+    dispatch(AdditionalActions.setLoader(true));
     if (error !== undefined) {
       dispatch(AdditionalActions.getErrors(error.data));
+      dispatch(AdditionalActions.setLoader(false));
+      setTimeout(() => dispatch(AdditionalActions.getErrors({})), 3000)
     } else if (data !== undefined) {
       const { token } = data;
       localStorage.setItem('jwtToken', token);
@@ -26,6 +29,7 @@ export const loginUser = user => dispatch => {
       const decoded = jwtDecode(token);
       dispatch(AdditionalActions.setCurrentUser(decoded));
       history.push('/dashboard');
+      dispatch(AdditionalActions.setLoader(false));
     }
   })
 };

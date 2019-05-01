@@ -32,7 +32,8 @@ export const addPortionAction = portion => (dispatch, getState) => {
     dcRequest.addPortion(portion, dateTransaction._d),
     (data, error) => {
       if (error !== undefined) {
-        dispatch(console.log(error));
+        dispatch(AdditionalActions.getErrors({ sales: 'Упс, что-то пошло не так 🤷‍' }));
+        setTimeout(() => dispatch(AdditionalActions.getErrors({})), 3000);
       } else if (data !== undefined) {
         dispatch(Creators.addPortion(data.data.portions));
       }

@@ -5,10 +5,8 @@ import classNames from 'classnames';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
-import CloseIcon from '@material-ui/icons/Close';
 import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
-import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
@@ -61,16 +59,6 @@ function MySnackbarContent(props) {
           {message}
         </span>
       }
-      action={[
-        <IconButton
-          key="close"
-          aria-label="Close"
-          color="inherit"
-          className={classes.close}
-          onClick={onClose}>
-          <CloseIcon className={classes.icon} />
-        </IconButton>,
-      ]}
       {...other}
     />
   );
@@ -110,7 +98,7 @@ class CustomizedSnackbars extends React.Component {
   // };
 
   render() {
-    const { visible } = this.props;
+    const { visible, type, message } = this.props;
 
     return (
       <div>
@@ -123,9 +111,8 @@ class CustomizedSnackbars extends React.Component {
           autoHideDuration={6000}
           onClose={this.handleClose}>
           <MySnackbarContentWrapper
-            onClose={this.handleClose}
-            variant="success"
-            message="Пользователь удален"
+            variant={type}
+            message={message}
           />
         </Snackbar>
       </div>
@@ -136,6 +123,8 @@ class CustomizedSnackbars extends React.Component {
 CustomizedSnackbars.propTypes = {
   // classes: PropTypes.shape().isRequired,
   visible: PropTypes.bool.isRequired,
+  type: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles2)(CustomizedSnackbars);

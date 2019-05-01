@@ -92,33 +92,21 @@ InputTextField.defaultProps = {
 class Login extends Component {
   state = {
     errors: {},
-    disabled: false,
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors,
-      });
+  static getDerivedStateFromProps(props) {
+    return {
+      errors: props.errors
     }
   }
 
   submit = values => {
-    this.setState(
-      {
-        disabled: true,
-        errors: {
-          password: '',
-          email: '',
-        },
-      },
-      () => this.props.loginUser(values, this.props.history),
-    );
+    this.props.loginUser(values, this.props.history)
   };
 
   render() {
-    const { errors, disabled } = this.state;
-    const { classes, handleSubmit } = this.props;
+    const { errors } = this.state;
+    const { classes, handleSubmit, isLoading } = this.props;
     return (
       <React.Fragment>
         <CssBaseline />
@@ -154,7 +142,7 @@ class Login extends Component {
                   <div className={classes.invalid}>{errors.password}</div>
                 )}
               </FormControl>
-              {!errors.password && !errors.email && disabled ? (
+              {isLoading ? (
                 <Loader />
               ) : (
                 <Button
@@ -179,11 +167,12 @@ Login.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   loginUser: PropTypes.func.isRequired,
-  errors: PropTypes.shape().isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 const mSTP = createStructuredSelector({
   errors: additionalSelectors.selectErrors,
+  isLoading: additionalSelectors.selectLoader,
 });
 
 const mDTP = dispatch => bindActionCreators({

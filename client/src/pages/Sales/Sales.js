@@ -11,6 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import AppBarComponent from '../../components/AppBarComponent';
 import FormDialog from '../../components/FormDialog';
 import SalesActions from '../../redux/actions/sales';
+import SnackBar from '../../components/SnackBar';
 
 import {
   selectCoffeeForChart,
@@ -127,7 +128,7 @@ class Sales extends PureComponent {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, errors } = this.props;
     return (
       <Fragment>
         <CssBaseline />
@@ -136,6 +137,11 @@ class Sales extends PureComponent {
           <main className={classes.content}>{this.renderContent()}</main>
           {this.renderFabButton()}
           {this.renderFormDialog()}
+          <SnackBar
+            visible={!!errors.sales}
+            type="error"
+            message={errors.sales}
+          />
         </div>
       </Fragment>
     );
@@ -147,6 +153,7 @@ Sales.propTypes = {
   classes: PropTypes.shape().isRequired,
   isLoading: PropTypes.bool.isRequired,
   tabIndex: PropTypes.number.isRequired,
+  errors: PropTypes.shape({}).isRequired,
 
   // data
   portions: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
@@ -168,6 +175,7 @@ const mSTP = createStructuredSelector({
   tabIndex: additionalSelectors.selectTabIndex,
   concatDataCoffee,
   concatDataPortions,
+  errors: additionalSelectors.selectErrors,
 });
 
 const mDTP = dispatch =>

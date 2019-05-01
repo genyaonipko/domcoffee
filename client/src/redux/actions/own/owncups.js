@@ -32,7 +32,8 @@ export const addOwncupAction = owncup => (dispatch, getState) => {
     dcRequest.addOwncup(owncup, dateTransaction._d),
     (data, error) => {
       if (error !== undefined) {
-        dispatch(console.log(error));
+        dispatch(AdditionalActions.getErrors({ own: 'Упс, что-то пошло не так 🤷‍' }));
+        setTimeout(() => dispatch(AdditionalActions.getErrors({})), 3000);
       } else if (data !== undefined) {
         dispatch(Creators.addOwncup(data.data.owncups));
       }

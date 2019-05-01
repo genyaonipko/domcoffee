@@ -128,7 +128,11 @@ class User extends Component {
           handleClose={this.handleCloseUpdate}
           keyItem={key}
         />
-        <SnackBar visible={visible} />
+        <SnackBar
+          visible={visible}
+          type="success"
+          message="Пользователь удален"
+        />
         <Fab
           color="primary"
           aria-label="Add"

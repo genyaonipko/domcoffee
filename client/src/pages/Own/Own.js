@@ -22,6 +22,7 @@ import {
 } from '../../redux/reducers/additionalReducer';
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
+import SnackBar from '../../components/SnackBar';
 
 const styles = () => ({
   root: {
@@ -125,7 +126,7 @@ class Own extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, errors } = this.props;
     return (
       <Fragment>
         <CssBaseline />
@@ -134,6 +135,11 @@ class Own extends Component {
           <main className={classes.content}>{this.renderContent()}</main>
           {this.renderFabButton()}
           {this.renderFormDialog()}
+          <SnackBar
+            visible={!!errors.own}
+            type="error"
+            message={errors.own}
+          />
         </div>
       </Fragment>
     );
@@ -145,6 +151,7 @@ Own.propTypes = {
   classes: PropTypes.shape().isRequired,
   isLoading: PropTypes.bool.isRequired,
   tabIndex: PropTypes.number.isRequired,
+  errors: PropTypes.shape({}).isRequired,
 
   // data
   owncups: PropTypes.shape({}).isRequired,
@@ -166,6 +173,7 @@ const mSTP = createStructuredSelector({
   tabIndex: additionalSelectors.selectTabIndex,
   concatDataOwnpacks,
   concatDataOwncups,
+  errors: additionalSelectors.selectErrors,
 });
 
 const mDTP = dispatch =>

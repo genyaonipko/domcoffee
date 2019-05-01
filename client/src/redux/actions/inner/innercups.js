@@ -32,7 +32,8 @@ export const addInnercupAction = innercup => (dispatch, getState) => {
     dcRequest.addInnercup(innercup, dateTransaction._d),
     (data, error) => {
       if (error !== undefined) {
-        dispatch(console.log(error));
+        dispatch(AdditionalActions.getErrors({ inner: 'Упс, что-то пошло не так 🤷‍' }));
+        setTimeout(() => dispatch(AdditionalActions.getErrors({})), 3000);
       } else if (data !== undefined) {
         dispatch(Creators.addInnercup(data.data.innercups));
       }

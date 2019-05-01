@@ -29,7 +29,8 @@ export const addPackAction = pack => (dispatch, getState) => {
   // eslint-disable-next-line
   addPack(dcRequest.addPack(pack, dateTransaction._d), (data, error) => {
     if (error !== undefined) {
-      dispatch(console.log(error));
+      dispatch(AdditionalActions.getErrors({ packs: 'Упс, что-то пошло не так 🤷‍' }));
+      setTimeout(() => dispatch(AdditionalActions.getErrors({})), 3000);
     } else if (data !== undefined) {
       dispatch(Creators.addPacks(data.data.packs));
     }

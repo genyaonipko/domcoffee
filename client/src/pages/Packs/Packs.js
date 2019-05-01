@@ -24,6 +24,8 @@ import {
 
 import TabPages from '../../components/TabPage';
 import ChartPage from '../../components/ChartPage';
+import SnackBar from '../../components/SnackBar';
+
 
 const styles = () => ({
   root: {
@@ -127,7 +129,7 @@ class Packs extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, errors } = this.props;
     return (
       <Fragment>
         <CssBaseline />
@@ -136,6 +138,11 @@ class Packs extends Component {
           <main className={classes.content}>{this.renderContent()}</main>
           {this.renderFabButton()}
           {this.renderFormDialog()}
+          <SnackBar
+            visible={!!errors.packs}
+            type="error"
+            message={errors.packs}
+          />
         </div>
       </Fragment>
     );
@@ -147,6 +154,7 @@ Packs.propTypes = {
   classes: PropTypes.shape().isRequired,
   isLoading: PropTypes.bool.isRequired,
   tabIndex: PropTypes.number.isRequired,
+  errors: PropTypes.shape({}).isRequired,
 
   // data
   degustation: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
@@ -168,6 +176,7 @@ const mSTP = createStructuredSelector({
   tabIndex: additionalSelectors.selectTabIndex,
   concatDataPacks,
   concatDataDegustation,
+  errors: additionalSelectors.selectErrors,
 });
 
 const mDTP = dispatch =>
