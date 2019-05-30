@@ -85,7 +85,7 @@ class Inner extends PureComponent {
     const { classes } = this.props;
     return (
       <Fab
-        color="primary"
+        color="secondary"
         aria-label="Add"
         className={classes.button}
         onClick={this.handleClickOpen}>
@@ -131,7 +131,7 @@ class Inner extends PureComponent {
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Внутренее" barColor="#26A69A" />
+          <AppBarComponent title="Внутренее" />
           <main className={classes.content}>{this.renderContent()}</main>
           {this.renderFabButton()}
           {this.renderFormDialog()}

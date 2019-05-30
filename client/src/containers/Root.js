@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
-import orange from '@material-ui/core/colors/orange';
+import red from '@material-ui/core/colors/red';
 import jwtDecode from 'jwt-decode';
 import App from './App';
 import store from '../redux/store';
@@ -28,9 +28,9 @@ const theme = createMuiTheme({
       dark: blue[700],
     },
     secondary: {
-      light: orange[300],
-      main: orange[500],
-      dark: orange[700],
+      light: red[300],
+      main: red[500],
+      dark: red[700],
     },
   },
 });

@@ -6,7 +6,6 @@ import moment from 'moment';
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
 import { Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -15,6 +14,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import 'moment/locale/ru';
 import MomentUtils from '@date-io/moment';
+import InputTextField from './Input/Input';
 
 import { Creators } from '../redux/actions/additional/additional';
 
@@ -29,17 +29,6 @@ const styles = () => ({
     padding: 16,
   },
 });
-
-const InputTextField = ({ input, label, autoFocus, ...rest }) => (
-  <TextField
-    autoFocus={autoFocus}
-    margin="dense"
-    label={label}
-    type="number"
-    {...input}
-    {...rest}
-  />
-);
 
 InputTextField.propTypes = {
   input: PropTypes.shape({}).isRequired,
@@ -192,10 +181,10 @@ class FormDialog extends React.Component {
                 </div>
               </div>
               <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose} variant="contained" color="secondary">
                   Отменить
                 </Button>
-                <Button type="submit" color="primary">
+                <Button type="submit" variant="contained" color="secondary">
                   Добавить
                 </Button>
               </DialogActions>

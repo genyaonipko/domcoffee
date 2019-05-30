@@ -17,9 +17,10 @@ import { logoutUser } from '../redux/actions/authentication';
 
 import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
 
-import { selectRole, selectUser } from '../redux/reducers/authReducer/selectors'
-import { additionalSelectors } from '../redux/reducers/additionalReducer'
+import { selectRole, selectUser } from '../redux/reducers/authReducer/selectors';
+import { additionalSelectors } from '../redux/reducers/additionalReducer';
 
+import Images from '../resources/Images';
 
 const drawerWidth = 240;
 
@@ -72,7 +73,7 @@ const styles = theme => ({
     marginLeft: 32,
   },
   avatar: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.dark,
   },
 });
 
@@ -86,11 +87,6 @@ class AppBarComponent extends Component {
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
     }).isRequired,
-    barColor: PropTypes.string,
-  };
-
-  static defaultProps = {
-    barColor: null,
   };
 
   handleDrawerOpen = () => {
@@ -98,14 +94,13 @@ class AppBarComponent extends Component {
   };
 
   render() {
-    const { classes, title, logout, sidebar, user, barColor } = this.props;
+    const { classes, title, logout, sidebar, user } = this.props;
 
     return (
       <div className={classes.root}>
         <AppBar
           position="absolute"
-          className={classNames(classes.appBar, sidebar && classes.appBarShift)}
-          style={{ backgroundColor: barColor }}>
+          className={classNames(classes.appBar, sidebar && classes.appBarShift)}>
           <Toolbar disableGutters={!sidebar} className={classes.toolbar}>
             <IconButton
               color="inherit"
@@ -124,6 +119,7 @@ class AppBarComponent extends Component {
               className={classes.title}>
               {title}
             </Typography>
+            <img style={{ width: 200, marginRight: 20 }} src={Images.Logo} alt="dom-coffee" />
             <Avatar className={classes.avatar}>
               {user.name
                 .split(' ')
@@ -133,7 +129,7 @@ class AppBarComponent extends Component {
             </Avatar>
             <Button
               variant="contained"
-              color="primary"
+              color="secondary"
               className={classes.buttonLogOut}
               onClick={() => logout()}>
               <ExitIcon />

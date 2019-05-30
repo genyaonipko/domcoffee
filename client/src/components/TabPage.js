@@ -59,8 +59,8 @@ class TabPage extends Component {
           <Tabs
             value={tabIndex}
             onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
+            indicatorColor="secondary"
+            textColor="secondary"
             variant="fullWidth">
             {tabTitles.map(title => (
               <Tab key={`item_${title}`} label={title} />

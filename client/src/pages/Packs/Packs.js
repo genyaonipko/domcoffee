@@ -88,7 +88,7 @@ class Packs extends Component {
     const { classes } = this.props;
     return (
       <Fab
-        color="primary"
+        color="secondary"
         aria-label="Add"
         className={classes.button}
         onClick={this.handleClickOpen}>
@@ -134,7 +134,7 @@ class Packs extends Component {
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Пачки" barColor="#AB47BC" />
+          <AppBarComponent title="Пачки" />
           <main className={classes.content}>{this.renderContent()}</main>
           {this.renderFabButton()}
           {this.renderFormDialog()}

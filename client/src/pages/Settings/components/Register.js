@@ -4,20 +4,26 @@ import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl/FormControl';
+import DialogActions from '@material-ui/core/DialogActions';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import Fab from '@material-ui/core/Fab';
 import { createStructuredSelector } from 'reselect';
 
+import InputTextField from '../../../components/Input/Input';
 import { registerUser } from '../../../redux/actions/authentication';
 import { additionalSelectors } from '../../../redux/reducers/additionalReducer';
 
 const styles = () => ({
   mainArea: {
     display: 'flex',
+    alignItems: 'center',
     flexDirection: 'column',
     marginBottom: 20,
+    marginLeft: 32,
+    marginTop: 20
   },
   invalid: {
     color: 'red',
@@ -26,27 +32,17 @@ const styles = () => ({
   },
   wrapper: {
     width: 500,
-    marginLeft: 32,
+    marginLeft: 0,
   },
+  top: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  title: {
+    margin: 0,
+    marginLeft: 32,
+  }
 });
-
-const InputTextField = ({ input, label, autoFocus, type, ...rest }) => (
-  <TextField
-    autoFocus={autoFocus}
-    margin="dense"
-    label={label}
-    type={type}
-    {...input}
-    {...rest}
-  />
-);
-
-InputTextField.propTypes = {
-  input: PropTypes.shape({}).isRequired,
-  label: PropTypes.string.isRequired,
-  autoFocus: PropTypes.bool.isRequired,
-  type: PropTypes.string.isRequired,
-};
 
 class Register extends React.Component {
   static propTypes = {
@@ -78,9 +74,17 @@ class Register extends React.Component {
     const { classes, handleSubmit, history } = this.props;
     return (
       <div className={classes.wrapper}>
-        <Typography variant="h4" gutterBottom>
-          Добавьте пользователя
-        </Typography>
+        <div className={classes.top}>
+          <Fab
+            color="secondary"
+            aria-label="Back"
+            onClick={() => history.push('/settings')}>
+            <ArrowBack />
+          </Fab>
+          <Typography className={classes.title} variant="h4" gutterBottom>
+            Добавьте пользователя
+          </Typography>
+        </div>
         <form onSubmit={handleSubmit(this.submit)}>
           <div className={classes.mainArea}>
             <FormControl margin="normal" required fullWidth>
@@ -136,15 +140,20 @@ class Register extends React.Component {
               )}
             </FormControl>
           </div>
-
-          <Button
-            onClick={() => history.push('/settings/users')}
-            color="primary">
-            Отменить
-          </Button>
-          <Button type="submit" color="primary">
-            Добавить
-          </Button>
+          <DialogActions>
+            <Button
+              onClick={() => history.push('/settings/users')}
+              color="secondary"
+              variant="contained">
+              Отменить
+            </Button>
+            <Button
+              type="submit"
+              color="secondary"
+              variant="contained">
+              Добавить
+            </Button>
+          </DialogActions>
         </form>
       </div>
     );

@@ -85,7 +85,7 @@ class Own extends Component {
     const { classes } = this.props;
     return (
       <Fab
-        color="primary"
+        color="secondary"
         aria-label="Add"
         className={classes.button}
         onClick={this.handleClickOpen}>
@@ -131,7 +131,7 @@ class Own extends Component {
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Личное" barColor="#4caf50" />
+          <AppBarComponent title="Личное" />
           <main className={classes.content}>{this.renderContent()}</main>
           {this.renderFabButton()}
           {this.renderFormDialog()}

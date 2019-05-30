@@ -134,7 +134,7 @@ class User extends Component {
           message="Пользователь удален"
         />
         <Fab
-          color="primary"
+          color="secondary"
           aria-label="Add"
           className={classes.button}
           onClick={this.handleClick}>

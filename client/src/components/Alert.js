@@ -38,10 +38,17 @@ class Alert extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button
+              onClick={handleClose}
+              color="secondary"
+              variant="contained">
               Нет
             </Button>
-            <Button onClick={this.handleAccept} color="primary" autoFocus>
+            <Button
+              onClick={this.handleAccept}
+              color="secondary"
+              variant="contained"
+              autoFocus>
               Да
             </Button>
           </DialogActions>

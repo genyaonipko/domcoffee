@@ -87,7 +87,7 @@ class Sales extends PureComponent {
     const { classes } = this.props;
     return (
       <Fab
-        color="primary"
+        color="secondary"
         aria-label="Add"
         className={classes.button}
         onClick={this.handleClickOpen}>
@@ -133,7 +133,7 @@ class Sales extends PureComponent {
       <Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBarComponent title="Продажи" barColor="#aa2c11" />
+          <AppBarComponent title="Продажи" />
           <main className={classes.content}>{this.renderContent()}</main>
           {this.renderFabButton()}
           {this.renderFormDialog()}

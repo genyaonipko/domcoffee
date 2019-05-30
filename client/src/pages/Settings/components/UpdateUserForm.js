@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
 import UsersActions from '../../../redux/actions/users/user';
+import InputTextField from '../../../components/Input/Input';
 
 const styles = () => ({
   mainArea: {
@@ -21,24 +21,6 @@ const styles = () => ({
     marginBottom: 30,
   },
 });
-
-const InputTextField = ({ input, label, type, autoFocus, ...rest }) => (
-  <TextField
-    autoFocus={autoFocus}
-    margin="dense"
-    label={label}
-    type={type}
-    {...input}
-    {...rest}
-  />
-);
-
-InputTextField.propTypes = {
-  input: PropTypes.shape({}).isRequired,
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  autoFocus: PropTypes.bool.isRequired,
-};
 
 class UpdateUserForm extends React.Component {
   static propTypes = {
@@ -97,10 +79,10 @@ class UpdateUserForm extends React.Component {
               />
             </div>
             <DialogActions>
-              <Button onClick={handleClose} color="primary">
+              <Button variant="contained" onClick={handleClose} color="secondary">
                 Отменить
               </Button>
-              <Button type="submit" color="primary">
+              <Button variant="contained" type="submit" color="secondary">
                 Изменить
               </Button>
             </DialogActions>
