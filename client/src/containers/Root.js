@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import moment from 'moment';
+import MomentUtils from '@date-io/moment';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
@@ -54,9 +57,14 @@ class Root extends Component {
       <Provider store={store}>
         <Router history={history}>
           <MuiThemeProvider theme={theme}>
-            <Switch>
-              <Route path="/" component={App} />
-            </Switch>
+            <MuiPickersUtilsProvider
+              utils={MomentUtils}
+              locale="ru"
+              moment={moment}>
+              <Switch>
+                <Route path="/" component={App} />
+              </Switch>
+            </MuiPickersUtilsProvider>
           </MuiThemeProvider>
         </Router>
       </Provider>

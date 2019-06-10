@@ -96,9 +96,17 @@ export const getUsersRequest = (requestData, responseProcessor) => {
 };
 
 export const deleteUserRequest = (requestData, responseProcessor) => {
-  domCoffeeConnection(`/api/users/${requestData.keys.key}`, requestData, responseProcessor);
+  domCoffeeConnection(
+    `/api/users/${requestData.keys.key}`,
+    requestData,
+    responseProcessor,
+  );
 };
 
 export const updateUserRequest = (requestData, responseProcessor) => {
-  domCoffeeConnection(`/api/users/${requestData.keys.key}`, requestData, responseProcessor);
+  domCoffeeConnection(
+    `/api/users/${requestData.keys.key}`,
+    requestData,
+    responseProcessor,
+  );
 };
