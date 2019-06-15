@@ -11,7 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Divider from '@material-ui/core/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
-import Loader from '../../../components/Loader';
+import Loader from '../../../Components/Loader';
 
 const ListUsers = ({ users, classes, handleOpenUpdate, handleOpen }) => (
   <div className={classes.listWrapper}>

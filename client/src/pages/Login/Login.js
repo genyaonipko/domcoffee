@@ -12,14 +12,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Loader from '../../components/Loader';
+import Loader from '../../Components/Loader';
 
-import { loginUser } from '../../redux/actions/authentication';
-import { additionalSelectors } from '../../redux/reducers/additionalReducer';
+import { loginUser } from '../../Redux/actions/authentication';
+import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
-import InputTextField from '../../components/Input/Input';
+import InputTextField from '../../Components/Input/Input';
 
-import Images from '../../resources/Images';
+import Images from '../../Resources/Images';
 
 const styles = theme => ({
   layout: {

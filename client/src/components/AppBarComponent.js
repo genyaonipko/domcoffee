@@ -13,14 +13,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
-import { logoutUser } from '../redux/actions/authentication';
+import { logoutUser } from '../Redux/actions/authentication';
 
-import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
+import { Creators as AdditionalActions } from '../Redux/actions/additional/additional';
 
-import { selectRole, selectUser } from '../redux/reducers/authReducer/selectors';
-import { additionalSelectors } from '../redux/reducers/additionalReducer';
+import { selectRole, selectUser } from '../Redux/reducers/authReducer/selectors';
+import { additionalSelectors } from '../Redux/reducers/additionalReducer';
 
-import Images from '../resources/Images';
+import Images from '../Resources/Images';
 
 const drawerWidth = 240;
 

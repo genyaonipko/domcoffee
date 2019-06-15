@@ -1,10 +1,14 @@
 import { createSelector } from 'reselect';
+import { changeData } from '../../../utils/helpers';
 
 export const selectCoffee = state => state.coffee;
-export const selectPortions = state => state.portions;
+export const selectCoffeeData = createSelector(selectCoffee, coffee => coffee.data);
+export const selectCoffeeFetching = createSelector(selectCoffee, coffee => coffee.fetching);
+export const selectCoffeeError = createSelector(selectCoffee, coffee => coffee.error);
+export const selectNormalizedCoffeeData = createSelector(selectCoffeeData, coffee => changeData(coffee))
 
 export const selectCoffeeForChart = createSelector(
-  selectCoffee,
+  selectNormalizedCoffeeData,
   coffee =>
     coffee &&
     Object.keys(coffee).map(item => ({
@@ -12,6 +16,17 @@ export const selectCoffeeForChart = createSelector(
       Помол: +coffee[item],
     })),
 );
+
+export const concatDataCoffee = createSelector(
+  selectNormalizedCoffeeData,
+  coffee =>
+    Object.values(coffee).reduce(
+      (previousValue, currentItem) => previousValue + currentItem,
+      0,
+    ),
+);
+
+export const selectPortions = state => state.portions;
 
 export const selectPortionsForChart = createSelector(
   selectPortions,
@@ -21,15 +36,6 @@ export const selectPortionsForChart = createSelector(
       name: item,
       Порции: +portions[item],
     })),
-);
-
-export const concatDataCoffee = createSelector(
-  selectCoffee,
-  coffee =>
-    Object.values(coffee).reduce(
-      (previousValue, currentItem) => previousValue + currentItem,
-      0,
-    ),
 );
 
 export const concatDataPortions = createSelector(

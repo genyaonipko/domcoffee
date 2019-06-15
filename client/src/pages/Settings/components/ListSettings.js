@@ -8,7 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import Divider from '@material-ui/core/Divider';
-import * as authSelectors from '../../../redux/reducers/authReducer/selectors';
+import * as authSelectors from '../../../Redux/reducers/authReducer/selectors';
 
 const ListSettings = ({ history }) => (
   <List component="nav">

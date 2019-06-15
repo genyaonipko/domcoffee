@@ -9,12 +9,12 @@ import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 import jwtDecode from 'jwt-decode';
 import App from './App';
-import store from '../redux/store';
+import store from '../Redux/store';
 import history from '../utils/history';
 import setAuthToken from '../utils/setAuthToken';
-import { logoutUser } from '../redux/actions/authentication';
-import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
-import Fixture from '../components/Fixture';
+import { logoutUser } from '../Redux/actions/authentication';
+import { Creators as AdditionalActions } from '../Redux/actions/additional/additional';
+import Fixture from '../Components/Fixture';
 
 const screenWidth = window.innerWidth;
 

@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import Dashboard from '../pages/Dashboard/Dashboard';
-import Sales from '../pages/Sales/Sales';
-import Packs from '../pages/Packs/Packs';
-import Own from '../pages/Own/Own';
-import Inner from '../pages/Inner/Inner';
-import Settings from '../pages/Settings/Settings';
-import ProtectedRoute from '../components/ProtectedRoute';
-import DrawerBar from '../components/Drawer';
-import Login from '../pages/Login/Login';
-import * as authSelectors from '../redux/reducers/authReducer/selectors';
+import Dashboard from '../Pages/Dashboard/Dashboard';
+import Sales from '../Pages/Sales/Sales';
+import Packs from '../Pages/Packs/Packs';
+import Own from '../Pages/Own/Own';
+import Inner from '../Pages/Inner/Inner';
+import Settings from '../Pages/Settings/Settings';
+import ProtectedRoute from '../Components/ProtectedRoute';
+import DrawerBar from '../Components/Drawer';
+import Login from '../Pages/Login/Login';
+import * as authSelectors from '../Redux/reducers/authReducer/selectors';
 
 class App extends Component {
   static propTypes = {

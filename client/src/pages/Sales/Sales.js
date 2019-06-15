@@ -8,23 +8,19 @@ import AddIcon from '@material-ui/icons/Add';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import AppBarComponent from '../../components/AppBarComponent';
-import FormDialog from '../../components/FormDialog';
-import SalesActions from '../../redux/actions/sales';
-import SnackBar from '../../components/SnackBar';
+import AppBarComponent from '../../Components/AppBarComponent';
+import FormDialog from '../../Components/FormDialog';
+import SalesActions from '../../Redux/actions/sales';
+import SnackBar from '../../Components/SnackBar';
 
-import {
-  selectCoffeeForChart,
-  selectPortionsForChart,
-  concatDataCoffee,
-  concatDataPortions,
-} from '../../redux/reducers/sales/selectors';
+import * as SalesSelectors from '../../Redux/reducers/sales/selectors';
 import {
   additionalSelectors
-} from '../../redux/reducers/additionalReducer';
+} from '../../Redux/reducers/additionalReducer';
 
-import TabPages from '../../components/TabPage';
-import ChartPage from '../../components/ChartPage';
+import CoffeeTabContainer from './Components/CoffeeTabContainer';
+import TabPages from '../../Components/TabPage';
+import ChartPage from '../../Components/ChartPage';
 
 const styles = () => ({
   root: {
@@ -51,7 +47,7 @@ class Sales extends PureComponent {
   };
 
   componentDidMount = () => {
-    this.props.getAllCoffee();
+    this.props.getCoffee();
     this.props.getAllPortions();
   };
 
@@ -97,29 +93,20 @@ class Sales extends PureComponent {
   };
 
   renderContent = () => {
-    const { portions, coffee, classes, isLoading, ...restProps } = this.props;
+    const { portions, classes, ...restProps } = this.props;
     const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
     const tabTitles = ['Помол', 'Порции'];
 
     return (
       <TabPages tabTitles={tabTitles} classes={classes} {...restProps}>
-        <ChartPage
-          classes={classes}
-          data={coffee}
-          chartTitle="График по помолу"
-          tableTitle="Помол"
-          tableHeaders={tableHeaders}
-          isLoading={isLoading}
-          chartColor="#aa2c11"
-          concatData={this.props.concatDataCoffee}
-        />
+        <CoffeeTabContainer />
         <ChartPage
           classes={classes}
           chartTitle="График по порциям"
           tableTitle="Порции"
           data={portions}
           tableHeaders={tableHeaders}
-          isLoading={isLoading}
+          isLoading={false}
           chartColor="#aa2c11"
           concatData={this.props.concatDataPortions}
         />
@@ -128,7 +115,7 @@ class Sales extends PureComponent {
   };
 
   render() {
-    const { classes, errors } = this.props;
+    const { classes, errorsCoffee } = this.props;
     return (
       <Fragment>
         <CssBaseline />
@@ -138,9 +125,9 @@ class Sales extends PureComponent {
           {this.renderFabButton()}
           {this.renderFormDialog()}
           <SnackBar
-            visible={!!errors.sales}
+            visible={!!errorsCoffee}
             type="error"
-            message={errors.sales}
+            message={errorsCoffee}
           />
         </div>
       </Fragment>
@@ -151,37 +138,31 @@ class Sales extends PureComponent {
 Sales.propTypes = {
   // settings
   classes: PropTypes.shape().isRequired,
-  isLoading: PropTypes.bool.isRequired,
   tabIndex: PropTypes.number.isRequired,
-  errors: PropTypes.shape({}).isRequired,
+  errorsCoffee: PropTypes.string.isRequired,
 
   // data
   portions: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
-  coffee: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
-  concatDataCoffee: PropTypes.number.isRequired,
   concatDataPortions: PropTypes.number.isRequired,
 
   // function
-  getAllCoffee: PropTypes.func.isRequired,
+  getCoffee: PropTypes.func.isRequired,
   getAllPortions: PropTypes.func.isRequired,
   onSubmitCoffee: PropTypes.func.isRequired,
   onSubmitPortions: PropTypes.func.isRequired,
 };
 
 const mSTP = createStructuredSelector({
-  portions: selectPortionsForChart,
-  coffee: selectCoffeeForChart,
-  isLoading: additionalSelectors.selectLoader,
+  portions: SalesSelectors.selectPortionsForChart,
   tabIndex: additionalSelectors.selectTabIndex,
-  concatDataCoffee,
-  concatDataPortions,
-  errors: additionalSelectors.selectErrors,
+  concatDataPortions: SalesSelectors.concatDataPortions,
+  errorsCoffee: SalesSelectors.selectCoffeeError,
 });
 
 const mDTP = dispatch =>
   bindActionCreators(
     {
-      getAllCoffee: SalesActions.changeDataCoffeeAction,
+      getCoffee: SalesActions.getCoffeeAction,
       getAllPortions: SalesActions.changeDataPortionAction,
       onSubmitCoffee: SalesActions.addCoffeeAction,
       onSubmitPortions: SalesActions.addPortionAction,

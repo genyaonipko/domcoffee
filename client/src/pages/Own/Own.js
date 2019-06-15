@@ -8,21 +8,21 @@ import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AddIcon from '@material-ui/icons/Add';
 
-import AppBarComponent from '../../components/AppBarComponent';
-import FormDialog from '../../components/FormDialog';
-import OwnActions from '../../redux/actions/own';
+import AppBarComponent from '../../Components/AppBarComponent';
+import FormDialog from '../../Components/FormDialog';
+import OwnActions from '../../Redux/actions/own';
 import {
   selectOwnpacksForChart,
   selectOwncupsForChart,
   concatDataOwnpacks,
   concatDataOwncups,
-} from '../../redux/reducers/own/selectors';
+} from '../../Redux/reducers/own/selectors';
 import {
   additionalSelectors
-} from '../../redux/reducers/additionalReducer';
-import TabPages from '../../components/TabPage';
-import ChartPage from '../../components/ChartPage';
-import SnackBar from '../../components/SnackBar';
+} from '../../Redux/reducers/additionalReducer';
+import TabPages from '../../Components/TabPage';
+import ChartPage from '../../Components/ChartPage';
+import SnackBar from '../../Components/SnackBar';
 
 const styles = () => ({
   root: {

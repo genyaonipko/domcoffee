@@ -8,23 +8,23 @@ import AddIcon from '@material-ui/icons/Add';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import AppBarComponent from '../../components/AppBarComponent';
-import FormDialog from '../../components/FormDialog';
-import PacksActions from '../../redux/actions/packs';
+import AppBarComponent from '../../Components/AppBarComponent';
+import FormDialog from '../../Components/FormDialog';
+import PacksActions from '../../Redux/actions/packs';
 
 import {
   selectPacksForChart,
   selectDegustationForChart,
   concatDataPacks,
   concatDataDegustation,
-} from '../../redux/reducers/packs/selectors';
+} from '../../Redux/reducers/packs/selectors';
 import {
   additionalSelectors
-} from '../../redux/reducers/additionalReducer';
+} from '../../Redux/reducers/additionalReducer';
 
-import TabPages from '../../components/TabPage';
-import ChartPage from '../../components/ChartPage';
-import SnackBar from '../../components/SnackBar';
+import TabPages from '../../Components/TabPage';
+import ChartPage from '../../Components/ChartPage';
+import SnackBar from '../../Components/SnackBar';
 
 
 const styles = () => ({

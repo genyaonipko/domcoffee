@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { mergeWith, add } from 'ramda';
 
 export const filterDataByDay = payload => payload.filter(
   item => 
@@ -19,18 +20,11 @@ export const filterDataByYear = payload => payload.filter(
 )
 
 
-export const changeData = (payload, initialState, type) => {
-  const keys = Object.keys(initialState);
-  const concatObj = Object.assign({}, initialState);
-  const data = payload.reduce((previousValue, currentItem) => {
-    for (let i = 0; i < keys.length; i += 1) {
-      const current = !Number.isNaN(+currentItem[type][keys[i]])
-        ? +currentItem[type][keys[i]]
-        : 0;
-      concatObj[keys[i]] = +previousValue[keys[i]] + current;
-    }
-    return { ...concatObj };
-  }, initialState);
+export const changeData = (payload) => {
+  let data = Object.assign({})
+  payload.forEach(item => {
+    data = mergeWith(add, data, item.coffee);
+  });
   return data;
 };
 

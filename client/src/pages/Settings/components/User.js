@@ -9,11 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 
-import UsersActions from '../../../redux/actions/users/user';
-import { additionalSelectors } from '../../../redux/reducers/additionalReducer';
+import UsersActions from '../../../Redux/actions/users/user';
+import { additionalSelectors } from '../../../Redux/reducers/additionalReducer';
 
-import Alert from '../../../components/Alert';
-import SnackBar from '../../../components/SnackBar';
+import Alert from '../../../Components/Alert';
+import SnackBar from '../../../Components/SnackBar';
 import UpdateUserForm from './UpdateUserForm';
 import ListUsers from './ListUsers';
 

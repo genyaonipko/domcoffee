@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBarComponent from '../../components/AppBarComponent';
+import AppBarComponent from '../../Components/AppBarComponent';
 import ListSettings from './components/ListSettings';
 import User from './components/User';
 import Register from './components/Register';

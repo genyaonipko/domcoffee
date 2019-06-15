@@ -13,17 +13,17 @@ import IconButton from '@material-ui/core/IconButton';
 
 import { MainListItems, SecondaryListItems } from './ListItems';
 
-import { Creators as AdditionalActions } from '../redux/actions/additional/additional';
+import { Creators as AdditionalActions } from '../Redux/actions/additional/additional';
 import {
   additionalSelectors
-} from '../redux/reducers/additionalReducer';
+} from '../Redux/reducers/additionalReducer';
 
-import OwnActions from '../redux/actions/own';
-import SalesActions from '../redux/actions/sales';
-import PacksActions from '../redux/actions/packs';
-import InnerActions from '../redux/actions/inner';
+import OwnActions from '../Redux/actions/own';
+import SalesActions from '../Redux/actions/sales';
+import PacksActions from '../Redux/actions/packs';
+import InnerActions from '../Redux/actions/inner';
 
-import { selectRole } from '../redux/reducers/authReducer/selectors';
+import { selectRole } from '../Redux/reducers/authReducer/selectors';
 
 const drawerWidth = 240;
 

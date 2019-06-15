@@ -12,9 +12,9 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import Fab from '@material-ui/core/Fab';
 import { createStructuredSelector } from 'reselect';
 
-import InputTextField from '../../../components/Input/Input';
-import { registerUser } from '../../../redux/actions/authentication';
-import { additionalSelectors } from '../../../redux/reducers/additionalReducer';
+import InputTextField from '../../../Components/Input/Input';
+import { registerUser } from '../../../Redux/actions/authentication';
+import { additionalSelectors } from '../../../Redux/reducers/additionalReducer';
 
 const styles = () => ({
   mainArea: {

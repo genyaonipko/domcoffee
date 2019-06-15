@@ -11,25 +11,25 @@ import Typography from '@material-ui/core/Typography';
 import { equals } from 'ramda';
 
 
-import Loader from '../../components/Loader';
+import Loader from '../../Components/Loader';
 
-import SalesActions from '../../redux/actions/sales';
-import PacksActions from '../../redux/actions/packs';
-import InnerActions from '../../redux/actions/inner';
-import OwnActions from '../../redux/actions/own';
+import SalesActions from '../../Redux/actions/sales';
+import PacksActions from '../../Redux/actions/packs';
+import InnerActions from '../../Redux/actions/inner';
+import OwnActions from '../../Redux/actions/own';
 
-import { selectDashboardTab1, selectDashboardTab2 } from '../../redux/reducers/dashboardReducer/selectors';
+import { selectDashboardTab1, selectDashboardTab2 } from '../../Redux/reducers/dashboardReducer/selectors';
 import {
   additionalSelectors
-} from '../../redux/reducers/additionalReducer';
+} from '../../Redux/reducers/additionalReducer';
 
 import SimpleLineChart from './components/LineChart';
 import SimpleBarChart from './components/BarChart';
 
 import SimpleTable from './components/Table';
-import AppBarComponent from '../../components/AppBarComponent';
+import AppBarComponent from '../../Components/AppBarComponent';
 
-import TabPages from '../../components/TabPage';
+import TabPages from '../../Components/TabPage';
 
 const styles = () => ({
   root: {

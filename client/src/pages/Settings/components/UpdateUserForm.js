@@ -11,8 +11,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-import UsersActions from '../../../redux/actions/users/user';
-import InputTextField from '../../../components/Input/Input';
+import UsersActions from '../../../Redux/actions/users/user';
+import InputTextField from '../../../Components/Input/Input';
 
 const styles = () => ({
   mainArea: {
