@@ -9,7 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AddIcon from '@material-ui/icons/Add';
 
 import AppBarComponent from '../../Components/AppBarComponent';
-import FormDialog from '../../Components/FormDialog';
+import FormDialog from '../../Components/SubmitModal';
 import InnerActions from '../../Redux/actions/inner';
 import {
   selectInnerpacksForChart,

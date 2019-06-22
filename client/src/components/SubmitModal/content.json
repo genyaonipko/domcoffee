@@ -1,0 +1,88 @@
+[
+  [
+    {
+      "name": "balerina",
+      "label": "Балерина"
+    },
+    {
+      "name": "gourme",
+      "label": "Гурме"
+    },
+    {
+      "name": "orient",
+      "label": "Ориент"
+    },
+    {
+      "name": "symphony",
+      "label": "Симфония"
+    },
+    {
+      "name": "servus",
+      "label": "Сервус"
+    },
+    {
+      "name": "sera",
+      "label": "Сера"
+    },
+    {
+      "name": "rose",
+      "label": "Роза"
+    }
+  ],
+  [
+    {
+      "name": "opera",
+      "label": "Опера"
+    },
+    {
+      "name": "barista",
+      "label": "Бариста"
+    },
+    {
+      "name": "nero",
+      "label": "Неро"
+    },
+    {
+      "name": "italia",
+      "label": "Италия"
+    },
+    {
+      "name": "marone",
+      "label": "Мароне"
+    },
+    {
+      "name": "pura",
+      "label": "Пура"
+    },
+    {
+      "name": "verde",
+      "label": "Верде"
+    }
+  ],
+  [
+    {
+      "name": "cote",
+      "label": "Коте"
+    },
+    {
+      "name": "trope",
+      "label": "С. Тропе"
+    },
+    {
+      "name": "java",
+      "label": "Ява"
+    },
+    {
+      "name": "efiopia",
+      "label": "Эфиопия"
+    },
+    {
+      "name": "columbia",
+      "label": "Колумбия"
+    },
+    {
+      "name": "crema",
+      "label": "Крема"
+    }
+  ]
+]

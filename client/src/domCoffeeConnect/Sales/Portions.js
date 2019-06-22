@@ -3,13 +3,11 @@ import BaseService from '../BaseService';
 export default class PortionService extends BaseService {
 
   getPortion = () => {
-    const baseUrl = `${this.getBaseUrl()}/api/portions`
-    return this.api.get(baseUrl, null)
+    return this.api.get('/api/portions', null)
   }
 
   submitPortion = (data, dateTransaction) => {
-    const baseUrl = `${this.getBaseUrl()}/api/portions`
-    return this.api.post(baseUrl, {
+    return this.api.post('/api/portions', {
       data,
       dateTransaction,
     })

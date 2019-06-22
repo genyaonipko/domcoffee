@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
@@ -9,161 +9,156 @@ import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import AppBarComponent from '../../Components/AppBarComponent';
-import FormDialog from '../../Components/FormDialog';
+import FormDialog from '../../Components/SubmitModal';
 import SalesActions from '../../Redux/actions/sales';
 import SnackBar from '../../Components/SnackBar';
 
 import * as SalesSelectors from '../../Redux/reducers/sales/selectors';
-import {
-  additionalSelectors
-} from '../../Redux/reducers/additionalReducer';
+import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
 import CoffeeTabContainer from './Components/CoffeeTabContainer';
+import PortionTabContainer from './Components/PortionTabContainer';
 import TabPages from '../../Components/TabPage';
-import ChartPage from '../../Components/ChartPage';
 
-const styles = () => ({
+const TAB_TITLES = ['Помол', 'Порции'];
+const APP_BAR_TITLE = 'Продажи';
+const FORM_DIALOG_TITLE = 'продаж';
+const SIDEBAR_WIDTH = 240;
+
+const styles = theme => ({
   root: {
     display: 'flex',
     flex: 1,
-    width: window.innerWidth - 240,
+    width: window.innerWidth - SIDEBAR_WIDTH,
   },
   content: {
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
-    paddingTop: 64,
+    paddingTop: theme.spacing(16),
   },
   button: {
     position: 'fixed',
-    right: 16,
-    bottom: 16,
+    right: theme.spacing(4),
+    bottom: theme.spacing(4),
   },
 });
 
-class Sales extends PureComponent {
-  state = {
-    open: false,
+const Sales = ({
+  onSubmitCoffee,
+  onSubmitPortions,
+  getCoffee,
+  getPortion,
+  tabIndex,
+  classes,
+  errorsCoffee,
+  errorsPortion,
+  ...props
+}) => {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    getCoffee();
+    getPortion();
+  }, []);
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  componentDidMount = () => {
-    this.props.getCoffee();
-    this.props.getAllPortions();
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  handleSubmit = values => {
-    if (!this.props.tabIndex) {
-      this.props.onSubmitCoffee(values);
+  const handleSubmit = values => {
+    if (!tabIndex) {
+      onSubmitCoffee(values);
     } else {
-      this.props.onSubmitPortions(values);
+      onSubmitPortions(values);
     }
   };
 
-  renderFormDialog = () => {
-    const { open } = this.state;
+  const renderFormDialog = () => {
     return (
       <FormDialog
-        onSubmit={values => this.handleSubmit(values)}
+        onSubmit={handleSubmit}
         open={open}
-        handleClose={this.handleClose}
-        title="продаж"
+        handleClose={handleClose}
+        title={FORM_DIALOG_TITLE}
       />
     );
   };
 
-  renderFabButton = () => {
-    const { classes } = this.props;
+  const renderFabButton = () => {
     return (
       <Fab
         color="secondary"
         aria-label="Add"
         className={classes.button}
-        onClick={this.handleClickOpen}>
+        onClick={handleClickOpen}>
         <AddIcon />
       </Fab>
     );
   };
 
-  renderContent = () => {
-    const { portions, classes, ...restProps } = this.props;
-    const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
-    const tabTitles = ['Помол', 'Порции'];
-
+  const renderContent = () => {
     return (
-      <TabPages tabTitles={tabTitles} classes={classes} {...restProps}>
+      <TabPages classes={classes} tabTitles={TAB_TITLES} {...props}>
         <CoffeeTabContainer />
-        <ChartPage
-          classes={classes}
-          chartTitle="График по порциям"
-          tableTitle="Порции"
-          data={portions}
-          tableHeaders={tableHeaders}
-          isLoading={false}
-          chartColor="#aa2c11"
-          concatData={this.props.concatDataPortions}
-        />
+        <PortionTabContainer />
       </TabPages>
     );
   };
 
-  render() {
-    const { classes, errorsCoffee } = this.props;
+  const renderSnackBar = () => {
     return (
-      <Fragment>
-        <CssBaseline />
-        <div className={classes.root}>
-          <AppBarComponent title="Продажи" />
-          <main className={classes.content}>{this.renderContent()}</main>
-          {this.renderFabButton()}
-          {this.renderFormDialog()}
-          <SnackBar
-            visible={!!errorsCoffee}
-            type="error"
-            message={errorsCoffee}
-          />
-        </div>
-      </Fragment>
+      <SnackBar
+        visible={!!errorsCoffee || !!errorsPortion}
+        type="error"
+        message={errorsCoffee || errorsPortion}
+      />
     );
-  }
-}
+  };
+
+  return (
+    <>
+      <CssBaseline />
+      <div className={classes.root}>
+        <AppBarComponent title={APP_BAR_TITLE} />
+        <main className={classes.content}>{renderContent()}</main>
+        {renderFabButton()}
+        {renderFormDialog()}
+        {renderSnackBar()}
+      </div>
+    </>
+  );
+};
 
 Sales.propTypes = {
   // settings
   classes: PropTypes.shape().isRequired,
   tabIndex: PropTypes.number.isRequired,
   errorsCoffee: PropTypes.string.isRequired,
-
-  // data
-  portions: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
-  concatDataPortions: PropTypes.number.isRequired,
+  errorsPortion: PropTypes.string.isRequired,
 
   // function
   getCoffee: PropTypes.func.isRequired,
-  getAllPortions: PropTypes.func.isRequired,
+  getPortion: PropTypes.func.isRequired,
   onSubmitCoffee: PropTypes.func.isRequired,
   onSubmitPortions: PropTypes.func.isRequired,
 };
 
-const mSTP = createStructuredSelector({
-  portions: SalesSelectors.selectPortionsForChart,
+const mapStateToProps = createStructuredSelector({
   tabIndex: additionalSelectors.selectTabIndex,
-  concatDataPortions: SalesSelectors.concatDataPortions,
   errorsCoffee: SalesSelectors.selectCoffeeError,
+  errorsPortion: SalesSelectors.selectPortionError,
 });
 
-const mDTP = dispatch =>
+const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getCoffee: SalesActions.getCoffeeAction,
-      getAllPortions: SalesActions.changeDataPortionAction,
+      getPortion: SalesActions.getPortionAction,
       onSubmitCoffee: SalesActions.addCoffeeAction,
       onSubmitPortions: SalesActions.addPortionAction,
     },
@@ -171,6 +166,6 @@ const mDTP = dispatch =>
   );
 
 export default connect(
-  mSTP,
-  mDTP,
+  mapStateToProps,
+  mapDispatchToProps,
 )(withStyles(styles, { withTheme: true })(Sales));

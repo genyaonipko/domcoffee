@@ -22,6 +22,7 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
     suppressDeprecationWarnings: true,
+    fontFamily: '"Helvetica Neue"'
   },
   direction: 'ltr',
   palette: {
@@ -36,6 +37,7 @@ const theme = createMuiTheme({
       dark: red[700],
     },
   },
+  spacing: 4,
 });
 
 if (localStorage.jwtToken) {

@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import AppBarComponent from '../../Components/AppBarComponent';
-import FormDialog from '../../Components/FormDialog';
+import FormDialog from '../../Components/SubmitModal';
 import PacksActions from '../../Redux/actions/packs';
 
 import {

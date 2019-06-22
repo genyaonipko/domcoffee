@@ -8,15 +8,15 @@ import ChartPage from '../../../Components/ChartPage';
 
 const useStyles = makeStyles({});
 
-const CoffeeTabContainer = ({ coffee, fetching, concatData }) => {
+const PortionTabContainer = ({ portion, fetching, concatData }) => {
   const classes = useStyles();
   const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
   return (
     <ChartPage
       classes={classes}
-      data={coffee}
-      chartTitle="График по помолу"
-      tableTitle="Помол"
+      chartTitle="График по порциям"
+      tableTitle="Порции"
+      data={portion}
       tableHeaders={tableHeaders}
       isLoading={fetching}
       chartColor="#aa2c11"
@@ -25,18 +25,18 @@ const CoffeeTabContainer = ({ coffee, fetching, concatData }) => {
   )
 }
 
-CoffeeTabContainer.propTypes = {
-  coffee: PropTypes.shape({}).isRequired,
+PortionTabContainer.propTypes = {
+  portion: PropTypes.shape({}).isRequired,
   fetching: PropTypes.bool.isRequired,
   concatData: PropTypes.number.isRequired,
 }
 
 const mSTP = createStructuredSelector({
-  coffee: SalesSelectors.selectCoffeeForChart,
-  fetching: SalesSelectors.selectCoffeeFetching,
-  concatData: SalesSelectors.concatDataCoffee,
+  portion: SalesSelectors.selectPortionForChart,
+  fetching: SalesSelectors.selectPortionFetching,
+  concatData: SalesSelectors.concatDataPortion,
 });
 
 export default connect(
   mSTP,
-)(CoffeeTabContainer);
+)(PortionTabContainer);

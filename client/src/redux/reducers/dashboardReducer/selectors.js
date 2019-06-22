@@ -5,7 +5,7 @@ import { selectOwncups, selectOwnpacks } from '../own/selectors';
 import {
   selectCoffee,
   selectCoffeeForChart,
-  selectPortions,
+  selectNormalizedPortionData,
 } from '../sales/selectors';
 import { selectPacks, selectDegustation } from '../packs/selectors';
 
@@ -20,7 +20,7 @@ export const selectPacksByMoney = createSelector(
 );
 
 export const selectCupsByMoney = createSelector(
-  selectPortions,
+  selectNormalizedPortionData,
   portions =>
     portions &&
     Object.keys(portions).map(item => ({
@@ -63,7 +63,7 @@ export const selectCupsFree = createSelector(
 
 export const selectAllCups = createSelector(
   selectDegustation,
-  selectPortions,
+  selectNormalizedPortionData,
   selectInnercups,
   selectOwncups,
   (degustation, portions, innercups, owncups) => {

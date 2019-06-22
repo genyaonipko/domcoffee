@@ -26,10 +26,14 @@ export const concatDataCoffee = createSelector(
     ),
 );
 
-export const selectPortions = state => state.portions;
+export const selectPortion = state => state.portions;
+export const selectPortionData = createSelector(selectPortion, coffee => coffee.data);
+export const selectPortionFetching = createSelector(selectPortion, coffee => coffee.fetching);
+export const selectPortionError = createSelector(selectPortion, coffee => coffee.error);
+export const selectNormalizedPortionData = createSelector(selectCoffeeData, coffee => changeData(coffee))
 
-export const selectPortionsForChart = createSelector(
-  selectPortions,
+export const selectPortionForChart = createSelector(
+  selectNormalizedPortionData,
   portions =>
     portions &&
     Object.keys(portions).map(item => ({
@@ -38,8 +42,8 @@ export const selectPortionsForChart = createSelector(
     })),
 );
 
-export const concatDataPortions = createSelector(
-  selectPortions,
+export const concatDataPortion = createSelector(
+  selectNormalizedPortionData,
   portions =>
     Object.values(portions).reduce(
       (previousValue, currentItem) => previousValue + currentItem,

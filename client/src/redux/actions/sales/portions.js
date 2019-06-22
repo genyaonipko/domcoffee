@@ -13,7 +13,7 @@ const { Creators } = createActions({
   sortPortionByYear: ['payload'],
 }, {})
 
-export const changeDataPortionAction = () => dispatch => {
+export const getPortionAction = () => dispatch => {
   dispatch(AdditionalActions.setLoader(true));
   getPortions(dcRequest.getPortions(), (data, error) => {
     if (error !== undefined) {
