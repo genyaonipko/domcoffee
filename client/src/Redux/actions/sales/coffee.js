@@ -35,6 +35,6 @@ export const addCoffeeAction = coffee => (dispatch, getState) => {
     // Fix me errors on backend
     console.log(err);
     dispatch(Creators.addCoffeeFailure({ error: 'Упс, что-то пошло не так 🤷‍' }));
-    setTimeout(() => dispatch(Creators.addCoffeeFailure({ error: '' }), 3000));
+    setTimeout(() => dispatch(Creators.addCoffeeFailure({ error: '' })), 3000);
   })
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -128,6 +128,7 @@ const mDTP = dispatch => bindActionCreators({
 }, dispatch);
 
 export default compose(
+  memo,
   withStyles(styles),
   reduxForm({ form: 'modal', enableReinitialize: true }),
   connect(

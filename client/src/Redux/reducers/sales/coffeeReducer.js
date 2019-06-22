@@ -24,13 +24,17 @@ export const getCoffeeFailure = (state = INITIAL_STATE, action) => {
 }
 
 export const addCoffeeSuccess = (state = INITIAL_STATE, action) =>
-  state.merge({ data: [...state.data, action.payload] });
+  state.merge({ data: [...state.data, action.payload.data] });
+
+export const addCoffeeFailure = (state = INITIAL_STATE, action) =>
+  state.merge({ error: action.payload.error });
 
 export const HANDLERS = {
   [Types.GET_COFFEE_INIT]: getCoffeeInit,
   [Types.GET_COFFEE_SUCCESS]: getCoffeeSuccess,
   [Types.GET_COFFEE_FAILURE]: getCoffeeFailure,
-  [Types.ADD_COFFEE]: addCoffeeSuccess,
+  [Types.ADD_COFFEE_SUCCESS]: addCoffeeSuccess,
+  [Types.ADD_COFFEE_FAILURE]: addCoffeeFailure,
 }
 
 /* -------------------- Create Reducer ------------------  */
