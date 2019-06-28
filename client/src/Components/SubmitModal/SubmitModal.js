@@ -12,7 +12,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import 'moment/locale/ru';
-import InputTextField from '../Input/Input';
+import InputTextField from '../Input';
 import content from './content.json';
 
 import { Creators } from '../../Redux/actions/additional/additional';

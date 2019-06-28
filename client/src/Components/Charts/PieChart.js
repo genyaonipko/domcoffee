@@ -2,8 +2,15 @@
 import React, { useState } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
 
+const PIE_CHART_WIDTH = 800;
+const PIE_CHART_HEIGHT = 600;
+const PIE_CHART_INNER_RADIUS = 150;
+const PIE_CHART_OUTER_RADIUS = 240;
+const CX = 400;
+const CY = 300;
+const RADIAN = Math.PI / 180;
+
 const renderActiveShape = (props) => {
-  const RADIAN = Math.PI / 180;
   const {
     cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
     fill, payload, percent, value,
@@ -53,20 +60,20 @@ const renderActiveShape = (props) => {
 const PieChartContainer = (props) => {
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const onPieEnter = (data, index) => {
+  const onPieEnter = (_, index) => {
     setActiveIndex(index);
   };
 
   return (
-    <PieChart width={800} height={600}>
+    <PieChart width={PIE_CHART_WIDTH} height={PIE_CHART_HEIGHT}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
         data={props.data}
-        cx={400}
-        cy={300}
-        innerRadius={50 * 3}
-        outerRadius={80 * 3}
+        cx={CX}
+        cy={CY}
+        innerRadius={PIE_CHART_INNER_RADIUS}
+        outerRadius={PIE_CHART_OUTER_RADIUS}
         fill={props.color}
         dataKey={props.legend}
         onMouseEnter={onPieEnter}

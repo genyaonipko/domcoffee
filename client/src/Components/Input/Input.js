@@ -1,13 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
-// import { makeStyles } from '@material-ui/styles';
-
-// const useStyles = makeStyles({
-//   formLabelRoot: { // must provide all of formLabelRoot && '&$formLabelFocused' && formLabelFocused
-//     '&$formLabelFocused': { color: '' },
-//   },
-// });
 
 const InputTextField = ({
   input,
@@ -17,7 +10,6 @@ const InputTextField = ({
   autoFocus,
   autoComplete,
 }) => {
-  // const classes = useStyles();
   return (
     <TextField
       autoFocus={autoFocus}
@@ -47,4 +39,4 @@ InputTextField.defaultProps = {
   autoFocus: null,
 };
 
-export default InputTextField;
+export default React.memo(InputTextField);
