@@ -16,6 +16,7 @@ import InputTextField from '../Input';
 import content from './content.json';
 
 import { Creators } from '../../Redux/actions/additional/additional';
+import Language from '../../Language';
 
 const styles = theme => ({
   mainArea: {
@@ -71,10 +72,10 @@ const SubmitModal = ({
     return (
       <DialogActions>
         <Button onClick={handleClose} variant="contained" color="secondary">
-          Отменить
+          {Language.actions.decline}
         </Button>
         <Button type="submit" variant="contained" color="secondary">
-          Добавить
+          {Language.actions.add}
         </Button>
       </DialogActions>
     );
@@ -139,7 +140,7 @@ export default compose(
 
 const ContentTitle = ({ title }) => (
   <Typography variant="h4" gutterBottom>
-    Колличество {title}
+    {Language.count} {title}
   </Typography>
 );
 

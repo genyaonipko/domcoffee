@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Language from '../../Language';
 
 class Alert extends React.Component {
   static propTypes = {
@@ -30,11 +31,11 @@ class Alert extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description">
           <DialogTitle id="alert-dialog-title">
-            Удаление пользователя
+            {Language.user.deleteUser}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Вы действительно хотите удалить пользователя?
+              {Language.user.hasAcceptMessage}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -42,14 +43,14 @@ class Alert extends React.Component {
               onClick={handleClose}
               color="secondary"
               variant="contained">
-              Нет
+              {Language.actions.no}
             </Button>
             <Button
               onClick={this.handleAccept}
               color="secondary"
               variant="contained"
               autoFocus>
-              Да
+              {Language.actions.yes}
             </Button>
           </DialogActions>
         </Dialog>
