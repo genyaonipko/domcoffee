@@ -1,90 +1,39 @@
+/* eslint-disable */
 import { createActions } from 'reduxsauce'
-import { getPortions, addPortion } from '../../../domCoffeeConnect';
-import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
-import { Creators as AdditionalActions } from '../additional/additional'
+import { PortionApi } from '../../../domCoffeeConnect/Sales';
 
 const { Creators } = createActions({
-  changeDataPortion: ['payload'],
-  setLoader: ['payload'],
-  addPortion: ['payload'],
-  sortPortionByDay: ['payload'],
-  sortPortionByMonth: ['payload'],
-  sortPortionByQuarter: ['payload'],
-  sortPortionByYear: ['payload'],
+  getPortionInit: [],
+  getPortionSuccess: ['payload'],
+  getPortionFailure: ['payload'],
+  addPortionSuccess: ['payload'],
+  addPortionFailure: ['payload'],
 }, {})
 
 export const getPortionAction = () => dispatch => {
-  dispatch(AdditionalActions.setLoader(true));
-  getPortions(dcRequest.getPortions(), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch(Creators.changeDataPortion(data.data));
-      dispatch(AdditionalActions.setLoader(false));
+  dispatch(Creators.getPortionInit());
+  PortionApi.getPortion().then(({ status, data, ...rest }) => {
+    if (status === 200) {
+      dispatch(Creators.getPortionSuccess({ data: data.data }));
     }
+  }).catch(err => {
+    // Fix me errors on backend
+    console.log(err);
+    dispatch(Creators.getPortionFailure({ error: 'Упс, что-то пошло не так 🤷‍' }));
+    setTimeout(() => dispatch(Creators.getPortionFailure({ error: '' })), 3000);
   });
 };
 
-export const addPortionAction = portion => (dispatch, getState) => {
+export const addPortionAction = coffee => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
-  addPortion(
-    // eslint-disable-next-line
-    dcRequest.addPortion(portion, dateTransaction._d),
-    (data, error) => {
-      if (error !== undefined) {
-        dispatch(AdditionalActions.getErrors({ sales: 'Упс, что-то пошло не так 🤷‍' }));
-        setTimeout(() => dispatch(AdditionalActions.getErrors({})), 3000);
-      } else if (data !== undefined) {
-        dispatch(Creators.addPortion(data.data.portions));
-      }
-    },
-  );
-};
-
-export const portionByMonthAction = () => dispatch => {
-  dispatch(AdditionalActions.setLoader(true));
-  getPortions(dcRequest.getPortions(), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch(Creators.sortPortionByMonth(data.data));
-      dispatch(AdditionalActions.setLoader(false));
+  PortionApi.submitPortion(coffee, dateTransaction._d).then(({ status, data }) => {
+    if (status === 200) {
+      dispatch(Creators.addPortionSuccess({ data: data.data }));
     }
-  });
-};
-
-export const portionByDayAction = () => dispatch => {
-  dispatch(AdditionalActions.setLoader(true));
-  getPortions(dcRequest.getPortions(), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch(Creators.sortPortionByDay(data.data));
-      dispatch(AdditionalActions.setLoader(false));
-    }
-  });
-};
-
-export const portionByQuarterAction = () => dispatch => {
-  dispatch(AdditionalActions.setLoader(true));
-  getPortions(dcRequest.getPortions(), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch(Creators.sortPortionByQuarter(data.data));
-      dispatch(AdditionalActions.setLoader(false));
-    }
-  });
-};
-
-export const portionByYearAction = () => dispatch => {
-  dispatch(AdditionalActions.setLoader(true));
-  getPortions(dcRequest.getPortions(), (data, error) => {
-    if (error !== undefined) {
-      dispatch(console.log(error));
-    } else if (data !== undefined) {
-      dispatch(Creators.sortPortionByYear(data.data));
-      dispatch(AdditionalActions.setLoader(false));
-    }
-  });
+  }).catch(err => {
+    // Fix me errors on backend
+    console.log(err);
+    dispatch(Creators.addPortionFailure({ error: 'Упс, что-то пошло не так 🤷‍' }));
+    setTimeout(() => dispatch(Creators.addPortionFailure({ error: '' })), 3000);
+  })
 };

@@ -6,7 +6,7 @@ import {
   selectCoffee,
   selectCoffeeForChart,
   selectNormalizedPortionData,
-} from '../sales/selectors';
+} from '../salesReducers/selectors';
 import { selectPacks, selectDegustation } from '../packs/selectors';
 
 export const selectPacksByMoney = createSelector(

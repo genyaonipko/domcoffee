@@ -1,8 +1,10 @@
 import React from 'react';
 import ErrorIcon from '@material-ui/icons/Error';
+import { makeStyles } from '@material-ui/styles';
+import Language from '../../Language';
 
-const styles = {
-  container : {
+const useStyles = makeStyles({
+  container: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -22,12 +24,17 @@ const styles = {
   icon: {
     width: '20vw',
     height: '20vh',
-  }
-}
+  },
+});
 
-const Fixture = () => <div style={styles.container}>
-    <span style={styles.title}>only Tablet and Desktop</span>
-    <ErrorIcon style={styles.icon} color="inherit" />
-  </div>
+const Fixture = () => {
+  const classes = useStyles();
+  return (
+    <div style={classes.container}>
+      <span style={classes.title}>{Language.fixture}</span>
+      <ErrorIcon style={classes.icon} color="inherit" />
+    </div>
+  );
+};
 
 export default Fixture;

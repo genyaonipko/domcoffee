@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { createActions } from 'reduxsauce'
 import { CoffeeApi } from '../../../domCoffeeConnect/Sales';
-import { Creators as AdditionalActions } from '../additional/additional'
 
 const { Creators } = createActions({
   getCoffeeInit: [],

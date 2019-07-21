@@ -11,4 +11,5 @@ export default {
     hasAcceptMessage: 'Вы действительно хотите удалить пользователя?',
   },
   count: 'Колличество',
+  fixture: 'only Tablet and Desktop',
 };

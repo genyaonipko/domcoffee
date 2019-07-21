@@ -49,9 +49,9 @@ class Dashboard extends React.Component {
   componentDidMount = () => {
     Promise.all([
       this.props.changeData(),
-      this.props.getAllCoffee(),
+      // this.props.getAllCoffee(),
       this.props.getAllOwn(),
-      this.props.getAllPortions(),
+      // this.props.getAllPortions(),
       this.props.getAllInnerPacks(),
       this.props.getAllDegustation(),
       this.props.getAllInnerCups(),

@@ -5,7 +5,7 @@ export const selectCoffee = state => state.coffee;
 export const selectCoffeeData = createSelector(selectCoffee, coffee => coffee.data);
 export const selectCoffeeFetching = createSelector(selectCoffee, coffee => coffee.fetching);
 export const selectCoffeeError = createSelector(selectCoffee, coffee => coffee.error);
-export const selectNormalizedCoffeeData = createSelector(selectCoffeeData, coffee => changeData(coffee))
+export const selectNormalizedCoffeeData = createSelector(selectCoffeeData, coffee => changeData(coffee, 'coffee'))
 
 export const selectCoffeeForChart = createSelector(
   selectNormalizedCoffeeData,
@@ -27,10 +27,10 @@ export const concatDataCoffee = createSelector(
 );
 
 export const selectPortion = state => state.portions;
-export const selectPortionData = createSelector(selectPortion, coffee => coffee.data);
-export const selectPortionFetching = createSelector(selectPortion, coffee => coffee.fetching);
-export const selectPortionError = createSelector(selectPortion, coffee => coffee.error);
-export const selectNormalizedPortionData = createSelector(selectCoffeeData, coffee => changeData(coffee))
+export const selectPortionData = createSelector(selectPortion, portions => portions.data);
+export const selectPortionFetching = createSelector(selectPortion, portions => portions.fetching);
+export const selectPortionError = createSelector(selectPortion, portions => portions.error);
+export const selectNormalizedPortionData = createSelector(selectPortionData, portions => changeData(portions, 'portions'))
 
 export const selectPortionForChart = createSelector(
   selectNormalizedPortionData,

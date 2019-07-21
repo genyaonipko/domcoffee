@@ -1,4 +1,2 @@
-import LineChart from './LineChart';
-import PieChart from './PieChart';
-
-export default { LineChart, PieChart };
+export { default as LineChart } from './LineChart';
+export { default as PieChart } from './PieChart';

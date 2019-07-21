@@ -13,7 +13,7 @@ import FormDialog from '../../Components/SubmitModal';
 import SalesActions from '../../Redux/actions/sales';
 import SnackBar from '../../Components/SnackBar';
 
-import * as SalesSelectors from '../../Redux/reducers/sales/selectors';
+import * as SalesSelectors from '../../Redux/reducers/salesReducers/selectors';
 import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
 import CoffeeTabContainer from './Components/CoffeeTabContainer';
