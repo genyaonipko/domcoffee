@@ -8,8 +8,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import { Creators as AdditionalActions } from '../Redux/actions/additional/additional';
-import { additionalSelectors } from '../Redux/reducers/additionalReducer';
+import { Creators as AdditionalActions } from '../../Redux/actions/additional/additional';
+import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
 const styles = () => ({
   rootTabs: {

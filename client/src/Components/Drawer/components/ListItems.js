@@ -11,7 +11,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import PeopleIcon from '@material-ui/icons/People';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import history from '../utils/history';
+import history from '../../../utils/history';
 
 export const MainListItems = ({ role, changeTabBar }) => (
   <div>
