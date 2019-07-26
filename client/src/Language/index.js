@@ -5,6 +5,7 @@ export default {
     no: 'Нет',
     decline: 'Отменить',
     add: 'Добавить',
+    edit: 'Изменить',
   },
   user: {
     deleteUser: 'Удаление пользователя',

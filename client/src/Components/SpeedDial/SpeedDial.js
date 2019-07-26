@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
@@ -8,13 +8,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles(theme => ({
-  fab: {
+  SpeedDial: {
     position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(3),
-    backgroundColor: theme.palette.primary
+    bottom: theme.spacing(4),
+    right: theme.spacing(4),
   },
-  directionUp: {},
 }));
 
 const SpeedDials = ({ addAction, editAction }) => {
@@ -36,7 +34,7 @@ const SpeedDials = ({ addAction, editAction }) => {
   return (
     <SpeedDial
       ariaLabel="SpeedDial"
-      className={classes.fab}
+      className={classes.SpeedDial}
       icon={<SpeedDialIcon />}
       onBlur={handleClose}
       onClick={handleClick}

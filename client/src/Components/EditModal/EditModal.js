@@ -75,7 +75,7 @@ const SubmitModal = ({
           {Language.actions.decline}
         </Button>
         <Button type="submit" variant="contained" color="secondary">
-          {Language.actions.add}
+          {Language.actions.edit}
         </Button>
       </DialogActions>
     );
