@@ -7,6 +7,7 @@ import AppBarComponent from '../../Components/AppBarComponent';
 import ListSettings from './components/ListSettings';
 import User from './components/User';
 import Register from './components/Register';
+import EditList from '../EditList';
 
 const styles = theme => ({
   root: {
@@ -37,6 +38,7 @@ class Settings extends React.Component {
               <Route exact path="/settings" component={ListSettings} />
               <Route exact path="/settings/users" component={User} />
               <Route exact path="/settings/add-user" component={Register} />
+              <Route exact path="/settings/edit" component={EditList} />
             </Switch>
           </main>
         </div>

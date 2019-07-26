@@ -21,7 +21,7 @@ export const concatDataCoffee = createSelector(
   selectNormalizedCoffeeData,
   coffee =>
     Object.values(coffee).reduce(
-      (previousValue, currentItem) => previousValue + currentItem,
+      (previousValue, currentItem) => +previousValue + +currentItem,
       0,
     ),
 );
@@ -46,7 +46,7 @@ export const concatDataPortion = createSelector(
   selectNormalizedPortionData,
   portions =>
     Object.values(portions).reduce(
-      (previousValue, currentItem) => previousValue + currentItem,
+      (previousValue, currentItem) => +previousValue + +currentItem,
       0,
     ),
 );

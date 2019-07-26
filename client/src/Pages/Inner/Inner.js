@@ -151,7 +151,9 @@ Inner.propTypes = {
   classes: PropTypes.shape().isRequired,
   isLoading: PropTypes.bool.isRequired,
   tabIndex: PropTypes.number.isRequired,
-  errors: PropTypes.shape({}).isRequired,
+  errors: PropTypes.shape({
+    inner: PropTypes.string.isRequired,
+  }).isRequired,
 
   // data
   innercups: PropTypes.shape({}).isRequired,

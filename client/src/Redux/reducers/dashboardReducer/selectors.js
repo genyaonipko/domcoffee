@@ -4,10 +4,11 @@ import { selectInnercups, selectInnerpacks } from '../inner/selectors';
 import { selectOwncups, selectOwnpacks } from '../own/selectors';
 import {
   selectCoffee,
+  selectPortion,
   selectCoffeeForChart,
   selectNormalizedPortionData,
 } from '../salesReducers/selectors';
-import { selectPacks, selectDegustation } from '../packs/selectors';
+import { selectPacks, selectDegustation } from '../packsReducers/selectors';
 
 export const selectPacksByMoney = createSelector(
   selectPacks,
@@ -99,3 +100,9 @@ export const selectDashboardTab2 = createSelector(
     return [normalizedCoffee, allcups];
   },
 );
+
+export const selectAllTransactions = createSelector(selectDegustation, selectPacks, selectCoffee, selectPortion,
+  ({ data: degustation }, { data: packs }, { data: coffee }, { data: portion }) => ({
+    degustation, packs, coffee, portion
+  })
+)

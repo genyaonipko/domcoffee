@@ -24,9 +24,9 @@ export const getPortionAction = () => dispatch => {
   });
 };
 
-export const addPortionAction = coffee => (dispatch, getState) => {
+export const addPortionAction = portion => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
-  PortionApi.submitPortion(coffee, dateTransaction._d).then(({ status, data }) => {
+  PortionApi.submitPortion(portion, dateTransaction._d).then(({ status, data }) => {
     if (status === 200) {
       dispatch(Creators.addPortionSuccess({ data: data.data }));
     }

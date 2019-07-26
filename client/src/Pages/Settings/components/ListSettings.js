@@ -1,31 +1,24 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import PersonAdd from '@material-ui/icons/PersonAdd';
-import Divider from '@material-ui/core/Divider';
+import ShowChart from '@material-ui/icons/ShowChart';
+import List from '../../../Components/List';
+import ListItem from '../../../Components/ListItem';
 import * as authSelectors from '../../../Redux/reducers/authReducer/selectors';
 
 const ListSettings = ({ history }) => (
-  <List component="nav">
-    <Fragment>
-      <ListItem button onClick={() => history.push('/settings/users')}>
-        <ListItemIcon>
-          <PersonAdd />
-        </ListItemIcon>
-        <ListItemText primary="Пользователи" />
-      </ListItem>
-      <Divider />
-    </Fragment>
+  <List title="Настройки">
+    <ListItem icon={PersonAdd} title="Пользователи" onClick={() => history.push('/settings/users')} />
+    <ListItem icon={ShowChart} title="Изменить данные" onClick={() => history.push('/settings/edit')} />
   </List>
 );
 
 ListSettings.propTypes = {
-  history: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mSTP = createStructuredSelector({

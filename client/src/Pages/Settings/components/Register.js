@@ -48,7 +48,9 @@ class Register extends React.Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    history: PropTypes.shape({}).isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
     classes: PropTypes.shape().isRequired,
     errors: PropTypes.shape({}).isRequired,
   };

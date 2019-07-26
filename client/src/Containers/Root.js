@@ -24,7 +24,7 @@ const theme = createMuiTheme({
     suppressDeprecationWarnings: true,
     fontFamily: '"Helvetica Neue"'
   },
-  direction: 'ltr',
+  // direction: 'ltr',
   palette: {
     primary: {
       light: blue[300],

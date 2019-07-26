@@ -34,6 +34,6 @@ export const addDegustationAction = degustation => (dispatch, getState) => {
     // Fix me errors on backend
     console.log(err);
     dispatch(Creators.addDegustationFailure({ error: 'Упс, что-то пошло не так 🤷‍' }));
-    setTimeout(() => dispatch(Creators.addDegustationFailure({ error: '' }), 3000));
+    setTimeout(() => dispatch(Creators.addDegustationFailure({ error: '' })), 3000);
   })
 };

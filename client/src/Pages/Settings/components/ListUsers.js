@@ -86,7 +86,14 @@ const ListUsers = ({ users, classes, handleOpenUpdate, handleOpen }) => (
 
 ListUsers.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
-  classes: PropTypes.shape({}).isRequired,
+  classes: PropTypes.shape({
+    listWrapper: PropTypes.shape({}).isRequired,
+    list: PropTypes.shape({}).isRequired,
+    listItem: PropTypes.shape({}).isRequired,
+    listText: PropTypes.shape({}).isRequired,
+    buttonList: PropTypes.shape({}).isRequired,
+    listNoneAction: PropTypes.shape({}).isRequired,
+  }).isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
   handleOpenUpdate: PropTypes.func.isRequired,
   handleOpen: PropTypes.func.isRequired,

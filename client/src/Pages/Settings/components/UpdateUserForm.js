@@ -28,7 +28,9 @@ class UpdateUserForm extends React.Component {
     handleClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func,
-    classes: PropTypes.shape({}).isRequired,
+    classes: PropTypes.shape({
+      mainArea: PropTypes.shape({}).isRequired,
+    }).isRequired,
     keyItem: PropTypes.string.isRequired,
   };
 

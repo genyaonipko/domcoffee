@@ -65,7 +65,9 @@ const Title = () => (
 );
 
 ChartPage.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
+  classes: PropTypes.shape({
+    appBarSpacer: PropTypes.shape({}).isRequired,
+  }).isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   chartTitle: PropTypes.string.isRequired,

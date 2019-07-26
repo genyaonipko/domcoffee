@@ -35,10 +35,15 @@ TabContainer.propTypes = {
 class TabPage extends Component {
   static propTypes = {
     setTabIndex: PropTypes.func.isRequired,
-    classes: PropTypes.shape({}).isRequired,
+    classes: PropTypes.shape({
+      rootTabs: PropTypes.shape({}).isRequired,
+      tabs: PropTypes.shape({}).isRequired,
+    }).isRequired,
     tabTitles: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     children: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
-    theme: PropTypes.shape({}).isRequired,
+    theme: PropTypes.shape({
+      direction: PropTypes.shape({}).isRequired,
+    }).isRequired,
     tabIndex: PropTypes.number.isRequired,
   };
 

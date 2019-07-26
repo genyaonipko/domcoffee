@@ -147,7 +147,12 @@ class User extends Component {
 
 User.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
-  classes: PropTypes.shape({}).isRequired,
+  classes: PropTypes.shape({
+    user: PropTypes.shape({}).isRequired,
+    top: PropTypes.shape({}).isRequired,
+    userTitle: PropTypes.shape({}).isRequired,
+    button: PropTypes.shape({}).isRequired,
+  }).isRequired,
   getAllUser: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
   deleteUser: PropTypes.func.isRequired,
