@@ -7,10 +7,6 @@ const packsSchema = new mongoose.Schema({
     unique: true,
     lowercase: true
   },
-  packs: {
-    type: Object,
-    required: true
-  },
   createdDate: {
     type: Date,
     default: Date.now

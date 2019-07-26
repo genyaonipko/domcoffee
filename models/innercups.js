@@ -7,7 +7,7 @@ const innercupsSchema = new mongoose.Schema({
     unique: true,
     lowercase: true
   },
-  innercups: {
+  data: {
     type: Object,
     required: true
   },

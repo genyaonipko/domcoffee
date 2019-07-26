@@ -12,7 +12,7 @@ module.exports = {
     try {
       req.item = await Ownpacks.create({
         key: randomString(),
-        ownpacks: req.body.data,
+        data: req.body.data,
         createdDate: req.body.dateTransaction
       });
       next();
@@ -28,7 +28,7 @@ module.exports = {
         },
         {
           ...req.item,
-          ownpacks: req.body
+          data: req.body
         },
         {
           new: true

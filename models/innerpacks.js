@@ -7,7 +7,7 @@ const innerpacksSchema = new mongoose.Schema({
     unique: true,
     lowercase: true
   },
-  innerpacks: {
+  data: {
     type: Object,
     required: true
   },

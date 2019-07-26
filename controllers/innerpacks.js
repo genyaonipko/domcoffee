@@ -12,7 +12,7 @@ module.exports = {
     try {
       req.item = await Innerpacks.create({
         key: randomString(),
-        innerpacks: req.body.data,
+        data: req.body.data,
         createdDate: req.body.dateTransaction
       });
       next();
@@ -28,7 +28,7 @@ module.exports = {
         },
         {
           ...req.item,
-          innerpacks: req.body
+          data: req.body
         },
         {
           new: true

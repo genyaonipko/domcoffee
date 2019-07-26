@@ -12,7 +12,7 @@ module.exports = {
     try {
       req.item = await Portions.create({
         key: randomString(),
-        portions: req.body.data,
+        data: req.body.data,
         createdDate: req.body.dateTransaction
       });
       next();
@@ -28,7 +28,7 @@ module.exports = {
         },
         {
           ...req.item,
-          portions: req.body
+          data: req.body
         },
         {
           new: true

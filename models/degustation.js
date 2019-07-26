@@ -7,7 +7,7 @@ const degustationSchema = new mongoose.Schema({
     unique: true,
     lowercase: true
   },
-  degustation: {
+  data: {
     type: Object,
     required: true
   },

@@ -12,7 +12,7 @@ module.exports = {
     try {
       req.item = await Degustation.create({
         key: randomString(),
-        degustation: req.body.data,
+        data: req.body.data,
         createdDate: req.body.dateTransaction
       });
       next();
@@ -28,7 +28,7 @@ module.exports = {
         },
         {
           ...req.item,
-          degustation: req.body
+          data: req.body
         },
         {
           new: true

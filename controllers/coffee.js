@@ -12,7 +12,7 @@ module.exports = {
     try {
       req.item = await Coffee.create({
         key: randomString(),
-        coffee: req.body.data,
+        data: req.body.data,
         createdDate: req.body.dateTransaction
       });
       next();
@@ -28,7 +28,7 @@ module.exports = {
         },
         {
           ...req.item,
-          coffee: req.body
+          data: req.body
         },
         {
           new: true
