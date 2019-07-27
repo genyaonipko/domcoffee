@@ -10,7 +10,6 @@ const InputTextField = ({
   autoFocus,
   autoComplete,
   styles,
-  value,
 }) => {
   return (
     <TextField
@@ -23,7 +22,6 @@ const InputTextField = ({
       label={label}
       margin="dense"
       variant="outlined"
-      value={value}
       {...input}
     />
   );
@@ -36,7 +34,6 @@ InputTextField.propTypes = {
   autoFocus: PropTypes.bool,
   autoComplete: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  value: PropTypes.string,
   styles: PropTypes.shape({}),
 
 };
@@ -44,7 +41,6 @@ InputTextField.propTypes = {
 InputTextField.defaultProps = {
   name: null,
   autoFocus: null,
-  value: '',
   styles: {},
 };
 

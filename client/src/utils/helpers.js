@@ -20,10 +20,10 @@ export const filterDataByYear = payload => payload.filter(
 )
 
 
-export const changeData = (payload, name) => {
+export const changeData = (payload) => {
   let data = Object.assign({})
   payload.forEach(item => {
-    data = mergeWith(add, data, item[name]);
+    data = mergeWith(add, data, item.data);
   });
   return data;
 };

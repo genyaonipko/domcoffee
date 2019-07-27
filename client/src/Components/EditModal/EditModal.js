@@ -4,6 +4,7 @@ import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { DatePicker } from 'material-ui-pickers';
+import { Field, reduxForm } from 'redux-form';
 import { createStructuredSelector } from 'reselect'
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -17,26 +18,31 @@ import InputTextField from '../Input';
 import { Creators } from '../../Redux/actions/additional/additional';
 import { selectAllTransactions } from '../../Redux/reducers/dashboardReducer/selectors';
 import Language from '../../Language';
+import content from '../SubmitModal/content.json'
+
+const MODAL_WIDTH = 600;
 
 const styles = theme => ({
   mainArea: {
     display: 'flex',
     marginBottom: theme.spacing(4),
-    flexWrap: 'wrap',
     justifyContent: 'space-around',
-  },
-  inputArea: {
-    marginLeft: theme.spacing(4),
-    marginRight: theme.spacing(4),
+    minWidth: MODAL_WIDTH - theme.spacing(12),
   },
   dateArea: {
     padding: theme.spacing(4),
   },
+  inputArea: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: theme.spacing(4),
+    marginRight: theme.spacing(4),
+  }
 });
 
 const CURRENT_DATE = moment();
 
-const SubmitModal = ({
+const EditModal = ({
   open,
   handleClose,
   classes,
@@ -44,19 +50,19 @@ const SubmitModal = ({
   title,
   dataTitle,
   data,
+  initialize,
   ...props
 }) => {
   if (!data) return null;
   const [date, setDate] = useState(CURRENT_DATE);
-
   useEffect(() => {
     props.changeDate(date);
   }, [date]);
 
-  // const submit = values => {
-  //   props.onSubmit(values);
-  //   handleClose();
-  // };
+  const submit = values => {
+    props.onSubmit(values);
+    handleClose();
+  };
 
   const handleDate = eventDate => setDate(eventDate);
 
@@ -80,10 +86,15 @@ const SubmitModal = ({
       </DialogActions>
     );
   };
-
+  
   const normalizedData = data[dataTitle].find(item => moment(item.createdDate).format('D') === moment(date).format('D'));
-  const dataToRender = normalizedData ? normalizedData[dataTitle] : {}
-  const keys = Object.keys(dataToRender) || null;
+  React.useEffect(() => {
+    if (normalizedData) {
+      initialize(normalizedData.data)
+    } else {
+      initialize({})
+    }
+  }, [normalizedData])
   return (
     <Dialog
       open={open}
@@ -94,15 +105,19 @@ const SubmitModal = ({
         {renderDatePicker()}
       </div>
       <DialogContent dividers>
-        <form>
+        <form onSubmit={handleSubmit(submit)}>
           <div className={classes.mainArea}>
-            {keys.map((key) => (
-              <InputTextField
-                styles={{ width: 160 }}
-                name={key}
-                label={key}
-                value={dataToRender[key]}
-              />
+            {content.map((section) => (
+              <div className={classes.inputArea}>
+                {section.map((field) => (
+                  <Field
+                    styles={{ width: 160 }}
+                    component={InputTextField}
+                    name={field.name}
+                    label={field.label}
+                  />
+                ))}
+              </div>
             ))}
           </div>
           {renderActionButtons()}
@@ -112,7 +127,7 @@ const SubmitModal = ({
   );
 };
 
-SubmitModal.propTypes = {
+EditModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -123,6 +138,7 @@ SubmitModal.propTypes = {
   changeDate: PropTypes.func.isRequired,
   dataTitle: PropTypes.string.isRequired,
   data: PropTypes.shape({}).isRequired,
+  initialize: PropTypes.func.isRequired,
 };
 
 const mDTP = dispatch => bindActionCreators({
@@ -136,11 +152,12 @@ const mSTP = createStructuredSelector({
 export default compose(
   memo,
   withStyles(styles),
+  reduxForm({ form: 'editModal' }),
   connect(
     mSTP,
     mDTP,
   ),
-)(SubmitModal);
+)(EditModal);
 
 const ContentTitle = ({ title }) => (
   <Typography variant="h4" gutterBottom>

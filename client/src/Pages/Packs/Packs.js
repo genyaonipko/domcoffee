@@ -58,6 +58,8 @@ const Packs = ({
     getDegustation();
   }, []);
 
+  const getModalTitle = !tabIndex ? 'packs' : 'degustation';
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -82,6 +84,17 @@ const Packs = ({
     }
   };
 
+  const handleEdit = values => {
+    if (!tabIndex) {
+      console.log(values)
+      // onSubmitPacks(values);
+    } else {
+      console.log(values)
+
+      // onSubmitDegustations(values);
+    }
+  };
+
   const renderFormDialog = () => {
     return (
       <>
@@ -92,9 +105,10 @@ const Packs = ({
           title={FORM_DIALOG_TITLE}
         />
         <EditModal
+          onSubmit={handleEdit}
           open={openEditModal}
           handleClose={handleCloseEditModal}
-          dataTitle="packs"
+          dataTitle={getModalTitle}
         />
       </>
     );
