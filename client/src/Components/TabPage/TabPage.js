@@ -75,7 +75,8 @@ class TabPage extends Component {
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={tabIndex}
-          onChangeIndex={this.handleChangeIndex}>
+          onChangeIndex={this.handleChangeIndex}
+        >
           {childrenArr.map((child, i) => (
             <TabContainer key={`item_${i + 1}_tab`} dir={theme.direction}>
               {child}

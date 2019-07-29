@@ -13,4 +13,7 @@ export default {
   },
   count: 'Колличество',
   fixture: 'only Tablet and Desktop',
+  editModal: {
+    dateLabel: 'Выберите дату',
+  }
 };

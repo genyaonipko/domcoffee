@@ -23,11 +23,17 @@ export const getPackFailure = (state = INITIAL_STATE, action) => {
   return state.merge({ ...action.payload, fetching: false });
 }
 
-export const addPackSuccess = (state = INITIAL_STATE, action) =>
-  state.merge({ data: [...state.data, action.payload.data] });
+export const addPackSuccess = (state = INITIAL_STATE, action) => {
+  const { data: nextData } = action.payload;
+  const normalizedArray = state.data.map(item => item.key === nextData.key ? nextData : item)
+  return state.merge({ data: [...normalizedArray] });
+}
 
 export const addPackFailure = (state = INITIAL_STATE, action) =>
   state.merge({ error: action.payload.error });
+
+export const selectPackId = (state = INITIAL_STATE, action) =>
+  state.merge({ selectedPackId: action.payload.id });
 
 export const HANDLERS = {
   [Types.GET_PACK_INIT]: getPackInit,
@@ -35,6 +41,7 @@ export const HANDLERS = {
   [Types.GET_PACK_FAILURE]: getPackFailure,
   [Types.ADD_PACK_SUCCESS]: addPackSuccess,
   [Types.ADD_PACK_FAILURE]: addPackFailure,
+  [Types.SELECT_PACK_ID]: selectPackId,
 }
 
 /* -------------------- Create Reducer ------------------  */

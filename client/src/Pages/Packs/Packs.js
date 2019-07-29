@@ -23,6 +23,7 @@ import EditModal from '../../Components/EditModal';
 const TAB_TITLES = ['Пачки', 'Дегустационные чашки'];
 const APP_BAR_TITLE = 'Пачки';
 const FORM_DIALOG_TITLE = 'пачек';
+const EDIT_MODAL_TITLE = 'Процесс изменения данных';
 const SIDEBAR_WIDTH = 240;
 
 const styles = theme => ({
@@ -30,6 +31,7 @@ const styles = theme => ({
     display: 'flex',
     flex: 1,
     width: window.innerWidth - SIDEBAR_WIDTH,
+    background: 'linear-gradient(45deg, #e3f2fd 40%, #ffebee 60%)',
   },
   content: {
     flexGrow: 1,
@@ -48,6 +50,8 @@ const Packs = ({
   classes,
   errorsPacks,
   errorsDegustation,
+  selectPackId,
+  onEditPack,
   ...props
 }) => {
   const [open, setOpen] = useState(false);
@@ -84,10 +88,13 @@ const Packs = ({
     }
   };
 
+  // const handleSelectedId = () => {
+    
+  // }
+
   const handleEdit = values => {
     if (!tabIndex) {
-      console.log(values)
-      // onSubmitPacks(values);
+      onEditPack(values);
     } else {
       console.log(values)
 
@@ -109,6 +116,8 @@ const Packs = ({
           open={openEditModal}
           handleClose={handleCloseEditModal}
           dataTitle={getModalTitle}
+          selectIdAction={selectPackId}
+          title={EDIT_MODAL_TITLE}
         />
       </>
     );
@@ -168,6 +177,8 @@ Packs.propTypes = {
   getDegustation: PropTypes.func.isRequired,
   onSubmitPacks: PropTypes.func.isRequired,
   onSubmitDegustations: PropTypes.func.isRequired,
+  selectPackId: PropTypes.func.isRequired,
+  onEditPack: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -183,6 +194,8 @@ const mapDispatchToProps = dispatch =>
       getDegustation: PacksActions.getDegustationAction,
       onSubmitPacks: PacksActions.addPackAction,
       onSubmitDegustations: PacksActions.addDegustationAction,
+      selectPackId: PacksActions.Creators.selectPackId,
+      onEditPack: PacksActions.editPackAction,
     },
     dispatch,
   );

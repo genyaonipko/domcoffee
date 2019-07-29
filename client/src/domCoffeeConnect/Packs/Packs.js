@@ -14,4 +14,8 @@ export default class PacksService extends BaseService {
       dateTransaction,
     })
   }
+
+  editPacks = (data, id) => {
+    return this.api.put(`/api/packs/${id}`, data)
+  }
 }
