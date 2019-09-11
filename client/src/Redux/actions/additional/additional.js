@@ -8,4 +8,5 @@ export const { Creators } = createActions({
   getErrors: ['payload'],
   setCurrentUser: ['payload'],
   setDateTransaction: ['payload'],
+  setDateFilter: ['payload'],
 }, {})

@@ -21,6 +21,11 @@ export const selectSidebar = createSelector(
   settings => settings.sidebar,
 );
 
+export const selectDateFilter = createSelector(
+  selectSettings,
+  settings => settings.dateFilter,
+);
+
 export default {
   selectSettings,
   selectErrors,
@@ -29,4 +34,5 @@ export default {
   selectTabIndex,
   selectDateTransaction,
   selectSidebar,
+  selectDateFilter,
 };

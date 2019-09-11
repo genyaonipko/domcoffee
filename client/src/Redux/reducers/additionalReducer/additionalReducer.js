@@ -5,7 +5,7 @@ import Types from '../../actions/actionTypes';
 
 /* -------------------- INITIAL_STATE ------------------  */
 const INITIAL_STATE = Immutable.from({
-  sidebar: true,
+  sidebar: false,
   isLoading: false,
   tabIndex: 0,
   dateTransaction: moment(),

@@ -18,7 +18,7 @@ export const MainListItems = ({ role, changeTabBar }) => (
     <ListItem
       button
       onClick={() => {
-        changeTabBar(0);
+        changeTabBar();
         history.push('/dashboard');
       }}>
       <ListItemIcon>
@@ -29,7 +29,7 @@ export const MainListItems = ({ role, changeTabBar }) => (
     <ListItem
       button
       onClick={() => {
-        changeTabBar(0);
+        changeTabBar();
         history.push('/packs');
       }}>
       <ListItemIcon>
@@ -40,29 +40,40 @@ export const MainListItems = ({ role, changeTabBar }) => (
     <ListItem
       button
       onClick={() => {
-        changeTabBar(0);
+        changeTabBar();
         history.push('/sales');
       }}>
       <ListItemIcon>
         <CoffeeIcon />
       </ListItemIcon>
-      <ListItemText primary="Продажи" />
+      <ListItemText primary="Помол" />
     </ListItem>
     <ListItem
       button
       onClick={() => {
-        changeTabBar(0);
+        changeTabBar();
         history.push('/inner');
       }}>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Внутреннее" />
+      <ListItemText primary="Порции" />
     </ListItem>
     <ListItem
       button
       onClick={() => {
-        changeTabBar(0);
+        changeTabBar();
+        history.push('/inner');
+      }}>
+      <ListItemIcon>
+        <BarChartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Персонал" />
+    </ListItem>
+    <ListItem
+      button
+      onClick={() => {
+        changeTabBar();
         history.push('/own');
       }}>
       <ListItemIcon>
@@ -71,7 +82,10 @@ export const MainListItems = ({ role, changeTabBar }) => (
       <ListItemText primary="Личное" />
     </ListItem>
     {role === 'admin' && (
-      <ListItem button onClick={() => history.push('/settings')}>
+      <ListItem button onClick={() => {
+        changeTabBar();
+        history.push('/settings');
+      }}>
         <ListItemIcon>
           <SettingsIcon />
         </ListItemIcon>

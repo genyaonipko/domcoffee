@@ -1,161 +1,379 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+// react plugin for creating charts
+// import ChartistGraph from 'react-chartist';
+// @material-ui/core
+import { makeStyles } from '@material-ui/core/styles';
+// import Icon from '@material-ui/core/Icon';
+// @material-ui/icons
+// import Warning from '@material-ui/icons/Warning';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import CoffeeIcon from '@material-ui/icons/LocalCafe';
+// import DateRange from '@material-ui/icons/DateRange';
+// import LocalOffer from '@material-ui/icons/LocalOffer';
+// import Update from '@material-ui/icons/Update';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import AccessTime from '@material-ui/icons/AccessTime';
+// import Accessibility from '@material-ui/icons/Accessibility';
+import BugReport from '@material-ui/icons/BugReport';
+import BarChartIcon from '@material-ui/icons/BarChart';
+import Code from '@material-ui/icons/Code';
+import Cloud from '@material-ui/icons/Cloud';
 import { compose, bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 
-// import _ from 'lodash';
-import { equals } from 'ramda';
+import moment from 'moment';
+// core components
 
+import GridItem from '../../NewComponents/Grid/GridItem';
+import GridContainer from '../../NewComponents/Grid/GridContainer';
+import Table from '../../NewComponents/Table/Table';
+import Tasks from '../../NewComponents/Tasks/Tasks';
+import CustomTabs from '../../NewComponents/CustomTabs/CustomTabs';
+// import Danger from '../../NewComponents/Typography/Danger';
+import Card from '../../NewComponents/Card/Card';
+import CardHeader from '../../NewComponents/Card/CardHeader';
+import CardIcon from '../../NewComponents/Card/CardIcon';
+import CardBody from '../../NewComponents/Card/CardBody';
+import CardFooter from '../../NewComponents/Card/CardFooter';
 
-import Loader from '../../Components/Loader';
+import AppBarComponent from '../../Components/AppBarComponent';
 
 import SalesActions from '../../Redux/actions/sales';
 import PacksActions from '../../Redux/actions/packs';
 import InnerActions from '../../Redux/actions/inner';
 import OwnActions from '../../Redux/actions/own';
+import UsersAction from '../../Redux/actions/users/user';
+import { LineChart } from '../../Components/Charts';
 
-import { selectDashboardTab1, selectDashboardTab2 } from '../../Redux/reducers/dashboardReducer/selectors';
 import {
-  additionalSelectors
-} from '../../Redux/reducers/additionalReducer';
+  selectDashboardTab1,
+  selectDashboardTab2,
+} from '../../Redux/reducers/dashboardReducer/selectors';
+import {
+  concatDataPacks,
+  selectPacksForChart,
+  selectDailyIncrease,
+} from '../../Redux/reducers/packsReducers/selectors';
+import {
+  concatDataCoffee,
+  concatDataPortion,
+} from '../../Redux/reducers/salesReducers/selectors';
+import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
+import { selectUsersForDashboard } from '../../Redux/reducers/usersReducer/selectors';
 
-import SimpleLineChart from './components/LineChart';
-import SimpleBarChart from './components/BarChart';
+import { bugs, website, server } from '../../variables/general';
 
-import SimpleTable from './components/Table';
-import AppBarComponent from '../../Components/AppBarComponent';
+import styles from '../../assets/jss/material-dashboard-react/views/dashboardStyle';
+import {
+  warningColor,
+  successColor,
+} from '../../assets/jss/material-dashboard-react';
 
-import TabPages from '../../Components/TabPage';
+const useStyles = makeStyles(styles);
 
-const styles = () => ({
-  root: {
-    display: 'flex',
-    flex: 1,
-    width: window.innerWidth - 240,
-  },
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-    paddingTop: 64,
-  },
-});
+const APP_BAR_TITLE = 'Дашборд';
 
-class Dashboard extends React.Component {
-  componentDidMount = () => {
-    Promise.all([
-      this.props.changeData(),
-      // this.props.getAllCoffee(),
-      this.props.getAllOwn(),
-      // this.props.getAllPortions(),
-      this.props.getAllInnerPacks(),
-      this.props.getAllDegustation(),
-      this.props.getAllInnerCups(),
-      this.props.getAllOwnCups(),
-    ]);
-  };
+const Dashboard = props => {
+  const classes = useStyles();
 
-  shouldComponentUpdate = nextProps => !equals(this.props, nextProps);
+  React.useEffect(() => {
+    props.changeData();
+    props.getUsers();
+  }, []);
 
-  renderChartAndTable = (data, tabTitles, classes) =>{
-    const isEmpty = !data.some((item, i) => !item.every(x => x[tabTitles[i]] === 0))
-    if(isEmpty) return (
-      <Typography variant="h2" gutterBottom>
-        Нет данных
-      </Typography>
-    )
-    return (
-      <div style={{ margin: 24 }}>
-          <div className={classes.appBarSpacer} />
-          <Typography variant="h4" gutterBottom>
-            График по всем данным
-          </Typography>
-          <Typography component="div">
-            <SimpleLineChart tabTitles={tabTitles} data={data} />
-            <SimpleBarChart tabTitles={tabTitles} data={data} />
-          </Typography>
-          <Typography variant="h4" gutterBottom>
-            Вся информация
-          </Typography>
-          <SimpleTable data={data} tableHeaders={tabTitles} />
-        </div>
-        )
-    }
-      
+  // eslint-disable-next-line
+  const renderDate = props.dateFilter._d;
 
-  renderContent = () => {
-    const {
-      classes,
-      dashboardTab1,
-      dashboardTab2,
-      isLoading,
-      ...restProps
-    } = this.props;
-    const tab1Titles = [
-      'Пачки за деньги',
-      'Чашки за деньги',
-      'Пачки бесплатно',
-      'Чашки бесплатно',
-    ];
-    const tab2Titles = ['Помол', 'Чашки'];
-
-    return (
-      <TabPages tabTitles={['Tab1', 'Tab2']} classes={classes} {...restProps}>
-        {this.renderChartAndTable(dashboardTab1, tab1Titles, classes)}
-        {this.renderChartAndTable(dashboardTab2, tab2Titles, classes)}
-      </TabPages>
-    );
-  };
-
-  render() {
-    const { classes, isLoading } = this.props;
-
-    return (
-      <Fragment>
-        <CssBaseline />
-        <div className={classes.root}>
-          <AppBarComponent title="Дашбоард" />
-          <main className={classes.content}>
-            {!isLoading ? (
-              this.renderContent()
-            ) : (
-              <Loader />
-            )}
-          </main>
-        </div>
-      </Fragment>
-    );
-  }
-}
-
-Dashboard.propTypes = {
-  // settings
-  classes: PropTypes.shape().isRequired,
-  isLoading: PropTypes.bool.isRequired,
-
-  // data
-  dashboardTab1: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))).isRequired,
-  dashboardTab2: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))).isRequired,
-
-  // functions
-  changeData: PropTypes.func.isRequired,
-  getAllOwn: PropTypes.func.isRequired,
-  getAllCoffee: PropTypes.func.isRequired,
-  getAllPortions: PropTypes.func.isRequired,
-  getAllInnerPacks: PropTypes.func.isRequired,
-  getAllDegustation: PropTypes.func.isRequired,
-  getAllInnerCups: PropTypes.func.isRequired,
-  getAllOwnCups: PropTypes.func.isRequired,
+  return (
+    <div style={{ paddingTop: 112, width: '100%' }}>
+      <AppBarComponent title={APP_BAR_TITLE} />
+      <GridContainer>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color="success" stats icon>
+              <CardIcon color="success">
+                <ShoppingCartIcon />
+              </CardIcon>
+              <p className={classes.cardCategory}>Всего пачек</p>
+              <h3 className={classes.cardTitle}>
+                {props.concatPacks} <small>шт</small>
+              </h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <p style={{ margin: 0 }}>{moment().format('D MMMM YYYY')}</p>
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color="warning" stats icon>
+              <CardIcon color="warning">
+                <CoffeeIcon />
+              </CardIcon>
+              <p className={classes.cardCategory}>Всего порции</p>
+              <h3 className={classes.cardTitle}>
+                {props.concatCoffee} <small>шт</small>
+              </h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <p style={{ margin: 0 }}>{moment().format('D MMMM YYYY')}</p>
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <BarChartIcon />
+              </CardIcon>
+              <p className={classes.cardCategory}>Всего помол</p>
+              <h3 className={classes.cardTitle}>
+                {props.concatPortion} <small>шт</small>
+              </h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <p style={{ margin: 0 }}>{moment().format('D MMMM YYYY')}</p>
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="success">
+              <LineChart
+                data={props.packsForChart}
+                legend="Пачки"
+                height={225}
+                color="#ffffff"
+                type="success"
+                tooltipTextColor="#ffffff"
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Дневные продажи пачек</h4>
+              <p className={classes.cardCategory}>
+                <span
+                  className={
+                    props.dailyIncrease > 0
+                      ? classes.successText
+                      : classes.dangerText
+                  }>
+                  {props.dailyIncrease > 0 ? (
+                    <ArrowUpward className={classes.upArrowCardCategory} />
+                  ) : (
+                    <ArrowDownward className={classes.upArrowCardCategory} />
+                  )}
+                  {props.dailyIncrease}%
+                </span>
+                {props.dailyIncrease > 0 ? 'повышение' : 'снижение'} продаж
+                сегодня.
+              </p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                {moment(renderDate).format('D MMMM YYYY')}
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="warning">
+              <LineChart
+                data={props.packsForChart}
+                legend="Пачки"
+                height={225}
+                color="#ffffff"
+                type="warning"
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Daily Sales</h4>
+              <p className={classes.cardCategory}>
+                <span className={classes.successText}>
+                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+                </span>{' '}
+                increase in today sales.
+              </p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> {moment().format('D MMMM YYYY')}
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="info">
+              <LineChart
+                data={props.packsForChart}
+                legend="Пачки"
+                height={225}
+                color="#ffffff"
+                type="info"
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Daily Sales</h4>
+              <p className={classes.cardCategory}>
+                <span className={classes.successText}>
+                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+                </span>{' '}
+                increase in today sales.
+              </p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> updated 4 minutes ago
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={6}>
+          <div
+            style={{
+              position: 'absolute',
+              top: 5,
+              left: 15,
+              right: 15,
+              bottom: 30,
+              opacity: 0.5,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              zIndex: 1000,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <span style={{ fontSize: 40, transform: ['rotate(-20deg)'] }}>
+              В процессе разработки
+            </span>
+          </div>
+          <CustomTabs
+            title="Задания на сегодня:"
+            headerColor="primary"
+            tabs={[
+              {
+                tabName: 'Задание 1',
+                tabIcon: BugReport,
+                tabContent: (
+                  <Tasks
+                    checkedIndexes={[0, 3]}
+                    tasksIndexes={[0, 1, 2, 3]}
+                    tasks={bugs}
+                  />
+                ),
+              },
+              {
+                tabName: 'Задание 2',
+                tabIcon: Code,
+                tabContent: (
+                  <Tasks
+                    checkedIndexes={[0]}
+                    tasksIndexes={[0, 1]}
+                    tasks={website}
+                  />
+                ),
+              },
+              {
+                tabName: 'Задание 3',
+                tabIcon: Cloud,
+                tabContent: (
+                  <Tasks
+                    checkedIndexes={[1]}
+                    tasksIndexes={[0, 1, 2]}
+                    tasks={server}
+                  />
+                ),
+              },
+            ]}
+          />
+        </GridItem>
+        <GridItem xs={12} sm={12} md={6}>
+          <Card>
+            <CardHeader color="warning">
+              <h4 className={classes.cardTitleWhite}>Персонал</h4>
+              <p className={classes.cardCategoryWhite}>
+                на дату {moment().format('Do MMMM YYYY')}
+              </p>
+            </CardHeader>
+            <CardBody>
+              <Table
+                tableHeaderColor="warning"
+                tableHead={['Номер', 'Имя', 'Дата приема', 'День рождения']}
+                tableData={props.usersForDashboard}
+              />
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={6}>
+          <Card chart>
+            <CardHeader color="warning" icon>
+              <CardIcon color="warning" icon>
+                <BarChartIcon />
+              </CardIcon>
+            </CardHeader>
+            <CardBody>
+              <LineChart
+                data={props.packsForChart}
+                legend="Пачки"
+                height={300}
+                tooltipTextColor="#ffffff"
+                color={warningColor[0]}
+                type="warning"
+              />
+            </CardBody>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={6}>
+          <Card chart>
+            <CardHeader color="success" icon>
+              <CardIcon color="success" icon>
+                <BarChartIcon />
+              </CardIcon>
+            </CardHeader>
+            <CardBody>
+              <LineChart
+                data={props.packsForChart}
+                legend="Пачки"
+                height={300}
+                tooltipTextColor="#ffffff"
+                color={successColor[0]}
+                type="success"
+              />
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
+    </div>
+  );
 };
 
 const mSTP = createStructuredSelector({
   isLoading: additionalSelectors.selectLoader,
   dashboardTab1: selectDashboardTab1,
   dashboardTab2: selectDashboardTab2,
+  concatPacks: concatDataPacks,
+  concatCoffee: concatDataCoffee,
+  concatPortion: concatDataPortion,
+  packsForChart: selectPacksForChart,
+  dailyIncrease: selectDailyIncrease,
+  usersForDashboard: selectUsersForDashboard,
+  dateFilter: additionalSelectors.selectDateFilter,
 });
 
 const mDTP = dispatch =>
@@ -163,18 +381,31 @@ const mDTP = dispatch =>
     {
       getAllCoffee: SalesActions.changeDataCoffeeAction,
       getAllPortions: SalesActions.changeDataPortionAction,
-      changeData: PacksActions.changeDataPacksAction,
+      changeData: PacksActions.getPackAction,
       getAllOwn: OwnActions.changeDataOwnpackAction,
       getAllInnerPacks: InnerActions.changeDataInnerpackAction,
       getAllDegustation: PacksActions.changeDataDegustationAction,
       getAllInnerCups: InnerActions.changeDataInnercupAction,
       getAllOwnCups: OwnActions.changeDataOwncupAction,
+      getUsers: UsersAction.getAllUser,
     },
     dispatch,
   );
 
+Dashboard.propTypes = {
+  concatPacks: PropTypes.number.isRequired,
+  concatCoffee: PropTypes.number.isRequired,
+  concatPortion: PropTypes.number.isRequired,
+  packsForChart: PropTypes.shape({}).isRequired,
+  changeData: PropTypes.func.isRequired,
+  dashboardTab1: PropTypes.shape({}).isRequired,
+  dailyIncrease: PropTypes.number.isRequired,
+  usersForDashboard: PropTypes.arrayOf().isRequired,
+  getUsers: PropTypes.func.isRequired,
+  dateFilter: PropTypes.shape({}).isRequired,
+};
+
 export default compose(
-  withStyles(styles, { withTheme: true }),
   connect(
     mSTP,
     mDTP,

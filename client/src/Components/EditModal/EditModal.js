@@ -57,7 +57,7 @@ const EditModal = ({
   ...props
 }) => {
   if (!data) return null;
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(moment());
 
   const submit = values => {
     props.onSubmit(values);
@@ -70,7 +70,6 @@ const EditModal = ({
     return (
       <div className={classes.dateArea}>
         <DatePicker
-          emptyLabel={Language.editModal.dateLabel}
           value={date}
           onChange={handleDate}
         />

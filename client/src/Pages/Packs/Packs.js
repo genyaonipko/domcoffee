@@ -15,12 +15,9 @@ import * as PacksSelectors from '../../Redux/reducers/packsReducers/selectors';
 import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
 import PacksTabContainer from './Components/PacksTabContainer';
-import DegustationTabContainer from './Components/DegustationTabContainer';
-import TabPages from '../../Components/TabPage';
 import SpeedDial from '../../Components/SpeedDial';
 import EditModal from '../../Components/EditModal';
 
-const TAB_TITLES = ['Пачки', 'Дегустационные чашки'];
 const APP_BAR_TITLE = 'Пачки';
 const FORM_DIALOG_TITLE = 'пачек';
 const EDIT_MODAL_TITLE = 'Процесс изменения данных';
@@ -31,13 +28,12 @@ const styles = theme => ({
     display: 'flex',
     flex: 1,
     width: window.innerWidth - SIDEBAR_WIDTH,
-    background: 'linear-gradient(45deg, #e3f2fd 40%, #ffebee 60%)',
   },
   content: {
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
-    paddingTop: theme.spacing(16),
+    paddingTop: theme.spacing(28),
   },
 });
 
@@ -52,9 +48,8 @@ const Packs = ({
   errorsDegustation,
   selectPackId,
   onEditPack,
-  ...props
 }) => {
-  const [open, setOpen] = useState(false);
+  const [openSubmitModal, setOpenSubmitModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
 
   useEffect(() => {
@@ -65,11 +60,11 @@ const Packs = ({
   const getModalTitle = !tabIndex ? 'packs' : 'degustation';
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenSubmitModal(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenSubmitModal(false);
   };
 
   const handleOpenEditModal = () => {
@@ -80,26 +75,15 @@ const Packs = ({
     setOpenEditModal(false);
   };
 
-  const handleSubmit = values => {
-    if (!tabIndex) {
-      onSubmitPacks(values);
-    } else {
-      onSubmitDegustations(values);
-    }
-  };
+  const getHandleSubmit = values => [
+    onSubmitPacks(values),
+    onSubmitDegustations(values),
+  ];
 
-  // const handleSelectedId = () => {
-    
-  // }
+  const handleSubmit = values => getHandleSubmit(values)[tabIndex];
 
   const handleEdit = values => {
-    if (!tabIndex) {
-      onEditPack(values);
-    } else {
-      console.log(values)
-
-      // onSubmitDegustations(values);
-    }
+    onEditPack(values);
   };
 
   const renderFormDialog = () => {
@@ -107,7 +91,7 @@ const Packs = ({
       <>
         <FormDialog
           onSubmit={handleSubmit}
-          open={open}
+          open={openSubmitModal}
           handleClose={handleClose}
           title={FORM_DIALOG_TITLE}
         />
@@ -125,20 +109,12 @@ const Packs = ({
 
   const renderFabButton = () => {
     return (
-      <SpeedDial
-        addAction={handleClickOpen}
-        editAction={handleOpenEditModal}
-      />
+      <SpeedDial addAction={handleClickOpen} editAction={handleOpenEditModal} />
     );
   };
 
   const renderContent = () => {
-    return (
-      <TabPages classes={classes} tabTitles={TAB_TITLES} {...props}>
-        <PacksTabContainer />
-        <DegustationTabContainer />
-      </TabPages>
-    );
+    return <PacksTabContainer />;
   };
 
   const renderSnackBar = () => {
@@ -150,7 +126,6 @@ const Packs = ({
       />
     );
   };
-
   return (
     <>
       <CssBaseline />

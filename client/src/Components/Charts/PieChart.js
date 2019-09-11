@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
 
-const PIE_CHART_WIDTH = 800;
-const PIE_CHART_HEIGHT = 600;
-const PIE_CHART_INNER_RADIUS = 150;
-const PIE_CHART_OUTER_RADIUS = 240;
-const CX = 400;
+const PIE_CHART_WIDTH = 750;
+const PIE_CHART_HEIGHT = 700;
+const PIE_CHART_INNER_RADIUS = 140;
+const PIE_CHART_OUTER_RADIUS = 230;
+const CX = 370;
 const CY = 300;
 const RADIAN = Math.PI / 180;
 

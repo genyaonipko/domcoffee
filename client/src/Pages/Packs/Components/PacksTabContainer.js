@@ -8,7 +8,7 @@ import ChartPage from '../../../Components/ChartPage';
 
 const useStyles = makeStyles({});
 
-const PacksTabContainer = ({ packs, fetching, concatData }) => {
+const PacksTabContainer = ({ packs, fetching, concatData, tableData }) => {
   const classes = useStyles();
   const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
   return (
@@ -21,6 +21,7 @@ const PacksTabContainer = ({ packs, fetching, concatData }) => {
       isLoading={fetching}
       chartColor="#AB47BC"
       concatData={concatData}
+      tableData={tableData}
     />
   )
 }
@@ -29,12 +30,14 @@ PacksTabContainer.propTypes = {
   packs: PropTypes.shape({}).isRequired,
   fetching: PropTypes.bool.isRequired,
   concatData: PropTypes.number.isRequired,
+  tableData: PropTypes.arrayOf().isRequired,
 }
 
 const mSTP = createStructuredSelector({
   packs: PacksSelectors.selectPacksForChart,
   fetching: PacksSelectors.selectPacksFetching,
   concatData: PacksSelectors.concatDataPacks,
+  tableData: PacksSelectors.selectPacksForTable,
 });
 
 export default connect(

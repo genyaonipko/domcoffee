@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,6 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
+import { DatePicker } from 'material-ui-pickers';
 import { logoutUser } from '../../Redux/actions/authentication';
 
 import { Creators as AdditionalActions } from '../../Redux/actions/additional/additional';
@@ -25,13 +25,19 @@ import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
 import Images from '../../Resources/Images';
 import Language from '../../Language';
+import {
+  grayColor,
+  blackColor,
+  hexToRgb,
+} from '../../assets/jss/material-dashboard-react';
 
-const DRAWER_WIDTH = 240;
+// const DRAWER_WIDTH = 240;
 
 const styles = theme => ({
   root: {},
   toolbar: {
     paddingRight: theme.spacing(6), // keep right padding when drawer closed
+    justifyContent: 'space-between',
   },
   toolbarIcon: {
     display: 'flex',
@@ -41,19 +47,20 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: DRAWER_WIDTH,
-    width: `calc(100% - ${DRAWER_WIDTH}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+    backgroundColor: '#ffffff',
+    boxShadow: `0 1px 20px 0 rgba(${hexToRgb(blackColor)}, 0.25)`,
+    borderBottom: '0',
+    marginBottom: '0',
+    width: '100%',
+    paddingTop: '10px',
+    zIndex: '1029',
+    color: grayColor[7],
+    border: '0',
+    borderRadius: '3px',
+    padding: '10px 0',
+    transition: 'all 150ms ease 0s',
+    minHeight: '50px',
+    display: 'block',
   },
   menuButton: {
     marginLeft: theme.spacing(3),
@@ -79,6 +86,18 @@ const styles = theme => ({
   avatar: {
     backgroundColor: theme.palette.secondary.dark,
   },
+  section: {
+    width: '33%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  datePicker: {
+    marginRight: 32,
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 });
 
 const AppBarComponent = ({
@@ -88,6 +107,8 @@ const AppBarComponent = ({
   sidebar,
   user,
   changeSidebar,
+  date,
+  handleDate,
 }) => {
   const handleDrawerOpen = () => {
     changeSidebar(!sidebar);
@@ -120,30 +141,39 @@ const AppBarComponent = ({
     </Typography>
   );
 
+  const renderDatePicker = () => {
+    return (
+      <div className={classes.datePicker}>
+        <DatePicker disableFuture value={date} onChange={handleDate} />
+      </div>
+    );
+  };
+
   return (
     <div className={classes.root}>
-      <AppBar
-        position="absolute"
-        className={classNames(classes.appBar, sidebar && classes.appBarShift)}>
-        <Toolbar disableGutters={!sidebar} className={classes.toolbar}>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={handleDrawerOpen}
-            className={classNames(
-              classes.menuButton,
-              sidebar && classes.menuButtonHidden,
-            )}>
-            <MenuIcon />
-          </IconButton>
-          {renderTitle()}
-          <img
-            style={{ width: 200, marginRight: 20 }}
-            src={Images.Logo}
-            alt="dom-coffee"
-          />
-          {renderAvatar()}
-          {renderExitButton()}
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar disableGutters={false} className={classes.toolbar}>
+          <div className={classes.section}>
+            <IconButton
+              aria-label="Open drawer"
+              onClick={handleDrawerOpen}
+              className={classes.menuButton}>
+              <MenuIcon />
+            </IconButton>
+            {renderTitle()}
+          </div>
+          <div className={classes.section}>
+            <img
+              style={{ width: 200, marginRight: 20 }}
+              src={Images.Logo}
+              alt="dom-coffee"
+            />
+          </div>
+          <div className={classes.section}>
+            {renderDatePicker()}
+            {renderAvatar()}
+            {renderExitButton()}
+          </div>
         </Toolbar>
       </AppBar>
     </div>
@@ -159,12 +189,15 @@ AppBarComponent.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,
+  date: PropTypes.shape({}).isRequired,
+  handleDate: PropTypes.func.isRequired,
 };
 
 const mSTP = createStructuredSelector({
   role: selectRole,
   sidebar: additionalSelectors.selectSidebar,
   user: selectUser,
+  date: state => state.settings.dateFilter,
 });
 
 const mDTP = dispatch =>
@@ -172,6 +205,7 @@ const mDTP = dispatch =>
     {
       logout: logoutUser,
       changeSidebar: AdditionalActions.setSidebarState,
+      handleDate: AdditionalActions.setDateFilter,
     },
     dispatch,
   );

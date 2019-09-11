@@ -8,15 +8,12 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton';
 
 import { MainListItems } from './components/ListItems';
 
 import { Creators as AdditionalActions } from '../../Redux/actions/additional/additional';
-import {
-  additionalSelectors
-} from '../../Redux/reducers/additionalReducer';
+import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
 import { selectRole } from '../../Redux/reducers/authReducer/selectors';
 
@@ -70,18 +67,21 @@ class DrawerBar extends Component {
     this.props.changeSidebar(!this.props.sidebar);
   };
 
+  handleChangeRoute = () => {
+    this.props.changeTabBar(0);
+    this.props.changeSidebar(false);
+  }
+
   render() {
     const { classes, sidebar } = this.props;
     return (
       <Drawer
-        variant="permanent"
+        variant="temporary"
         classes={{
-          paper: classNames(
-            classes.drawerPaper,
-            !sidebar && classes.drawerPaperClose,
-          ),
+          paper: classes.drawerPaper,
         }}
-        open={sidebar}>
+        open={sidebar}
+        onBackdropClick={this.handleDrawerClose}>
         <div className={classes.toolbarIcon}>
           <IconButton onClick={this.handleDrawerClose}>
             <ChevronLeftIcon />
@@ -91,7 +91,7 @@ class DrawerBar extends Component {
         <List>
           <MainListItems
             role={this.props.role}
-            changeTabBar={this.props.changeTabBar}
+            changeTabBar={this.handleChangeRoute}
           />
         </List>
         <Divider />
