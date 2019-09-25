@@ -29,7 +29,7 @@ export const addPackAction = pack => (dispatch, getState) => {
   const { dateTransaction } = getState().settings;
   PacksApi.submitPacks(pack, dateTransaction._d).then(({ status, data }) => {
     if (status === 200) {
-      dispatch(Creators.addPackSuccess({ data: data.data }));
+      dispatch(Creators.addPackSuccess({ data: data.data, type: 'add' }));
     }
   }).catch(err => {
     // Fix me errors on backend
@@ -43,7 +43,7 @@ export const editPackAction = pack => (dispatch, getState) => {
   const { selectedPackId } = getState().packs;
   PacksApi.editPacks(pack, selectedPackId).then(({ status, data }) => {
     if (status === 200) {
-      dispatch(Creators.addPackSuccess({ data: data.data }));
+      dispatch(Creators.addPackSuccess({ data: data.data, type: 'edit' }));
     }
   }).catch(err => {
     // Fix me errors on backend

@@ -4,7 +4,7 @@ import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Dashboard from '../Pages/Dashboard/Dashboard';
-import Sales from '../Pages/Sales/Sales';
+import Coffee from '../Pages/Coffee/Coffee';
 import Packs from '../Pages/Packs/Packs';
 import Own from '../Pages/Own/Own';
 import Inner from '../Pages/Inner/Inner';
@@ -54,8 +54,8 @@ class App extends Component {
           />
           <ProtectedRoute
             exact
-            path="/sales"
-            component={Sales}
+            path="/coffee"
+            component={Coffee}
             redirectTo="/login"
             authenticated={authenticated}
           />

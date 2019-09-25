@@ -4,43 +4,6 @@ import { isNil } from 'ramda';
 import { changeData } from '../../../utils/helpers';
 import { additionalSelectors } from '../additionalReducer';
 
-export const selectDegustation = state => state.degustation;
-export const selectDegustationData = createSelector(
-  selectDegustation,
-  degustation => degustation.data,
-);
-export const selectDegustationFetching = createSelector(
-  selectDegustation,
-  degustation => degustation.fetching,
-);
-export const selectDegustationError = createSelector(
-  selectDegustation,
-  degustation => degustation.error,
-);
-export const selectNormalizedDegustationData = createSelector(
-  selectDegustationData,
-  degustation => changeData(degustation),
-);
-
-export const selectDegustationForChart = createSelector(
-  selectNormalizedDegustationData,
-  degustation =>
-    degustation &&
-    Object.keys(degustation).map(item => ({
-      name: item,
-      'Дегустационные чашки': +degustation[item],
-    })),
-);
-
-export const concatDataDegustation = createSelector(
-  selectNormalizedDegustationData,
-  degustation =>
-    Object.values(degustation).reduce(
-      (previousValue, currentItem) => +previousValue + +currentItem,
-      0,
-    ),
-);
-
 export const selectPacks = state => state.packs;
 export const selectPacksData = createSelector(
   selectPacks,
@@ -71,45 +34,81 @@ export const concatDataPacks = createSelector(
 export const selectFilteredPacksByDate = createSelector(
   selectPacksData,
   additionalSelectors.selectDateFilter,
-  selectNormalizedPacksData,
-  (packs, filter, allPacks) => {
+  (packs, filter) => {
+    if (isNil(filter)) return 'all_data';
     const filteredPacks = packs.find(
       item =>
         moment(item.createdDate).format('DD MM YYYY') ===
         // eslint-disable-next-line
         moment(filter._d).format('DD MM YYYY'),
     );
-    if (isNil(filteredPacks)) return { data: allPacks };
+    if (isNil(filteredPacks)) return 'empty_day';
     return filteredPacks;
-  }
-)
-
-export const selectPacksForChart = createSelector(
-  selectFilteredPacksByDate,
-  packs =>
-    packs &&
-    Object.keys(packs.data).map(item => ({
-      name: item,
-      Пачки: +packs.data[item],
-    })),
+  },
 );
 
 export const selectDailyIncrease = createSelector(
   selectFilteredPacksByDate,
   concatDataPacks,
-  (packs, concatPacks) => { 
-    if (isNil(packs)) return null;
+  selectPacksData,
+  (packs, concatPacks, allPacks) => {
+    if (packs === 'all_data' || packs === 'empty_day') return null;
     const concatTodayAddedPack = Object.values(packs.data).reduce(
       (previousValue, currentItem) => +previousValue + +currentItem,
       0,
     );
-    const averagePacksAmount = concatPacks / packs.length;
+    const averagePacksAmount = concatPacks / allPacks.length;
     return ((concatTodayAddedPack / averagePacksAmount - 1) * 100).toFixed(2);
   },
 );
 
-export const selectPacksForTable = createSelector(selectFilteredPacksByDate, packs => {
-  if (isNil(packs)) return null;
-  const tableData = Object.keys(packs.data).map(key => [key, packs.data[key]]);
-  return tableData;
-})
+export const selectPacksToRender = createSelector(
+  selectFilteredPacksByDate,
+  selectNormalizedPacksData,
+  (packs, allPacks) => {
+    if (isNil(packs)) return null;
+    let packsToRender;
+    switch (packs) {
+      case 'all_data':
+        packsToRender = allPacks;
+        break;
+      case 'empty_day':
+        packsToRender = null;
+        break;
+      default:
+        packsToRender = packs.data;
+        break;
+    }
+    return packsToRender;
+  }
+)
+
+export const selectPacksForTable = createSelector(
+  selectPacksToRender,
+  (packs) => {
+    if (isNil(packs)) return null;
+    const tableData = Object.keys(packs).map(key => [
+      key,
+      packs[key],
+    ]);
+    return tableData;
+  },
+);
+
+export const selectPacksForChart = createSelector(
+  selectPacksToRender,
+  (packs) => {
+    if (isNil(packs)) return null;
+    return Object.keys(packs).map(item => ({
+      name: item,
+      Пачки: +packs[item],
+    }));
+  },
+);
+
+export const selectHasExistPack = createSelector(
+  selectPacksForChart,
+  packs => {
+    return !isNil(packs);
+  },
+);

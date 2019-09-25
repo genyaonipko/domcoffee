@@ -9,7 +9,7 @@ const INITIAL_STATE = Immutable.from({
   isLoading: false,
   tabIndex: 0,
   dateTransaction: moment(),
-  dateFilter: moment(),
+  dateFilter: null,
 });
 
 /* -------------------- Handlers ------------------  */

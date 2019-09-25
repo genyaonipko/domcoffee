@@ -24,8 +24,11 @@ export const getPackFailure = (state = INITIAL_STATE, action) => {
 }
 
 export const addPackSuccess = (state = INITIAL_STATE, action) => {
-  const { data: nextData } = action.payload;
-  const normalizedArray = state.data.map(item => item.key === nextData.key ? nextData : item)
+  const { data: nextData, type } = action.payload;
+  let normalizedArray = { ...state }.data.map(item => item.key === nextData.key ? nextData : item)
+  if (type === 'add') {
+    normalizedArray = normalizedArray.concat([nextData]);
+  }
   return state.merge({ data: [...normalizedArray] });
 }
 

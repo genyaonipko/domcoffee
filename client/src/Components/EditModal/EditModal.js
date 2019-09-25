@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { DatePicker } from 'material-ui-pickers';
+import { DatePicker } from '@material-ui/pickers';
 import { Field, reduxForm } from 'redux-form';
-import { createStructuredSelector } from 'reselect';
+// import { createStructuredSelector } from 'reselect';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -17,7 +17,6 @@ import 'moment/locale/ru';
 import InputTextField from '../Input';
 
 import { Creators } from '../../Redux/actions/additional/additional';
-import { selectAllTransactions } from '../../Redux/reducers/dashboardReducer/selectors';
 import Language from '../../Language';
 import content from '../SubmitModal/content.json';
 
@@ -90,7 +89,7 @@ const EditModal = ({
     );
   };
 
-  const normalizedData = data[dataTitle].find(
+  const normalizedData = data.find(
     item => moment(item.createdDate).format('D') === moment(date).format('D'),
   );
   useEffect(() => {
@@ -153,7 +152,7 @@ EditModal.propTypes = {
   reset: PropTypes.func.isRequired,
   changeDate: PropTypes.func.isRequired,
   dataTitle: PropTypes.string.isRequired,
-  data: PropTypes.shape({}).isRequired,
+  data: PropTypes.arrayOf().isRequired,
   initialize: PropTypes.func.isRequired,
   selectIdAction: PropTypes.func.isRequired,
 };
@@ -166,16 +165,12 @@ const mDTP = dispatch =>
     dispatch,
   );
 
-const mSTP = createStructuredSelector({
-  data: selectAllTransactions,
-});
-
 export default compose(
   memo,
   withStyles(styles),
   reduxForm({ form: 'editModal' }),
   connect(
-    mSTP,
+    null,
     mDTP,
   ),
 )(EditModal);

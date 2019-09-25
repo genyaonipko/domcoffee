@@ -12,7 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
-import { DatePicker } from 'material-ui-pickers';
+import { DatePicker } from '@material-ui/pickers';
 import { logoutUser } from '../../Redux/actions/authentication';
 
 import { Creators as AdditionalActions } from '../../Redux/actions/additional/additional';
@@ -144,7 +144,13 @@ const AppBarComponent = ({
   const renderDatePicker = () => {
     return (
       <div className={classes.datePicker}>
-        <DatePicker disableFuture value={date} onChange={handleDate} />
+        <DatePicker
+          disableFuture
+          emptyLabel="Все время"
+          value={date}
+          onChange={handleDate}
+          clearable
+        />
       </div>
     );
   };
@@ -164,7 +170,7 @@ const AppBarComponent = ({
           </div>
           <div className={classes.section}>
             <img
-              style={{ width: 200, marginRight: 20 }}
+              style={{ width: 200 }}
               src={Images.Logo}
               alt="dom-coffee"
             />

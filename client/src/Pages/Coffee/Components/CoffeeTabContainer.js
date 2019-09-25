@@ -3,40 +3,43 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as PacksSelectors from '../../../Redux/reducers/packsReducers/selectors';
+import * as CoffeeSelectors from '../../../Redux/reducers/salesReducers/selectors';
 import ChartPage from '../../../Components/ChartPage';
 
 const useStyles = makeStyles({});
 
-const DegustationTabContainer = ({ degustation, fetching, concatData }) => {
+const CoffeeTabContainer = ({ coffee, fetching, concatData, tableData }) => {
   const classes = useStyles();
   const tableHeaders = ['Марка кофе', 'Кол-во продаж'];
   return (
     <ChartPage
       classes={classes}
-      data={degustation}
-      chartTitle="График по дегустационным чашкам"
-      tableTitle="Дегустационные чашки"
+      chartTitle="График по пачкам"
+      tableTitle="Пачки"
+      data={coffee}
       tableHeaders={tableHeaders}
       isLoading={fetching}
       chartColor="#AB47BC"
       concatData={concatData}
+      tableData={tableData}
     />
   )
 }
 
-DegustationTabContainer.propTypes = {
-  degustation: PropTypes.shape({}).isRequired,
+CoffeeTabContainer.propTypes = {
+  coffee: PropTypes.shape({}).isRequired,
   fetching: PropTypes.bool.isRequired,
   concatData: PropTypes.number.isRequired,
+  tableData: PropTypes.arrayOf().isRequired,
 }
 
 const mSTP = createStructuredSelector({
-  degustation: PacksSelectors.selectDegustationForChart,
-  fetching: PacksSelectors.selectDegustationFetching,
-  concatData: PacksSelectors.concatDataDegustation,
+  coffee: CoffeeSelectors.selectCoffeeForChart,
+  fetching: CoffeeSelectors.selectCoffeeFetching,
+  concatData: CoffeeSelectors.concatDataCoffee,
+  tableData: CoffeeSelectors.selectCoffeeForTable,
 });
 
 export default connect(
   mSTP,
-)(DegustationTabContainer);
+)(CoffeeTabContainer);

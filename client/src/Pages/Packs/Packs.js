@@ -39,22 +39,19 @@ const styles = theme => ({
 
 const Packs = ({
   onSubmitPacks,
-  onSubmitDegustations,
   getPacks,
-  getDegustation,
   tabIndex,
   classes,
   errorsPacks,
-  errorsDegustation,
   selectPackId,
   onEditPack,
+  data,
 }) => {
   const [openSubmitModal, setOpenSubmitModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
 
   useEffect(() => {
     getPacks();
-    getDegustation();
   }, []);
 
   const getModalTitle = !tabIndex ? 'packs' : 'degustation';
@@ -75,12 +72,7 @@ const Packs = ({
     setOpenEditModal(false);
   };
 
-  const getHandleSubmit = values => [
-    onSubmitPacks(values),
-    onSubmitDegustations(values),
-  ];
-
-  const handleSubmit = values => getHandleSubmit(values)[tabIndex];
+  const handleSubmit = values => onSubmitPacks(values);
 
   const handleEdit = values => {
     onEditPack(values);
@@ -102,6 +94,7 @@ const Packs = ({
           dataTitle={getModalTitle}
           selectIdAction={selectPackId}
           title={EDIT_MODAL_TITLE}
+          data={data}
         />
       </>
     );
@@ -120,9 +113,9 @@ const Packs = ({
   const renderSnackBar = () => {
     return (
       <SnackBar
-        visible={!!errorsPacks || !!errorsDegustation}
+        visible={!!errorsPacks}
         type="error"
-        message={errorsPacks || errorsDegustation}
+        message={errorsPacks}
       />
     );
   };
@@ -145,30 +138,28 @@ Packs.propTypes = {
   classes: PropTypes.shape().isRequired,
   tabIndex: PropTypes.number.isRequired,
   errorsPacks: PropTypes.string.isRequired,
-  errorsDegustation: PropTypes.string.isRequired,
 
   // function
   getPacks: PropTypes.func.isRequired,
-  getDegustation: PropTypes.func.isRequired,
   onSubmitPacks: PropTypes.func.isRequired,
-  onSubmitDegustations: PropTypes.func.isRequired,
   selectPackId: PropTypes.func.isRequired,
   onEditPack: PropTypes.func.isRequired,
+
+  // data
+  data: PropTypes.arrayOf().isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   tabIndex: additionalSelectors.selectTabIndex,
   errorsPacks: PacksSelectors.selectPacksError,
-  errorsDegustation: PacksSelectors.selectDegustationError,
+  data: PacksSelectors.selectPacksData,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getPacks: PacksActions.getPackAction,
-      getDegustation: PacksActions.getDegustationAction,
       onSubmitPacks: PacksActions.addPackAction,
-      onSubmitDegustations: PacksActions.addDegustationAction,
       selectPackId: PacksActions.Creators.selectPackId,
       onEditPack: PacksActions.editPackAction,
     },

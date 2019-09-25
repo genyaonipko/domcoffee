@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import moment from 'moment';
 import MomentUtils from '@date-io/moment';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';

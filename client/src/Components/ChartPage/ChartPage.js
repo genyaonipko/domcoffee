@@ -8,9 +8,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import { PieChart, LineChart } from '../Charts';
 import Loader from '../Loader';
+import Images from '../../Resources/Images';
 import GridItem from '../../NewComponents/Grid/GridItem';
 import GridContainer from '../../NewComponents/Grid/GridContainer';
-// import Danger from '../../NewComponents/Typography/Danger';
 import Card from '../../NewComponents/Card/Card';
 import CardHeader from '../../NewComponents/Card/CardHeader';
 import CardIcon from '../../NewComponents/Card/CardIcon';
@@ -35,7 +35,6 @@ const ChartPage = ({
   tableData,
   concatData,
 }) => {
-  console.log(tableData);
   const classes = useStyles();
   if (isLoading) return <Loader />;
   if (isEmpty(data)) {
@@ -43,73 +42,88 @@ const ChartPage = ({
   }
   return (
     <div style={{ marginLeft: 24, marginRight: 24 }}>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card chart>
-            <CardHeader color="warning" icon>
-              <CardIcon color="warning" icon>
-                <LineChartIcon />
-              </CardIcon>
-            </CardHeader>
-            <CardBody>
-              <LineChart
-                data={data}
-                legend={tableTitle}
-                height={500}
-                tooltipTextColor="#ffffff"
-                color={warningColor[0]}
-                type="warning"
-              />
-            </CardBody>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <p style={{ marginLeft: 24, fontSize: 24, fontWeight: 900 }}>
-                  {chartTitle}
-                </p>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card chart>
-            <CardHeader color="success" icon>
-              <CardIcon color="success" icon>
-                <PieChartIcon />
-              </CardIcon>
-            </CardHeader>
-            <CardBody>
-              <PieChart data={data} legend="Пачки" color={successColor[0]} />
-            </CardBody>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Персонал</h4>
-              <p className={classes.cardCategoryWhite}>
-                на дату {moment().format('Do MMMM YYYY')}
-              </p>
-            </CardHeader>
-            <CardBody>
-              {tableData ? (
-                <Table
-                  tableHeaderColor="warning"
-                  tableHead={tableHeaders}
-                  tableData={tableData}
-                />
-              ) : (
-                <div className={classes.stats}>
-                  <p style={{ marginLeft: 24, fontSize: 24, fontWeight: 900 }}>
-                    Нет данных
+      {tableData ? (
+        <>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <Card chart>
+                <CardHeader color="warning" icon>
+                  <CardIcon color="warning" icon>
+                    <LineChartIcon />
+                  </CardIcon>
+                </CardHeader>
+                <CardBody>
+                  <LineChart
+                    data={data}
+                    legend={tableTitle}
+                    height={500}
+                    tooltipTextColor="#ffffff"
+                    color={warningColor[0]}
+                    type="warning"
+                  />
+                </CardBody>
+                <CardFooter stats>
+                  <div className={classes.stats}>
+                    <p
+                      style={{ marginLeft: 24, fontSize: 24, fontWeight: 900 }}>
+                      {chartTitle}
+                    </p>
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card chart>
+                <CardHeader color="success" icon>
+                  <CardIcon color="success" icon>
+                    <PieChartIcon />
+                  </CardIcon>
+                </CardHeader>
+                <CardBody>
+                  <PieChart
+                    data={data}
+                    legend="Пачки"
+                    color={successColor[0]}
+                  />
+                </CardBody>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card>
+                <CardHeader color="warning">
+                  <h4 className={classes.cardTitleWhite}>{tableTitle}</h4>
+                  <p className={classes.cardCategoryWhite}>
+                    на дату {moment().format('Do MMMM YYYY')}
                   </p>
-                </div>
-              )}
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+                </CardHeader>
+                <CardBody>
+                  <Table
+                    tableHeaderColor="warning"
+                    tableHead={tableHeaders}
+                    tableData={tableData}
+                  />
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+        </>
+      ) : (
+        <div
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            flexDirection: 'column',
+            display: 'flex',
+            marginTop: 20,
+          }}>
+          <img width={200} height={200} src={Images.EmojiSad} alt="emoji_sad" />
+          <div className={classes.stats}>
+            <p style={{ fontSize: 40, fontWeight: 900 }}>Нет данных</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

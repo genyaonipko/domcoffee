@@ -41,7 +41,7 @@ export const MainListItems = ({ role, changeTabBar }) => (
       button
       onClick={() => {
         changeTabBar();
-        history.push('/sales');
+        history.push('/coffee');
       }}>
       <ListItemIcon>
         <CoffeeIcon />

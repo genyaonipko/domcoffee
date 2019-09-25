@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AddIcon from '@material-ui/icons/Add';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import AppBarComponent from '../../Components/AppBarComponent';
 import FormDialog from '../../Components/SubmitModal';
-import SalesActions from '../../Redux/actions/sales';
+import CoffeeActions from '../../Redux/actions/sales';
 import SnackBar from '../../Components/SnackBar';
 
-import * as SalesSelectors from '../../Redux/reducers/salesReducers/selectors';
+import * as CoffeeSelectors from '../../Redux/reducers/salesReducers/selectors';
 import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
 import CoffeeTabContainer from './Components/CoffeeTabContainer';
-import PortionTabContainer from './Components/PortionTabContainer';
-import TabPages from '../../Components/TabPage';
+import SpeedDial from '../../Components/SpeedDial';
+import EditModal from '../../Components/EditModal';
 
-const TAB_TITLES = ['Помол', 'Порции'];
-const APP_BAR_TITLE = 'Продажи';
-const FORM_DIALOG_TITLE = 'продаж';
+const APP_BAR_TITLE = 'Помол';
+const FORM_DIALOG_TITLE = 'помола';
+const EDIT_MODAL_TITLE = 'Процесс изменения данных';
 const SIDEBAR_WIDTH = 240;
 
 const styles = theme => ({
@@ -35,91 +33,92 @@ const styles = theme => ({
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
-    paddingTop: theme.spacing(16),
-  },
-  button: {
-    position: 'fixed',
-    right: theme.spacing(4),
-    bottom: theme.spacing(4),
+    paddingTop: theme.spacing(28),
   },
 });
 
-const Sales = ({
+const Coffee = ({
   onSubmitCoffee,
-  onSubmitPortions,
   getCoffee,
-  getPortion,
   tabIndex,
   classes,
   errorsCoffee,
-  errorsPortion,
-  ...props
+  selectCoffeeId,
+  onEditCoffee,
+  data,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [openSubmitModal, setOpenSubmitModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
   useEffect(() => {
     getCoffee();
-    getPortion();
   }, []);
 
+  const getModalTitle = !tabIndex ? 'coffee' : 'degustation';
+
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenSubmitModal(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenSubmitModal(false);
   };
 
-  const handleSubmit = values => {
-    if (!tabIndex) {
-      onSubmitCoffee(values);
-    } else {
-      onSubmitPortions(values);
-    }
+  const handleOpenEditModal = () => {
+    setOpenEditModal(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
+  };
+
+  const handleSubmit = values => onSubmitCoffee(values);
+
+  const handleEdit = values => {
+    onEditCoffee(values);
   };
 
   const renderFormDialog = () => {
     return (
-      <FormDialog
-        onSubmit={handleSubmit}
-        open={open}
-        handleClose={handleClose}
-        title={FORM_DIALOG_TITLE}
-      />
+      <>
+        <FormDialog
+          onSubmit={handleSubmit}
+          open={openSubmitModal}
+          handleClose={handleClose}
+          title={FORM_DIALOG_TITLE}
+        />
+        <EditModal
+          onSubmit={handleEdit}
+          open={openEditModal}
+          handleClose={handleCloseEditModal}
+          dataTitle={getModalTitle}
+          selectIdAction={selectCoffeeId}
+          title={EDIT_MODAL_TITLE}
+          data={data}
+        />
+      </>
     );
   };
 
   const renderFabButton = () => {
     return (
-      <Fab
-        color="secondary"
-        aria-label="Add"
-        className={classes.button}
-        onClick={handleClickOpen}>
-        <AddIcon />
-      </Fab>
+      <SpeedDial addAction={handleClickOpen} editAction={handleOpenEditModal} />
     );
   };
 
   const renderContent = () => {
-    return (
-      <TabPages classes={classes} tabTitles={TAB_TITLES} {...props}>
-        <CoffeeTabContainer />
-        <PortionTabContainer />
-      </TabPages>
-    );
+    return <CoffeeTabContainer />;
   };
 
   const renderSnackBar = () => {
     return (
       <SnackBar
-        visible={!!errorsCoffee || !!errorsPortion}
+        visible={!!errorsCoffee}
         type="error"
-        message={errorsCoffee || errorsPortion}
+        message={errorsCoffee}
       />
     );
   };
-
   return (
     <>
       <CssBaseline />
@@ -134,33 +133,35 @@ const Sales = ({
   );
 };
 
-Sales.propTypes = {
+Coffee.propTypes = {
   // settings
   classes: PropTypes.shape().isRequired,
   tabIndex: PropTypes.number.isRequired,
   errorsCoffee: PropTypes.string.isRequired,
-  errorsPortion: PropTypes.string.isRequired,
 
   // function
   getCoffee: PropTypes.func.isRequired,
-  getPortion: PropTypes.func.isRequired,
   onSubmitCoffee: PropTypes.func.isRequired,
-  onSubmitPortions: PropTypes.func.isRequired,
+  selectCoffeeId: PropTypes.func.isRequired,
+  onEditCoffee: PropTypes.func.isRequired,
+
+  // data
+  data: PropTypes.arrayOf().isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   tabIndex: additionalSelectors.selectTabIndex,
-  errorsCoffee: SalesSelectors.selectCoffeeError,
-  errorsPortion: SalesSelectors.selectPortionError,
+  errorsCoffee: CoffeeSelectors.selectCoffeeError,
+  data: CoffeeSelectors.selectCoffeeData,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getCoffee: SalesActions.getCoffeeAction,
-      getPortion: SalesActions.getPortionAction,
-      onSubmitCoffee: SalesActions.addCoffeeAction,
-      onSubmitPortions: SalesActions.addPortionAction,
+      getCoffee: CoffeeActions.getCoffeeAction,
+      onSubmitCoffee: CoffeeActions.addCoffeeAction,
+      selectCoffeeId: CoffeeActions.Creators.selectCoffeeId,
+      onEditCoffee: CoffeeActions.editCoffeeAction,
     },
     dispatch,
   );
@@ -168,4 +169,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles, { withTheme: true })(Sales));
+)(withStyles(styles, { withTheme: true })(Coffee));

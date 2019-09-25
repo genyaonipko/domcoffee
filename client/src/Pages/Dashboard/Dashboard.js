@@ -14,12 +14,8 @@ import CoffeeIcon from '@material-ui/icons/LocalCafe';
 // import Update from '@material-ui/icons/Update';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import AccessTime from '@material-ui/icons/AccessTime';
 // import Accessibility from '@material-ui/icons/Accessibility';
-import BugReport from '@material-ui/icons/BugReport';
 import BarChartIcon from '@material-ui/icons/BarChart';
-import Code from '@material-ui/icons/Code';
-import Cloud from '@material-ui/icons/Cloud';
 import { compose, bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -30,8 +26,6 @@ import moment from 'moment';
 import GridItem from '../../NewComponents/Grid/GridItem';
 import GridContainer from '../../NewComponents/Grid/GridContainer';
 import Table from '../../NewComponents/Table/Table';
-import Tasks from '../../NewComponents/Tasks/Tasks';
-import CustomTabs from '../../NewComponents/CustomTabs/CustomTabs';
 // import Danger from '../../NewComponents/Typography/Danger';
 import Card from '../../NewComponents/Card/Card';
 import CardHeader from '../../NewComponents/Card/CardHeader';
@@ -48,14 +42,15 @@ import OwnActions from '../../Redux/actions/own';
 import UsersAction from '../../Redux/actions/users/user';
 import { LineChart } from '../../Components/Charts';
 
-import {
-  selectDashboardTab1,
-  selectDashboardTab2,
-} from '../../Redux/reducers/dashboardReducer/selectors';
+// import {
+//   selectDashboardTab1,
+//   selectDashboardTab2,
+// } from '../../Redux/reducers/dashboardReducer/selectors';
 import {
   concatDataPacks,
   selectPacksForChart,
   selectDailyIncrease,
+  selectHasExistPack,
 } from '../../Redux/reducers/packsReducers/selectors';
 import {
   concatDataCoffee,
@@ -63,8 +58,6 @@ import {
 } from '../../Redux/reducers/salesReducers/selectors';
 import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 import { selectUsersForDashboard } from '../../Redux/reducers/usersReducer/selectors';
-
-import { bugs, website, server } from '../../variables/general';
 
 import styles from '../../assets/jss/material-dashboard-react/views/dashboardStyle';
 import {
@@ -85,7 +78,7 @@ const Dashboard = props => {
   }, []);
 
   // eslint-disable-next-line
-  const renderDate = props.dateFilter._d;
+  const renderDate = props.dateFilter && props.dateFilter._d;
 
   return (
     <div style={{ paddingTop: 112, width: '100%' }}>
@@ -149,159 +142,172 @@ const Dashboard = props => {
       <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader color="success">
-              <LineChart
-                data={props.packsForChart}
-                legend="Пачки"
-                height={225}
-                color="#ffffff"
-                type="success"
-                tooltipTextColor="#ffffff"
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Дневные продажи пачек</h4>
-              <p className={classes.cardCategory}>
-                <span
-                  className={
-                    props.dailyIncrease > 0
-                      ? classes.successText
-                      : classes.dangerText
-                  }>
-                  {props.dailyIncrease > 0 ? (
-                    <ArrowUpward className={classes.upArrowCardCategory} />
-                  ) : (
-                    <ArrowDownward className={classes.upArrowCardCategory} />
-                  )}
-                  {props.dailyIncrease}%
-                </span>
-                {props.dailyIncrease > 0 ? 'повышение' : 'снижение'} продаж
-                сегодня.
-              </p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                {moment(renderDate).format('D MMMM YYYY')}
-              </div>
-            </CardFooter>
+            {props.hasExistPacks ? (
+              <>
+                <CardHeader color="success">
+                  <LineChart
+                    data={props.packsForChart}
+                    legend="Пачки"
+                    height={225}
+                    color="#ffffff"
+                    type="success"
+                    tooltipTextColor="#ffffff"
+                  />
+                </CardHeader>
+                {props.dailyIncrease ? (
+                  <CardBody>
+                    <h4 className={classes.cardTitle}>Дневные продажи пачек</h4>
+                    <p className={classes.cardCategory}>
+                      <span
+                        className={
+                          props.dailyIncrease > 0
+                            ? classes.successText
+                            : classes.dangerText
+                        }>
+                        {props.dailyIncrease > 0 ? (
+                          <ArrowUpward
+                            className={classes.upArrowCardCategory}
+                          />
+                        ) : (
+                          <ArrowDownward
+                            className={classes.upArrowCardCategory}
+                          />
+                        )}
+                        {props.dailyIncrease}%
+                      </span>
+                      {props.dailyIncrease > 0 ? 'повышение' : 'снижение'}{' '}
+                      продаж сегодня.
+                    </p>
+                  </CardBody>
+                ) : null}
+                <CardFooter chart>
+                  <div className={classes.stats}>
+                    {props.dailyIncrease
+                      ? moment(renderDate).format('D MMMM YYYY')
+                      : ' Все время'}
+                  </div>
+                </CardFooter>
+              </>
+            ) : (
+              <h1 style={{ margin: 20 }} className={classes.cardTitle}>
+                Нет Данных
+              </h1>
+            )}
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader color="warning">
-              <LineChart
-                data={props.packsForChart}
-                legend="Пачки"
-                height={225}
-                color="#ffffff"
-                type="warning"
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Daily Sales</h4>
-              <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                </span>{' '}
-                increase in today sales.
-              </p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> {moment().format('D MMMM YYYY')}
-              </div>
-            </CardFooter>
+            {props.hasExistPacks ? (
+              <>
+                <CardHeader color="success">
+                  <LineChart
+                    data={props.packsForChart}
+                    legend="Пачки"
+                    height={225}
+                    color="#ffffff"
+                    type="success"
+                    tooltipTextColor="#ffffff"
+                  />
+                </CardHeader>
+                {props.dailyIncrease ? (
+                  <CardBody>
+                    <h4 className={classes.cardTitle}>Дневные продажи пачек</h4>
+                    <p className={classes.cardCategory}>
+                      <span
+                        className={
+                          props.dailyIncrease > 0
+                            ? classes.successText
+                            : classes.dangerText
+                        }>
+                        {props.dailyIncrease > 0 ? (
+                          <ArrowUpward
+                            className={classes.upArrowCardCategory}
+                          />
+                        ) : (
+                          <ArrowDownward
+                            className={classes.upArrowCardCategory}
+                          />
+                        )}
+                        {props.dailyIncrease}%
+                      </span>
+                      {props.dailyIncrease > 0 ? 'повышение' : 'снижение'}{' '}
+                      продаж сегодня.
+                    </p>
+                  </CardBody>
+                ) : null}
+                <CardFooter chart>
+                  <div className={classes.stats}>
+                    {props.dailyIncrease
+                      ? moment(renderDate).format('D MMMM YYYY')
+                      : ' Все время'}
+                  </div>
+                </CardFooter>
+              </>
+            ) : (
+              <h1 style={{ margin: 20 }} className={classes.cardTitle}>
+                Нет Данных
+              </h1>
+            )}
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader color="info">
-              <LineChart
-                data={props.packsForChart}
-                legend="Пачки"
-                height={225}
-                color="#ffffff"
-                type="info"
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Daily Sales</h4>
-              <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                </span>{' '}
-                increase in today sales.
-              </p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> updated 4 minutes ago
-              </div>
-            </CardFooter>
+            {props.hasExistPacks ? (
+              <>
+                <CardHeader color="success">
+                  <LineChart
+                    data={props.packsForChart}
+                    legend="Пачки"
+                    height={225}
+                    color="#ffffff"
+                    type="success"
+                    tooltipTextColor="#ffffff"
+                  />
+                </CardHeader>
+                {props.dailyIncrease ? (
+                  <CardBody>
+                    <h4 className={classes.cardTitle}>Дневные продажи пачек</h4>
+                    <p className={classes.cardCategory}>
+                      <span
+                        className={
+                          props.dailyIncrease > 0
+                            ? classes.successText
+                            : classes.dangerText
+                        }>
+                        {props.dailyIncrease > 0 ? (
+                          <ArrowUpward
+                            className={classes.upArrowCardCategory}
+                          />
+                        ) : (
+                          <ArrowDownward
+                            className={classes.upArrowCardCategory}
+                          />
+                        )}
+                        {props.dailyIncrease}%
+                      </span>
+                      {props.dailyIncrease > 0 ? 'повышение' : 'снижение'}{' '}
+                      продаж сегодня.
+                    </p>
+                  </CardBody>
+                ) : null}
+                <CardFooter chart>
+                  <div className={classes.stats}>
+                    {props.dailyIncrease
+                      ? moment(renderDate).format('D MMMM YYYY')
+                      : ' Все время'}
+                  </div>
+                </CardFooter>
+              </>
+            ) : (
+              <h1 style={{ margin: 20 }} className={classes.cardTitle}>
+                Нет Данных
+              </h1>
+            )}
           </Card>
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
-          <div
-            style={{
-              position: 'absolute',
-              top: 5,
-              left: 15,
-              right: 15,
-              bottom: 30,
-              opacity: 0.5,
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              zIndex: 1000,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <span style={{ fontSize: 40, transform: ['rotate(-20deg)'] }}>
-              В процессе разработки
-            </span>
-          </div>
-          <CustomTabs
-            title="Задания на сегодня:"
-            headerColor="primary"
-            tabs={[
-              {
-                tabName: 'Задание 1',
-                tabIcon: BugReport,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0, 3]}
-                    tasksIndexes={[0, 1, 2, 3]}
-                    tasks={bugs}
-                  />
-                ),
-              },
-              {
-                tabName: 'Задание 2',
-                tabIcon: Code,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0]}
-                    tasksIndexes={[0, 1]}
-                    tasks={website}
-                  />
-                ),
-              },
-              {
-                tabName: 'Задание 3',
-                tabIcon: Cloud,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[1]}
-                    tasksIndexes={[0, 1, 2]}
-                    tasks={server}
-                  />
-                ),
-              },
-            ]}
-          />
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>Персонал</h4>
@@ -365,8 +371,8 @@ const Dashboard = props => {
 
 const mSTP = createStructuredSelector({
   isLoading: additionalSelectors.selectLoader,
-  dashboardTab1: selectDashboardTab1,
-  dashboardTab2: selectDashboardTab2,
+  // dashboardTab1: selectDashboardTab1,
+  // dashboardTab2: selectDashboardTab2,
   concatPacks: concatDataPacks,
   concatCoffee: concatDataCoffee,
   concatPortion: concatDataPortion,
@@ -374,6 +380,7 @@ const mSTP = createStructuredSelector({
   dailyIncrease: selectDailyIncrease,
   usersForDashboard: selectUsersForDashboard,
   dateFilter: additionalSelectors.selectDateFilter,
+  hasExistPacks: selectHasExistPack,
 });
 
 const mDTP = dispatch =>
@@ -403,6 +410,7 @@ Dashboard.propTypes = {
   usersForDashboard: PropTypes.arrayOf().isRequired,
   getUsers: PropTypes.func.isRequired,
   dateFilter: PropTypes.shape({}).isRequired,
+  hasExistPacks: PropTypes.bool.isRequired,
 };
 
 export default compose(

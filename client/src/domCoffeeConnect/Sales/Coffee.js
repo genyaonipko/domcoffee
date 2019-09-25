@@ -14,4 +14,8 @@ export default class CoffeeService extends BaseService {
       dateTransaction,
     })
   }
+
+  editCoffee = (data, id) => {
+    return this.api.put(`/api/coffee/${id}`, data)
+  }
 }

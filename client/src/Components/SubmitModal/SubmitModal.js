@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { DatePicker } from 'material-ui-pickers';
+import { DatePicker } from '@material-ui/pickers';
 import { Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
