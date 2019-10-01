@@ -37,12 +37,10 @@ const ChartPage = ({
 }) => {
   const classes = useStyles();
   if (isLoading) return <Loader />;
-  if (isEmpty(data)) {
-    return <Title />;
-  }
+  console.log(data)
   return (
     <div style={{ marginLeft: 24, marginRight: 24 }}>
-      {tableData ? (
+      {data ? (
         <>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>

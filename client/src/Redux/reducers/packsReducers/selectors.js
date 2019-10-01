@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { isNil } from 'ramda';
+import { isNil, isEmpty } from 'ramda';
 import { changeData } from '../../../utils/helpers';
 import { additionalSelectors } from '../additionalReducer';
 
@@ -35,6 +35,7 @@ export const selectFilteredPacksByDate = createSelector(
   selectPacksData,
   additionalSelectors.selectDateFilter,
   (packs, filter) => {
+    if (isEmpty(packs)) return 'all_empty'
     if (isNil(filter)) return 'all_data';
     const filteredPacks = packs.find(
       item =>
@@ -52,7 +53,7 @@ export const selectDailyIncrease = createSelector(
   concatDataPacks,
   selectPacksData,
   (packs, concatPacks, allPacks) => {
-    if (packs === 'all_data' || packs === 'empty_day') return null;
+    if (packs === 'all_data' || packs === 'empty_day' || packs === 'all_empty') return null;
     const concatTodayAddedPack = Object.values(packs.data).reduce(
       (previousValue, currentItem) => +previousValue + +currentItem,
       0,
@@ -72,6 +73,7 @@ export const selectPacksToRender = createSelector(
       case 'all_data':
         packsToRender = allPacks;
         break;
+      case 'all_empty':
       case 'empty_day':
         packsToRender = null;
         break;

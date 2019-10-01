@@ -24,6 +24,7 @@ import moment from 'moment';
 // core components
 
 import GridItem from '../../NewComponents/Grid/GridItem';
+import Loader from '../../Components/Loader';
 import GridContainer from '../../NewComponents/Grid/GridContainer';
 import Table from '../../NewComponents/Table/Table';
 // import Danger from '../../NewComponents/Typography/Danger';
@@ -51,10 +52,14 @@ import {
   selectPacksForChart,
   selectDailyIncrease,
   selectHasExistPack,
+  selectPacksFetching,
 } from '../../Redux/reducers/packsReducers/selectors';
 import {
+  selectCoffeeForChart,
+  selectCoffeeDailyIncrease,
+  selectHasExistCoffee,
   concatDataCoffee,
-  concatDataPortion,
+  selectCoffeeFetching,
 } from '../../Redux/reducers/salesReducers/selectors';
 import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 import { selectUsersForDashboard } from '../../Redux/reducers/usersReducer/selectors';
@@ -75,309 +80,334 @@ const Dashboard = props => {
   React.useEffect(() => {
     props.changeData();
     props.getUsers();
+    props.getAllCoffee();
   }, []);
 
   // eslint-disable-next-line
   const renderDate = props.dateFilter && props.dateFilter._d;
-
   return (
     <div style={{ paddingTop: 112, width: '100%' }}>
       <AppBarComponent title={APP_BAR_TITLE} />
-      <GridContainer>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="success" stats icon>
-              <CardIcon color="success">
-                <ShoppingCartIcon />
-              </CardIcon>
-              <p className={classes.cardCategory}>Всего пачек</p>
-              <h3 className={classes.cardTitle}>
-                {props.concatPacks} <small>шт</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <p style={{ margin: 0 }}>{moment().format('D MMMM YYYY')}</p>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <CoffeeIcon />
-              </CardIcon>
-              <p className={classes.cardCategory}>Всего порции</p>
-              <h3 className={classes.cardTitle}>
-                {props.concatCoffee} <small>шт</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <p style={{ margin: 0 }}>{moment().format('D MMMM YYYY')}</p>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="info" stats icon>
-              <CardIcon color="info">
-                <BarChartIcon />
-              </CardIcon>
-              <p className={classes.cardCategory}>Всего помол</p>
-              <h3 className={classes.cardTitle}>
-                {props.concatPortion} <small>шт</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <p style={{ margin: 0 }}>{moment().format('D MMMM YYYY')}</p>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            {props.hasExistPacks ? (
-              <>
-                <CardHeader color="success">
+      {!props.fetchingCoffee || !props.fetchingPacks ? (
+        <>
+          <GridContainer>
+            <GridItem xs={12} sm={6} md={4}>
+              <Card>
+                <CardHeader color="success" stats icon>
+                  <CardIcon color="success">
+                    <ShoppingCartIcon />
+                  </CardIcon>
+                  <p className={classes.cardCategory}>Всего пачек</p>
+                  <h3 className={classes.cardTitle}>
+                    {props.concatPacks} <small>шт</small>
+                  </h3>
+                </CardHeader>
+                <CardFooter stats>
+                  <div className={classes.stats}>
+                    <p style={{ margin: 0 }}>
+                      {moment().format('D MMMM YYYY')}
+                    </p>
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={6} md={4}>
+              <Card>
+                <CardHeader color="warning" stats icon>
+                  <CardIcon color="warning">
+                    <CoffeeIcon />
+                  </CardIcon>
+                  <p className={classes.cardCategory}>Всего помол</p>
+                  <h3 className={classes.cardTitle}>
+                    {props.concatCoffee} <small>шт</small>
+                  </h3>
+                </CardHeader>
+                <CardFooter stats>
+                  <div className={classes.stats}>
+                    <p style={{ margin: 0 }}>
+                      {moment().format('D MMMM YYYY')}
+                    </p>
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={6} md={4}>
+              <Card>
+                <CardHeader color="info" stats icon>
+                  <CardIcon color="info">
+                    <BarChartIcon />
+                  </CardIcon>
+                  <p className={classes.cardCategory}>Всего помол</p>
+                  <h3 className={classes.cardTitle}>
+                    {props.concatPortion} <small>шт</small>
+                  </h3>
+                </CardHeader>
+                <CardFooter stats>
+                  <div className={classes.stats}>
+                    <p style={{ margin: 0 }}>
+                      {moment().format('D MMMM YYYY')}
+                    </p>
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={4}>
+              <Card chart>
+                {props.hasExistPacks ? (
+                  <>
+                    <CardHeader color="success">
+                      <LineChart
+                        data={props.packsForChart}
+                        legend="Пачки"
+                        height={225}
+                        color="#ffffff"
+                        type="success"
+                        tooltipTextColor="#ffffff"
+                      />
+                    </CardHeader>
+                    {props.dailyPacksIncrease ? (
+                      <CardBody>
+                        <h4 className={classes.cardTitle}>
+                          Дневные продажи пачек
+                        </h4>
+                        <p className={classes.cardCategory}>
+                          <span
+                            className={
+                              props.dailyPacksIncrease > 0
+                                ? classes.successText
+                                : classes.dangerText
+                            }>
+                            {props.dailyPacksIncrease > 0 ? (
+                              <ArrowUpward
+                                className={classes.upArrowCardCategory}
+                              />
+                            ) : (
+                              <ArrowDownward
+                                className={classes.upArrowCardCategory}
+                              />
+                            )}
+                            {props.dailyPacksIncrease}%
+                          </span>
+                          {props.dailyPacksIncrease > 0
+                            ? 'повышение'
+                            : 'снижение'}{' '}
+                          продаж сегодня.
+                        </p>
+                      </CardBody>
+                    ) : null}
+                    <CardFooter chart>
+                      <div className={classes.stats}>
+                        {props.dailyPacksIncrease
+                          ? moment(renderDate).format('D MMMM YYYY')
+                          : ' Все время'}
+                      </div>
+                    </CardFooter>
+                  </>
+                ) : (
+                  <h1 style={{ margin: 20 }} className={classes.cardTitle}>
+                    Нет Данных про пачки
+                  </h1>
+                )}
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={4}>
+              <Card chart>
+                {props.hasExistCoffee ? (
+                  <>
+                    <CardHeader color="warning">
+                      <LineChart
+                        data={props.coffeeForChart}
+                        legend="Пачки"
+                        height={225}
+                        color="#ffffff"
+                        type="warning"
+                        tooltipTextColor="#ffffff"
+                      />
+                    </CardHeader>
+                    {props.dailyCoffeeIncrease ? (
+                      <CardBody>
+                        <h4 className={classes.cardTitle}>
+                          Дневное колличество помола
+                        </h4>
+                        <p className={classes.cardCategory}>
+                          <span
+                            className={
+                              props.dailyCoffeeIncrease > 0
+                                ? classes.successText
+                                : classes.dangerText
+                            }>
+                            {props.dailyCoffeeIncrease > 0 ? (
+                              <ArrowUpward
+                                className={classes.upArrowCardCategory}
+                              />
+                            ) : (
+                              <ArrowDownward
+                                className={classes.upArrowCardCategory}
+                              />
+                            )}
+                            {props.dailyCoffeeIncrease}%
+                          </span>
+                          {props.dailyCoffeeIncrease > 0
+                            ? 'повышение'
+                            : 'снижение'}{' '}
+                          продаж сегодня.
+                        </p>
+                      </CardBody>
+                    ) : null}
+                    <CardFooter chart>
+                      <div className={classes.stats}>
+                        {props.dailyCoffeeIncrease
+                          ? moment(renderDate).format('D MMMM YYYY')
+                          : ' Все время'}
+                      </div>
+                    </CardFooter>
+                  </>
+                ) : (
+                  <h1 style={{ margin: 20 }} className={classes.cardTitle}>
+                    Нет данных про помол
+                  </h1>
+                )}
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={4}>
+              <Card chart>
+                {props.hasExistPacks ? (
+                  <>
+                    <CardHeader color="info">
+                      <LineChart
+                        data={props.packsForChart}
+                        legend="Пачки"
+                        height={225}
+                        color="#ffffff"
+                        type="info"
+                        tooltipTextColor="#ffffff"
+                      />
+                    </CardHeader>
+                    {props.dailyPacksIncrease ? (
+                      <CardBody>
+                        <h4 className={classes.cardTitle}>
+                          Дневные продажи пачек
+                        </h4>
+                        <p className={classes.cardCategory}>
+                          <span
+                            className={
+                              props.dailyPacksIncrease > 0
+                                ? classes.successText
+                                : classes.dangerText
+                            }>
+                            {props.dailyPacksIncrease > 0 ? (
+                              <ArrowUpward
+                                className={classes.upArrowCardCategory}
+                              />
+                            ) : (
+                              <ArrowDownward
+                                className={classes.upArrowCardCategory}
+                              />
+                            )}
+                            {props.dailyPacksIncrease}%
+                          </span>
+                          {props.dailyPacksIncrease > 0
+                            ? 'повышение'
+                            : 'снижение'}{' '}
+                          продаж сегодня.
+                        </p>
+                      </CardBody>
+                    ) : null}
+                    <CardFooter chart>
+                      <div className={classes.stats}>
+                        {props.dailyPacksIncrease
+                          ? moment(renderDate).format('D MMMM YYYY')
+                          : ' Все время'}
+                      </div>
+                    </CardFooter>
+                  </>
+                ) : (
+                  <h1 style={{ margin: 20 }} className={classes.cardTitle}>
+                    Нет Данных
+                  </h1>
+                )}
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <Card>
+                <CardHeader color="primary">
+                  <h4 className={classes.cardTitleWhite}>Персонал</h4>
+                  <p className={classes.cardCategoryWhite}>
+                    на дату {moment().format('Do MMMM YYYY')}
+                  </p>
+                </CardHeader>
+                <CardBody>
+                  <Table
+                    tableHeaderColor="primary"
+                    tableHead={['Номер', 'Имя', 'Дата приема', 'День рождения']}
+                    tableData={props.usersForDashboard}
+                  />
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card chart>
+                <CardHeader color="warning" icon>
+                  <CardIcon color="warning" icon>
+                    <BarChartIcon />
+                  </CardIcon>
+                </CardHeader>
+                <CardBody>
                   <LineChart
                     data={props.packsForChart}
                     legend="Пачки"
-                    height={225}
-                    color="#ffffff"
-                    type="success"
+                    height={300}
                     tooltipTextColor="#ffffff"
+                    color={warningColor[0]}
+                    type="warning"
                   />
+                </CardBody>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card chart>
+                <CardHeader color="success" icon>
+                  <CardIcon color="success" icon>
+                    <BarChartIcon />
+                  </CardIcon>
                 </CardHeader>
-                {props.dailyIncrease ? (
-                  <CardBody>
-                    <h4 className={classes.cardTitle}>Дневные продажи пачек</h4>
-                    <p className={classes.cardCategory}>
-                      <span
-                        className={
-                          props.dailyIncrease > 0
-                            ? classes.successText
-                            : classes.dangerText
-                        }>
-                        {props.dailyIncrease > 0 ? (
-                          <ArrowUpward
-                            className={classes.upArrowCardCategory}
-                          />
-                        ) : (
-                          <ArrowDownward
-                            className={classes.upArrowCardCategory}
-                          />
-                        )}
-                        {props.dailyIncrease}%
-                      </span>
-                      {props.dailyIncrease > 0 ? 'повышение' : 'снижение'}{' '}
-                      продаж сегодня.
-                    </p>
-                  </CardBody>
-                ) : null}
-                <CardFooter chart>
-                  <div className={classes.stats}>
-                    {props.dailyIncrease
-                      ? moment(renderDate).format('D MMMM YYYY')
-                      : ' Все время'}
-                  </div>
-                </CardFooter>
-              </>
-            ) : (
-              <h1 style={{ margin: 20 }} className={classes.cardTitle}>
-                Нет Данных
-              </h1>
-            )}
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            {props.hasExistPacks ? (
-              <>
-                <CardHeader color="success">
+                <CardBody>
                   <LineChart
                     data={props.packsForChart}
                     legend="Пачки"
-                    height={225}
-                    color="#ffffff"
-                    type="success"
+                    height={300}
                     tooltipTextColor="#ffffff"
-                  />
-                </CardHeader>
-                {props.dailyIncrease ? (
-                  <CardBody>
-                    <h4 className={classes.cardTitle}>Дневные продажи пачек</h4>
-                    <p className={classes.cardCategory}>
-                      <span
-                        className={
-                          props.dailyIncrease > 0
-                            ? classes.successText
-                            : classes.dangerText
-                        }>
-                        {props.dailyIncrease > 0 ? (
-                          <ArrowUpward
-                            className={classes.upArrowCardCategory}
-                          />
-                        ) : (
-                          <ArrowDownward
-                            className={classes.upArrowCardCategory}
-                          />
-                        )}
-                        {props.dailyIncrease}%
-                      </span>
-                      {props.dailyIncrease > 0 ? 'повышение' : 'снижение'}{' '}
-                      продаж сегодня.
-                    </p>
-                  </CardBody>
-                ) : null}
-                <CardFooter chart>
-                  <div className={classes.stats}>
-                    {props.dailyIncrease
-                      ? moment(renderDate).format('D MMMM YYYY')
-                      : ' Все время'}
-                  </div>
-                </CardFooter>
-              </>
-            ) : (
-              <h1 style={{ margin: 20 }} className={classes.cardTitle}>
-                Нет Данных
-              </h1>
-            )}
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            {props.hasExistPacks ? (
-              <>
-                <CardHeader color="success">
-                  <LineChart
-                    data={props.packsForChart}
-                    legend="Пачки"
-                    height={225}
-                    color="#ffffff"
+                    color={successColor[0]}
                     type="success"
-                    tooltipTextColor="#ffffff"
                   />
-                </CardHeader>
-                {props.dailyIncrease ? (
-                  <CardBody>
-                    <h4 className={classes.cardTitle}>Дневные продажи пачек</h4>
-                    <p className={classes.cardCategory}>
-                      <span
-                        className={
-                          props.dailyIncrease > 0
-                            ? classes.successText
-                            : classes.dangerText
-                        }>
-                        {props.dailyIncrease > 0 ? (
-                          <ArrowUpward
-                            className={classes.upArrowCardCategory}
-                          />
-                        ) : (
-                          <ArrowDownward
-                            className={classes.upArrowCardCategory}
-                          />
-                        )}
-                        {props.dailyIncrease}%
-                      </span>
-                      {props.dailyIncrease > 0 ? 'повышение' : 'снижение'}{' '}
-                      продаж сегодня.
-                    </p>
-                  </CardBody>
-                ) : null}
-                <CardFooter chart>
-                  <div className={classes.stats}>
-                    {props.dailyIncrease
-                      ? moment(renderDate).format('D MMMM YYYY')
-                      : ' Все время'}
-                  </div>
-                </CardFooter>
-              </>
-            ) : (
-              <h1 style={{ margin: 20 }} className={classes.cardTitle}>
-                Нет Данных
-              </h1>
-            )}
-          </Card>
-        </GridItem>
-      </GridContainer>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Персонал</h4>
-              <p className={classes.cardCategoryWhite}>
-                на дату {moment().format('Do MMMM YYYY')}
-              </p>
-            </CardHeader>
-            <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={['Номер', 'Имя', 'Дата приема', 'День рождения']}
-                tableData={props.usersForDashboard}
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card chart>
-            <CardHeader color="warning" icon>
-              <CardIcon color="warning" icon>
-                <BarChartIcon />
-              </CardIcon>
-            </CardHeader>
-            <CardBody>
-              <LineChart
-                data={props.packsForChart}
-                legend="Пачки"
-                height={300}
-                tooltipTextColor="#ffffff"
-                color={warningColor[0]}
-                type="warning"
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card chart>
-            <CardHeader color="success" icon>
-              <CardIcon color="success" icon>
-                <BarChartIcon />
-              </CardIcon>
-            </CardHeader>
-            <CardBody>
-              <LineChart
-                data={props.packsForChart}
-                legend="Пачки"
-                height={300}
-                tooltipTextColor="#ffffff"
-                color={successColor[0]}
-                type="success"
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+        </>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };
 
 const mSTP = createStructuredSelector({
-  isLoading: additionalSelectors.selectLoader,
-  // dashboardTab1: selectDashboardTab1,
-  // dashboardTab2: selectDashboardTab2,
   concatPacks: concatDataPacks,
   concatCoffee: concatDataCoffee,
-  concatPortion: concatDataPortion,
+  fetchingCoffee: selectCoffeeFetching,
+  fetchingPacks: selectPacksFetching,
+  hasExistCoffee: selectHasExistCoffee,
   packsForChart: selectPacksForChart,
-  dailyIncrease: selectDailyIncrease,
+  coffeeForChart: selectCoffeeForChart,
+  dailyPacksIncrease: selectDailyIncrease,
+  dailyCoffeeIncrease: selectCoffeeDailyIncrease,
   usersForDashboard: selectUsersForDashboard,
   dateFilter: additionalSelectors.selectDateFilter,
   hasExistPacks: selectHasExistPack,
@@ -386,7 +416,7 @@ const mSTP = createStructuredSelector({
 const mDTP = dispatch =>
   bindActionCreators(
     {
-      getAllCoffee: SalesActions.changeDataCoffeeAction,
+      getAllCoffee: SalesActions.getCoffeeAction,
       getAllPortions: SalesActions.changeDataPortionAction,
       changeData: PacksActions.getPackAction,
       getAllOwn: OwnActions.changeDataOwnpackAction,
@@ -403,12 +433,18 @@ Dashboard.propTypes = {
   concatPacks: PropTypes.number.isRequired,
   concatCoffee: PropTypes.number.isRequired,
   concatPortion: PropTypes.number.isRequired,
-  packsForChart: PropTypes.shape({}).isRequired,
   changeData: PropTypes.func.isRequired,
-  dashboardTab1: PropTypes.shape({}).isRequired,
-  dailyIncrease: PropTypes.number.isRequired,
+  fetchingCoffee: PropTypes.bool.isRequired,
+  fetchingPacks: PropTypes.bool.isRequired,
+
+  hasExistCoffee: PropTypes.bool.isRequired,
+  dailyCoffeeIncrease: PropTypes.number.isRequired,
+  coffeeForChart: PropTypes.shape({}).isRequired,
+  packsForChart: PropTypes.shape({}).isRequired,
+  dailyPacksIncrease: PropTypes.number.isRequired,
   usersForDashboard: PropTypes.arrayOf().isRequired,
   getUsers: PropTypes.func.isRequired,
+  getAllCoffee: PropTypes.func.isRequired,
   dateFilter: PropTypes.shape({}).isRequired,
   hasExistPacks: PropTypes.bool.isRequired,
 };
