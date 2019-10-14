@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 
-import UsersActions from '../../../Reducers/actions/users/user';
+import { UserActions } from '../../../Reducers/UserReducers';
 import { CommonSelectors } from '../../../Reducers/CommonReducers';
 
 import Alert from '../../../Components/Alert';
@@ -165,8 +165,8 @@ User.propTypes = {
 const mDTP = dispatch =>
   bindActionCreators(
     {
-      getAllUser: UsersActions.getAllUser,
-      deleteUser: UsersActions.deleteUserAction,
+      getAllUser: UserActions.getAllUser,
+      deleteUser: UserActions.deleteUserAction,
     },
     dispatch,
   );

@@ -11,7 +11,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-import UsersActions from '../../../Reducers/actions/users/user';
+import { UserActions } from '../../../Reducers/UserReducers';
 import InputTextField from '../../../Components/Input/Input';
 
 const styles = () => ({
@@ -96,7 +96,7 @@ class UpdateUserForm extends React.Component {
 }
 
 const mDTP = dispatch => ({
-  onSubmit: (key, obj) => dispatch(UsersActions.updateUser(key, obj)),
+  onSubmit: (key, obj) => dispatch(UserActions.updateUser(key, obj)),
 });
 
 export default compose(
