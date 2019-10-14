@@ -1,23 +1,23 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import CoffeeIcon from '@material-ui/icons/LocalCafe';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import PeopleIcon from '@material-ui/icons/People';
 import SettingsIcon from '@material-ui/icons/Settings';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import history from '../../../utils/history';
 
-export const MainListItems = ({ role }) => (
+export const MainListItems = ({ role, changeTabBar }) => (
   <div>
     <ListItem
       button
       onClick={() => {
+        changeTabBar()
         history.push('/dashboard');
       }}>
       <ListItemIcon>
@@ -28,6 +28,7 @@ export const MainListItems = ({ role }) => (
     <ListItem
       button
       onClick={() => {
+        changeTabBar()
         history.push('/packs');
       }}>
       <ListItemIcon>
@@ -38,6 +39,7 @@ export const MainListItems = ({ role }) => (
     <ListItem
       button
       onClick={() => {
+        changeTabBar()
         history.push('/coffee');
       }}>
       <ListItemIcon>
@@ -48,6 +50,7 @@ export const MainListItems = ({ role }) => (
     <ListItem
       button
       onClick={() => {
+        changeTabBar()
         history.push('/portion');
       }}>
       <ListItemIcon>
@@ -59,6 +62,7 @@ export const MainListItems = ({ role }) => (
       button
       disabled
       onClick={() => {
+        changeTabBar()
         history.push('/inner');
       }}>
       <ListItemIcon>
@@ -70,6 +74,7 @@ export const MainListItems = ({ role }) => (
       button
       disabled
       onClick={() => {
+        changeTabBar()
         history.push('/own');
       }}>
       <ListItemIcon>
@@ -79,6 +84,7 @@ export const MainListItems = ({ role }) => (
     </ListItem>
     {role === 'admin' && (
       <ListItem button onClick={() => {
+        changeTabBar()
         history.push('/settings');
       }}>
         <ListItemIcon>
@@ -92,48 +98,5 @@ export const MainListItems = ({ role }) => (
 
 MainListItems.propTypes = {
   role: PropTypes.string.isRequired,
-};
-
-export const SecondaryListItems = props => (
-  <div>
-    <ListSubheader inset>Период</ListSubheader>
-    <ListItem button onClick={() => props.changeDay()}>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="День" />
-    </ListItem>
-    <ListItem button onClick={() => props.changeMonth()}>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Месяц" />
-    </ListItem>
-    <ListItem button onClick={() => props.changeQuarter()}>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Квартал" />
-    </ListItem>
-    <ListItem button onClick={() => props.changeYear()}>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Год" />
-    </ListItem>
-    <ListItem button onClick={() => props.getAll()}>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Все время" />
-    </ListItem>
-  </div>
-);
-
-SecondaryListItems.propTypes = {
-  changeMonth: PropTypes.func.isRequired,
-  changeDay: PropTypes.func.isRequired,
-  changeQuarter: PropTypes.func.isRequired,
-  changeYear: PropTypes.func.isRequired,
-  getAll: PropTypes.func.isRequired,
+  changeTabBar: PropTypes.func.isRequired,
 };

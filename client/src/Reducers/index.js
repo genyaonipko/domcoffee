@@ -3,11 +3,11 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import Config from '../Config';
 import { PacksReducer } from './PacksReducers';
-import { dataUsersReducer } from './reducers/usersReducer';
 import { AuthReducer } from './AuthReducers';
 import { CoffeeReducer } from './CoffeeReducers';
 import { PortionsReducer } from './PortionsReducers';
 import { CommonReducer } from './CommonReducers';
+import { UserReducer } from './UserReducers';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   coffee: CoffeeReducer,
   portions: PortionsReducer,
   auth: AuthReducer,
-  users: dataUsersReducer,
+  users: UserReducer,
   common: CommonReducer,
 });
 

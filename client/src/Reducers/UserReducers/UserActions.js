@@ -1,11 +1,6 @@
 /* eslint-disable */
 import { createActions } from 'reduxsauce';
-// import {
-//   getUsersRequest,
-//   deleteUserRequest,
-//   updateUserRequest,
-// } from '../../../domCoffeeConnect';
-// import dcRequest from '../../../domCoffeeConnect/domCoffeeConnect';
+import { UserApi } from '../../Services';
 
 export const { Creators } = createActions(
   {
@@ -14,14 +9,14 @@ export const { Creators } = createActions(
   {},
 );
 
-const getAllUser = () => dispatch => {
-  // getUsersRequest(dcRequest.getUsersRequest(), (data, error) => {
-  //   if (error !== undefined) {
-  //     dispatch(console.log(error));
-  //   } else if (data !== undefined) {
-  //     dispatch(Creators.getUsers(data.data));
-  //   }
-  // });
+export const getUsers = () => dispatch => {
+  UserApi.getUsers()
+    .then(({ status, data }) => {
+      dispatch(Creators.getUsers(data.data))
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 };
 
 const deleteUserAction = key => dispatch => {
@@ -43,5 +38,3 @@ const updateUser = (key, user) => dispatch => {
   //   }
   // });
 };
-
-export default { getAllUser, deleteUserAction, updateUser }

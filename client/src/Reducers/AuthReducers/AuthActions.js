@@ -41,7 +41,7 @@ export const loginUser = user => dispatch => {
       dispatch(Creators.logInFailure({ error: password || email }));
       setTimeout(() => {
         dispatch(Creators.logInFailure({ error: '' }));
-      }, 4000);
+      }, 3000);
     });
 };
 

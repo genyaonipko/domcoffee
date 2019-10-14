@@ -1,7 +1,7 @@
 
 import { createReducer } from 'reduxsauce';
 import Immutable from 'seamless-immutable'
-import Types from '../../actionTypes';
+import Types from '../actionTypes';
 
 /* -------------------- INITIAL_STATE ------------------  */
 const INITIAL_STATE = Immutable.from([]);

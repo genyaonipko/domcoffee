@@ -49,8 +49,7 @@ import { LineChart } from '../../Components/Charts';
 //   selectDashboardTab2,
 // } from '../../Redux/reducers/dashboardReducer/selectors';
 import { CommonSelectors } from '../../Reducers/CommonReducers';
-import { selectUsersForDashboard } from '../../Reducers/reducers/usersReducer/selectors';
-import UsersAction from '../../Reducers/actions/users/user';
+import { UserActions, UserSelectors } from '../../Reducers/UserReducers';
 
 import styles from '../../assets/jss/material-dashboard-react/views/dashboardStyle';
 import {
@@ -408,7 +407,7 @@ const mSTP = createStructuredSelector({
   hasExistPacks: PacksSelectors.selectHasExistPack,
   hasExistPortions: PortionsSelectors.selectHasExistPortions,
 
-  usersForDashboard: selectUsersForDashboard,
+  usersForDashboard: UserSelectors.selectUsersForDashboard,
   dateFilter: CommonSelectors.selectDateFilter,
 });
 
@@ -418,7 +417,7 @@ const mDTP = dispatch =>
       getAllCoffee: CoffeeActions.getCoffeeAction,
       getAllPortions: PortionsActions.getPortionAction,
       changeData: PacksActions.getPackAction,
-      getUsers: UsersAction.getAllUser,
+      getUsers: UserActions.getUsers,
     },
     dispatch,
   );
