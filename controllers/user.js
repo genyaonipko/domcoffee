@@ -26,7 +26,7 @@ module.exports = {
 
     User.findOne({ email }).then(user => {
       if (!user) {
-        errors.email = "User not found";
+        errors.email = "Пользователь не существует";
         return res.status(404).json(errors);
       }
       bcrypt.compare(password, user.password).then(isMatch => {
@@ -54,7 +54,7 @@ module.exports = {
             }
           );
         } else {
-          errors.password = "Incorrect Password";
+          errors.password = "Не правильный пароль";
           return res.status(400).json(errors);
         }
       });
