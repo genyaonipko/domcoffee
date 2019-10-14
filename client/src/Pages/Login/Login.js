@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
@@ -7,151 +7,163 @@ import { createStructuredSelector } from 'reselect';
 // import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
 // import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Loader from '../../Components/Loader';
+import { Hidden } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { makeStyles } from '@material-ui/core/styles';
 
-import { loginUser } from '../../Redux/actions/authentication';
-import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
+import { AuthActions, AuthSelectors } from '../../Reducers/AuthReducers';
+import { CommonSelectors } from '../../Reducers/CommonReducers';
 
 import InputTextField from '../../Components/Input/Input';
 
 import Images from '../../Resources/Images';
+import SnackBar from '../../Components/SnackBar';
+import Loader from '../../Components/Loader';
 
-const styles = theme => ({
-  layout: {
-    width: 'auto',
-    display: 'block', // Fix IE11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+const useStyles = makeStyles(theme => ({
+  root: {
+    height: '100vh',
+  },
+  image: {
+    width: '100vw',
+    height: '101vh',
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
+    margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-      .spacing.unit * 3}px`,
   },
   avatar: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
+    marginBottom: theme.spacing(3),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE11 issue.
-    marginTop: theme.spacing.unit,
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
   },
   submit: {
-    marginTop: theme.spacing.unit * 3,
+    margin: theme.spacing(8, 0, 2),
   },
-  invalid: {
-    color: 'red',
-    fontSize: 10,
-    marginTop: 4,
-  },
-});
+}));
 
-class Login extends Component {
-  state = {
-    errors: {},
-  };
-
-  static getDerivedStateFromProps(props) {
-    return {
-      errors: props.errors,
-    };
-  }
-
-  submit = values => {
-    this.props.loginUser(values, this.props.history);
-  };
-
-  render() {
-    const { errors } = this.state;
-    const { classes, handleSubmit, isLoading } = this.props;
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <main className={classes.layout}>
-          <Paper className={classes.paper}>
-            <img style={{ width: 200 }} src={Images.Logo} alt="dom-coffee" />
-            <Typography variant="h5">Вход в приложение</Typography>
-            <form className={classes.form} onSubmit={handleSubmit(this.submit)}>
-              <FormControl margin="normal" required fullWidth>
-                <Field
-                  label="Электронная почта"
-                  name="email"
-                  autoComplete="email"
-                  component={InputTextField}
-                  type="text"
-                />
-                {errors.email && (
-                  <div className={classes.invalid}>{errors.email}</div>
-                )}
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <Field
-                  label="Пароль"
-                  name="password"
-                  autoComplete="current-password"
-                  component={InputTextField}
-                  type="password"
-                />
-                {errors.password && (
-                  <div className={classes.invalid}>{errors.password}</div>
-                )}
-              </FormControl>
-              {isLoading ? (
-                <Loader />
-              ) : (
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}>
-                  Вход
-                </Button>
-              )}
-            </form>
-          </Paper>
-        </main>
-      </React.Fragment>
-    );
-  }
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'developed by '}
+      <Link color="inherit" target="_blank" href="https://github.com/genyaonipko">
+        Yevheii Onipko
+      </Link>
+    </Typography>
+  );
 }
 
+const bgImage = Images.getRandomImage();
+
+const Login = props => {
+  const submit = values => {
+    if (props.fetching) return null;
+    return props.loginUser(values, props.history);
+  };
+
+  const classes = useStyles();
+
+  const { handleSubmit } = props;
+  return (
+    <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Hidden only="xs">
+        <Grid item xs={false} sm={4} md={8}>
+          <img className={classes.image} src={bgImage} alt="random_image" />
+        </Grid>
+      </Hidden>
+      <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Войдите в приложение
+          </Typography>
+          <form className={classes.form} onSubmit={handleSubmit(submit)}>
+            <Field
+              label="Электронная почта"
+              name="email"
+              required
+              autoComplete="email"
+              component={InputTextField}
+              type="text"
+              fullWidth
+            />
+            <Field
+              label="Пароль"
+              name="password"
+              required
+              autoComplete="current-password"
+              component={InputTextField}
+              type="password"
+              fullWidth
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={!!props.error}
+            >
+              {props.fetching ? <Loader /> : 'Далее'}
+            </Button>
+            <Box mt={5}>
+              <Copyright />
+            </Box>
+          </form>
+        </div>
+      </Grid>
+      <SnackBar
+        visible={props.error}
+        type="error"
+        message={props.error}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+      />
+    </Grid>
+  );
+};
+
 Login.propTypes = {
-  classes: PropTypes.shape().isRequired,
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   loginUser: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  fetching: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
 };
 
 const mSTP = createStructuredSelector({
-  errors: additionalSelectors.selectErrors,
-  isLoading: additionalSelectors.selectLoader,
+  errors: CommonSelectors.selectErrors,
+  fetching: AuthSelectors.selectFetching,
+  error: AuthSelectors.selectError,
 });
 
 const mDTP = dispatch =>
   bindActionCreators(
     {
-      loginUser,
+      loginUser: AuthActions.loginUser,
     },
     dispatch,
   );
 
 export default compose(
-  withStyles(styles),
   reduxForm({ form: 'login' }),
   connect(
     mSTP,

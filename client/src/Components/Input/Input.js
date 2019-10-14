@@ -10,6 +10,7 @@ const InputTextField = ({
   autoFocus,
   autoComplete,
   styles,
+  ...props,
 }) => {
   return (
     <TextField
@@ -23,6 +24,7 @@ const InputTextField = ({
       margin="dense"
       variant="outlined"
       {...input}
+      {...props}
     />
   );
 };

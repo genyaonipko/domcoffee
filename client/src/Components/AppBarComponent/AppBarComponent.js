@@ -13,15 +13,12 @@ import ExitIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import { DatePicker } from '@material-ui/pickers';
-import { logoutUser } from '../../Redux/actions/authentication';
+import { AuthActions, AuthSelectors } from '../../Reducers/AuthReducers';
 
-import { Creators as AdditionalActions } from '../../Redux/actions/additional/additional';
 
 import {
-  selectRole,
-  selectUser,
-} from '../../Redux/reducers/authReducer/selectors';
-import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
+  CommonSelectors, CommonActions,
+} from '../../Reducers/CommonReducers';
 
 import Images from '../../Resources/Images';
 import Language from '../../Language';
@@ -200,18 +197,18 @@ AppBarComponent.propTypes = {
 };
 
 const mSTP = createStructuredSelector({
-  role: selectRole,
-  sidebar: additionalSelectors.selectSidebar,
-  user: selectUser,
-  date: state => state.settings.dateFilter,
+  role: AuthSelectors.selectRole,
+  sidebar: CommonSelectors.selectSidebar,
+  user: AuthSelectors.selectUser,
+  date: state => state.common.dateFilter,
 });
 
 const mDTP = dispatch =>
   bindActionCreators(
     {
-      logout: logoutUser,
-      changeSidebar: AdditionalActions.setSidebarState,
-      handleDate: AdditionalActions.setDateFilter,
+      logout: AuthActions.logoutUser,
+      changeSidebar: CommonActions.Creators.setSidebarState,
+      handleDate: CommonActions.Creators.setDateFilter,
     },
     dispatch,
   );

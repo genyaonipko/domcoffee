@@ -8,11 +8,8 @@ import { createStructuredSelector } from 'reselect';
 
 import AppBarComponent from '../../Components/AppBarComponent';
 import FormDialog from '../../Components/SubmitModal';
-import CoffeeActions from '../../Redux/actions/sales';
+import { CoffeeActions, CoffeeSelectors } from '../../Reducers/CoffeeReducers';
 import SnackBar from '../../Components/SnackBar';
-
-import * as CoffeeSelectors from '../../Redux/reducers/salesReducers/selectors';
-import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
 import CoffeeTabContainer from './Components/CoffeeTabContainer';
 import SpeedDial from '../../Components/SpeedDial';
@@ -150,7 +147,6 @@ Coffee.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  tabIndex: additionalSelectors.selectTabIndex,
   errorsCoffee: CoffeeSelectors.selectCoffeeError,
   data: CoffeeSelectors.selectCoffeeData,
 });

@@ -12,10 +12,9 @@ import IconButton from '@material-ui/core/IconButton';
 
 import { MainListItems } from './components/ListItems';
 
-import { Creators as AdditionalActions } from '../../Redux/actions/additional/additional';
-import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
+import { CommonActions, CommonSelectors } from '../../Reducers/CommonReducers';
 
-import { selectRole } from '../../Redux/reducers/authReducer/selectors';
+import { AuthSelectors } from '../../Reducers/AuthReducers';
 
 const DRAWER_WIDTH = 240;
 
@@ -56,7 +55,6 @@ class DrawerBar extends Component {
     sidebar: PropTypes.bool.isRequired,
     changeSidebar: PropTypes.func.isRequired,
     role: PropTypes.string.isRequired,
-    changeTabBar: PropTypes.func.isRequired,
 
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
@@ -68,7 +66,6 @@ class DrawerBar extends Component {
   };
 
   handleChangeRoute = () => {
-    this.props.changeTabBar(0);
     this.props.changeSidebar(false);
   }
 
@@ -101,15 +98,14 @@ class DrawerBar extends Component {
 }
 
 const mSTP = createStructuredSelector({
-  sidebar: additionalSelectors.selectSidebar,
-  role: selectRole,
+  sidebar: CommonSelectors.selectSidebar,
+  role: AuthSelectors.selectRole,
 });
 
 const mDTP = dispatch =>
   bindActionCreators(
     {
-      changeSidebar: AdditionalActions.setSidebarState,
-      changeTabBar: AdditionalActions.setIndexTab,
+      changeSidebar: CommonActions.Creators.setSidebarState,
     },
     dispatch,
   );

@@ -13,8 +13,8 @@ import Fab from '@material-ui/core/Fab';
 import { createStructuredSelector } from 'reselect';
 
 import InputTextField from '../../../Components/Input/Input';
-import { registerUser } from '../../../Redux/actions/authentication';
-import { additionalSelectors } from '../../../Redux/reducers/additionalReducer';
+import { AuthActions } from '../../../Reducers/AuthReducers';
+import { CommonSelectors } from '../../../Reducers/CommonReducers';
 
 const styles = () => ({
   mainArea: {
@@ -163,11 +163,11 @@ class Register extends React.Component {
 }
 
 const mSTP = createStructuredSelector({
-  errors: additionalSelectors.selectErrors,
+  errors: CommonSelectors.selectErrors,
 });
 
 const mDTP = dispatch => bindActionCreators({
-  onSubmit: registerUser,
+  onSubmit: AuthActions.registerUser,
 }, dispatch);
 
 export default compose(

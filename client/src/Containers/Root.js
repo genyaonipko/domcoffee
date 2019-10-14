@@ -9,14 +9,12 @@ import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 import jwtDecode from 'jwt-decode';
 import App from './App';
-import store from '../Redux/store';
+import store from '../Reducers';
 import history from '../utils/history';
 import setAuthToken from '../utils/setAuthToken';
-import { logoutUser } from '../Redux/actions/authentication';
-import { Creators as AdditionalActions } from '../Redux/actions/additional/additional';
-import Fixture from '../Components/Fixture';
+import { AuthActions } from '../Reducers/AuthReducers';
 
-const screenWidth = window.innerWidth;
+// const screenWidth = window.innerWidth;
 
 const theme = createMuiTheme({
   typography: {
@@ -40,21 +38,22 @@ const theme = createMuiTheme({
   spacing: 4,
 });
 
-if (localStorage.jwtToken) {
-  setAuthToken(localStorage.jwtToken);
-  const decoded = jwtDecode(localStorage.jwtToken);
-  store.dispatch(AdditionalActions.setCurrentUser(decoded));
+const token = localStorage.JWT_TOKEN;
 
+if (token) {
+  setAuthToken(token);
+  const decoded = jwtDecode(token);
+  store.dispatch(AuthActions.Creators.logInSuccess({ user: decoded }));
+  
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
-    store.dispatch(logoutUser());
+    store.dispatch(AuthActions.logoutUser());
     window.location.href = '/login';
   }
 }
 
 class Root extends Component {
   render() {
-    if (screenWidth < 768) return <Fixture />;
     return (
       <Provider store={store}>
         <Router history={history}>

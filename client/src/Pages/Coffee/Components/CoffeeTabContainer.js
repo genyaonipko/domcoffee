@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as CoffeeSelectors from '../../../Redux/reducers/salesReducers/selectors';
+import { CoffeeSelectors } from '../../../Reducers/CoffeeReducers';
 import ChartPage from '../../../Components/ChartPage';
 
 const useStyles = makeStyles({});

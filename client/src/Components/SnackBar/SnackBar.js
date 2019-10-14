@@ -11,7 +11,7 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { makeStyles } from '@material-ui/core/styles';
 
-const SNACKBAR_HIDE_DELAY = 6000;
+const SNACKBAR_HIDE_DELAY = 4000;
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SnackBar = ({ className, message, visible, onClose, type, ...rest }) => {
+const SnackBar = ({ className, message, visible, onClose, type, anchorOrigin, ...rest }) => {
   const Icon = variantIcon[type];
   const classes = useStyles();
 
@@ -59,10 +59,7 @@ const SnackBar = ({ className, message, visible, onClose, type, ...rest }) => {
 
   return (
     <Snackbar
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
+      anchorOrigin={anchorOrigin}
       open={visible}
       autoHideDuration={SNACKBAR_HIDE_DELAY}>
       <SnackbarContent
@@ -82,6 +79,17 @@ SnackBar.propTypes = {
   onClose: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
   visible: PropTypes.bool.isRequired,
+  anchorOrigin: PropTypes.shape({
+    horizontal: PropTypes.string.isRequired,
+    vertical: PropTypes.string.isRequired,
+  }),
 };
+
+SnackBar.defaultProps = {
+  anchorOrigin: {
+    horizontal: 'left',
+    vertical: 'bottom',
+  }
+}
 
 export default React.memo(SnackBar);

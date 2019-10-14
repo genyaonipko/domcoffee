@@ -36,33 +36,21 @@ import CardFooter from '../../NewComponents/Card/CardFooter';
 
 import AppBarComponent from '../../Components/AppBarComponent';
 
-import SalesActions from '../../Redux/actions/sales';
-import PacksActions from '../../Redux/actions/packs';
-import InnerActions from '../../Redux/actions/inner';
-import OwnActions from '../../Redux/actions/own';
-import UsersAction from '../../Redux/actions/users/user';
+import { PacksActions, PacksSelectors } from '../../Reducers/PacksReducers';
+import { CoffeeActions, CoffeeSelectors } from '../../Reducers/CoffeeReducers';
+import {
+  PortionsActions,
+  PortionsSelectors,
+} from '../../Reducers/PortionsReducers';
 import { LineChart } from '../../Components/Charts';
 
 // import {
 //   selectDashboardTab1,
 //   selectDashboardTab2,
 // } from '../../Redux/reducers/dashboardReducer/selectors';
-import {
-  concatDataPacks,
-  selectPacksForChart,
-  selectDailyIncrease,
-  selectHasExistPack,
-  selectPacksFetching,
-} from '../../Redux/reducers/packsReducers/selectors';
-import {
-  selectCoffeeForChart,
-  selectCoffeeDailyIncrease,
-  selectHasExistCoffee,
-  concatDataCoffee,
-  selectCoffeeFetching,
-} from '../../Redux/reducers/salesReducers/selectors';
-import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
-import { selectUsersForDashboard } from '../../Redux/reducers/usersReducer/selectors';
+import { CommonSelectors } from '../../Reducers/CommonReducers';
+import { selectUsersForDashboard } from '../../Reducers/reducers/usersReducer/selectors';
+import UsersAction from '../../Reducers/actions/users/user';
 
 import styles from '../../assets/jss/material-dashboard-react/views/dashboardStyle';
 import {
@@ -81,6 +69,7 @@ const Dashboard = props => {
     props.changeData();
     props.getUsers();
     props.getAllCoffee();
+    props.getAllPortions();
   }, []);
 
   // eslint-disable-next-line
@@ -88,7 +77,7 @@ const Dashboard = props => {
   return (
     <div style={{ paddingTop: 112, width: '100%' }}>
       <AppBarComponent title={APP_BAR_TITLE} />
-      {!props.fetchingCoffee || !props.fetchingPacks ? (
+      {!props.fetchingPortions || !props.fetchingCoffee || !props.fetchingPacks ? (
         <>
           <GridContainer>
             <GridItem xs={12} sm={6} md={4}>
@@ -137,7 +126,7 @@ const Dashboard = props => {
                   <CardIcon color="info">
                     <BarChartIcon />
                   </CardIcon>
-                  <p className={classes.cardCategory}>Всего помол</p>
+                  <p className={classes.cardCategory}>Всего порций</p>
                   <h3 className={classes.cardTitle}>
                     {props.concatPortion} <small>шт</small>
                   </h3>
@@ -273,11 +262,11 @@ const Dashboard = props => {
             </GridItem>
             <GridItem xs={12} sm={12} md={4}>
               <Card chart>
-                {props.hasExistPacks ? (
+                {props.hasExistPortions ? (
                   <>
                     <CardHeader color="info">
                       <LineChart
-                        data={props.packsForChart}
+                        data={props.portionsForChart}
                         legend="Пачки"
                         height={225}
                         color="#ffffff"
@@ -285,19 +274,19 @@ const Dashboard = props => {
                         tooltipTextColor="#ffffff"
                       />
                     </CardHeader>
-                    {props.dailyPacksIncrease ? (
+                    {props.dailyPortionsIncrease ? (
                       <CardBody>
                         <h4 className={classes.cardTitle}>
-                          Дневные продажи пачек
+                          Дневные продажи порций
                         </h4>
                         <p className={classes.cardCategory}>
                           <span
                             className={
-                              props.dailyPacksIncrease > 0
+                              props.dailyPortionsIncrease > 0
                                 ? classes.successText
                                 : classes.dangerText
                             }>
-                            {props.dailyPacksIncrease > 0 ? (
+                            {props.dailyPortionsIncrease > 0 ? (
                               <ArrowUpward
                                 className={classes.upArrowCardCategory}
                               />
@@ -306,9 +295,9 @@ const Dashboard = props => {
                                 className={classes.upArrowCardCategory}
                               />
                             )}
-                            {props.dailyPacksIncrease}%
+                            {props.dailyPortionsIncrease}%
                           </span>
-                          {props.dailyPacksIncrease > 0
+                          {props.dailyPortionsIncrease > 0
                             ? 'повышение'
                             : 'снижение'}{' '}
                           продаж сегодня.
@@ -317,7 +306,7 @@ const Dashboard = props => {
                     ) : null}
                     <CardFooter chart>
                       <div className={classes.stats}>
-                        {props.dailyPacksIncrease
+                        {props.dailyPortionsIncrease
                           ? moment(renderDate).format('D MMMM YYYY')
                           : ' Все время'}
                       </div>
@@ -325,7 +314,7 @@ const Dashboard = props => {
                   </>
                 ) : (
                   <h1 style={{ margin: 20 }} className={classes.cardTitle}>
-                    Нет Данных
+                    Нет данных про порции
                   </h1>
                 )}
               </Card>
@@ -399,31 +388,36 @@ const Dashboard = props => {
 };
 
 const mSTP = createStructuredSelector({
-  concatPacks: concatDataPacks,
-  concatCoffee: concatDataCoffee,
-  fetchingCoffee: selectCoffeeFetching,
-  fetchingPacks: selectPacksFetching,
-  hasExistCoffee: selectHasExistCoffee,
-  packsForChart: selectPacksForChart,
-  coffeeForChart: selectCoffeeForChart,
-  dailyPacksIncrease: selectDailyIncrease,
-  dailyCoffeeIncrease: selectCoffeeDailyIncrease,
+  concatPacks: PacksSelectors.concatDataPacks,
+  concatCoffee: CoffeeSelectors.concatDataCoffee,
+  concatPortion: PortionsSelectors.concatDataPortions,
+
+  fetchingCoffee: CoffeeSelectors.selectCoffeeFetching,
+  fetchingPacks: PacksSelectors.selectPacksFetching,
+  fetchingPortions: PortionsSelectors.selectPortionsFetching,
+
+  packsForChart: PacksSelectors.selectPacksForChart,
+  coffeeForChart: CoffeeSelectors.selectCoffeeForChart,
+  portionsForChart: PortionsSelectors.selectPortionsForChart,
+
+  dailyPacksIncrease: PacksSelectors.selectDailyIncrease,
+  dailyCoffeeIncrease: CoffeeSelectors.selectCoffeeDailyIncrease,
+  dailyPortionsIncrease: PortionsSelectors.selectDailyPortionsIncrease,
+
+  hasExistCoffee: CoffeeSelectors.selectHasExistCoffee,
+  hasExistPacks: PacksSelectors.selectHasExistPack,
+  hasExistPortions: PortionsSelectors.selectHasExistPortions,
+
   usersForDashboard: selectUsersForDashboard,
-  dateFilter: additionalSelectors.selectDateFilter,
-  hasExistPacks: selectHasExistPack,
+  dateFilter: CommonSelectors.selectDateFilter,
 });
 
 const mDTP = dispatch =>
   bindActionCreators(
     {
-      getAllCoffee: SalesActions.getCoffeeAction,
-      getAllPortions: SalesActions.changeDataPortionAction,
+      getAllCoffee: CoffeeActions.getCoffeeAction,
+      getAllPortions: PortionsActions.getPortionAction,
       changeData: PacksActions.getPackAction,
-      getAllOwn: OwnActions.changeDataOwnpackAction,
-      getAllInnerPacks: InnerActions.changeDataInnerpackAction,
-      getAllDegustation: PacksActions.changeDataDegustationAction,
-      getAllInnerCups: InnerActions.changeDataInnercupAction,
-      getAllOwnCups: OwnActions.changeDataOwncupAction,
       getUsers: UsersAction.getAllUser,
     },
     dispatch,
@@ -436,8 +430,13 @@ Dashboard.propTypes = {
   changeData: PropTypes.func.isRequired,
   fetchingCoffee: PropTypes.bool.isRequired,
   fetchingPacks: PropTypes.bool.isRequired,
+  fetchingPortions: PropTypes.bool.isRequired,
+  getAllPortions: PropTypes.func.isRequired,
 
   hasExistCoffee: PropTypes.bool.isRequired,
+  hasExistPortions: PropTypes.bool.isRequired,
+  portionsForChart: PropTypes.shape({}).isRequired,
+  dailyPortionsIncrease: PropTypes.number.isRequired,
   dailyCoffeeIncrease: PropTypes.number.isRequired,
   coffeeForChart: PropTypes.shape({}).isRequired,
   packsForChart: PropTypes.shape({}).isRequired,

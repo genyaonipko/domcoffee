@@ -9,8 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 
-import UsersActions from '../../../Redux/actions/users/user';
-import { additionalSelectors } from '../../../Redux/reducers/additionalReducer';
+import UsersActions from '../../../Reducers/actions/users/user';
+import { CommonSelectors } from '../../../Reducers/CommonReducers';
 
 import Alert from '../../../Components/Alert';
 import SnackBar from '../../../Components/SnackBar';
@@ -172,7 +172,7 @@ const mDTP = dispatch =>
   );
 
 const mSTP = createStructuredSelector({
-  users: additionalSelectors.selectUsers,
+  users: CommonSelectors.selectUsers,
 });
 
 export default compose(

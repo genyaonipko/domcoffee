@@ -6,13 +6,12 @@ import { createStructuredSelector } from 'reselect';
 import Dashboard from '../Pages/Dashboard/Dashboard';
 import Coffee from '../Pages/Coffee/Coffee';
 import Packs from '../Pages/Packs/Packs';
-import Own from '../Pages/Own/Own';
-import Inner from '../Pages/Inner/Inner';
+import Portion from '../Pages/Portion/Portion';
 import Settings from '../Pages/Settings/Settings';
 import ProtectedRoute from '../Components/ProtectedRoute';
 import DrawerBar from '../Components/Drawer';
 import Login from '../Pages/Login/Login';
-import * as authSelectors from '../Redux/reducers/authReducer/selectors';
+import { AuthSelectors } from '../Reducers/AuthReducers';
 
 class App extends Component {
   static propTypes = {
@@ -61,15 +60,8 @@ class App extends Component {
           />
           <ProtectedRoute
             exact
-            path="/inner"
-            component={Inner}
-            redirectTo="/login"
-            authenticated={authenticated}
-          />
-          <ProtectedRoute
-            exact
-            path="/own"
-            component={Own}
+            path="/portion"
+            component={Portion}
             redirectTo="/login"
             authenticated={authenticated}
           />
@@ -87,8 +79,8 @@ class App extends Component {
 }
 
 const mSTP = createStructuredSelector({
-  authenticated: authSelectors.selectIsAuthenticated,
-  role: authSelectors.selectRole,
+  authenticated: AuthSelectors.selectIsAuthenticated,
+  role: AuthSelectors.selectRole,
 });
 
 export default connect(

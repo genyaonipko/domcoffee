@@ -13,12 +13,11 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import history from '../../../utils/history';
 
-export const MainListItems = ({ role, changeTabBar }) => (
+export const MainListItems = ({ role }) => (
   <div>
     <ListItem
       button
       onClick={() => {
-        changeTabBar();
         history.push('/dashboard');
       }}>
       <ListItemIcon>
@@ -29,7 +28,6 @@ export const MainListItems = ({ role, changeTabBar }) => (
     <ListItem
       button
       onClick={() => {
-        changeTabBar();
         history.push('/packs');
       }}>
       <ListItemIcon>
@@ -40,7 +38,6 @@ export const MainListItems = ({ role, changeTabBar }) => (
     <ListItem
       button
       onClick={() => {
-        changeTabBar();
         history.push('/coffee');
       }}>
       <ListItemIcon>
@@ -51,8 +48,7 @@ export const MainListItems = ({ role, changeTabBar }) => (
     <ListItem
       button
       onClick={() => {
-        changeTabBar();
-        history.push('/inner');
+        history.push('/portion');
       }}>
       <ListItemIcon>
         <BarChartIcon />
@@ -61,8 +57,8 @@ export const MainListItems = ({ role, changeTabBar }) => (
     </ListItem>
     <ListItem
       button
+      disabled
       onClick={() => {
-        changeTabBar();
         history.push('/inner');
       }}>
       <ListItemIcon>
@@ -72,8 +68,8 @@ export const MainListItems = ({ role, changeTabBar }) => (
     </ListItem>
     <ListItem
       button
+      disabled
       onClick={() => {
-        changeTabBar();
         history.push('/own');
       }}>
       <ListItemIcon>
@@ -83,7 +79,6 @@ export const MainListItems = ({ role, changeTabBar }) => (
     </ListItem>
     {role === 'admin' && (
       <ListItem button onClick={() => {
-        changeTabBar();
         history.push('/settings');
       }}>
         <ListItemIcon>
@@ -97,7 +92,6 @@ export const MainListItems = ({ role, changeTabBar }) => (
 
 MainListItems.propTypes = {
   role: PropTypes.string.isRequired,
-  changeTabBar: PropTypes.func.isRequired,
 };
 
 export const SecondaryListItems = props => (

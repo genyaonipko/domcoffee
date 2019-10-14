@@ -15,7 +15,7 @@ import 'moment/locale/ru';
 import InputTextField from '../Input';
 import content from './content.json';
 
-import { Creators } from '../../Redux/actions/additional/additional';
+import { CommonActions } from '../../Reducers/CommonReducers';
 import Language from '../../Language';
 
 const styles = theme => ({
@@ -125,7 +125,7 @@ SubmitModal.propTypes = {
 };
 
 const mDTP = dispatch => bindActionCreators({
-  changeDate: Creators.setDateTransaction,
+  changeDate: CommonActions.Creators.setDateTransaction,
 }, dispatch);
 
 export default compose(

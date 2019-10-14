@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import 'moment/locale/ru';
 import InputTextField from '../Input';
 
-import { Creators } from '../../Redux/actions/additional/additional';
+import { CommonActions } from '../../Reducers/CommonReducers';
 import Language from '../../Language';
 import content from '../SubmitModal/content.json';
 
@@ -160,7 +160,7 @@ EditModal.propTypes = {
 const mDTP = dispatch =>
   bindActionCreators(
     {
-      changeDate: Creators.setDateTransaction,
+      changeDate: CommonActions.Creators.setDateTransaction,
     },
     dispatch,
   );

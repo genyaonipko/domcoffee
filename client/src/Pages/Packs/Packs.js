@@ -8,11 +8,8 @@ import { createStructuredSelector } from 'reselect';
 
 import AppBarComponent from '../../Components/AppBarComponent';
 import FormDialog from '../../Components/SubmitModal';
-import PacksActions from '../../Redux/actions/packs';
+import { PacksActions, PacksSelectors } from '../../Reducers/PacksReducers';
 import SnackBar from '../../Components/SnackBar';
-
-import * as PacksSelectors from '../../Redux/reducers/packsReducers/selectors';
-import { additionalSelectors } from '../../Redux/reducers/additionalReducer';
 
 import PacksTabContainer from './Components/PacksTabContainer';
 import SpeedDial from '../../Components/SpeedDial';
@@ -150,7 +147,6 @@ Packs.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  tabIndex: additionalSelectors.selectTabIndex,
   errorsPacks: PacksSelectors.selectPacksError,
   data: PacksSelectors.selectPacksData,
 });
