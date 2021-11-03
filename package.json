@@ -27,6 +27,6 @@
     "nodemon": "^1.18.4",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "validator": "^10.7.1"
+    "validator": "^13.7.0"
   }
 }
